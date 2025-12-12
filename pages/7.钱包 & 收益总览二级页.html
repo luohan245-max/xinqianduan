@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>钱包 & 收益总览 · V2</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <style>
+    :root {
+      --bg: #050506;
+      --bg-card: #111427;
+      --bg-card-soft: #151725;
+      --border-subtle: #262a3f;
+      --gold: #f5d27a;
+      --pink: #ff7eb3;
+      --text-main: #f7f7fb;
+      --text-sub: #9ea1b6;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 999px;
+      --shadow-soft: 0 18px 40px rgba(0,0,0,0.55);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      min-height: 100vh;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      margin: 0 auto;
+      padding-bottom: 16px;
+      position: relative;
+    }
+
+    @media (min-width: 768px) {
+      .app {
+        max-width: 520px;
+        margin: 16px auto;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: var(--shadow-soft);
+      }
+    }
+
+    .page {
+      padding: 12px 16px 24px;
+    }
+
+    /* 顶部栏 */
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 0 10px;
+    }
+
+    .back-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      border: 1px solid rgba(245,210,122,0.4);
+      background:
+        radial-gradient(circle at top, rgba(255,126,179,0.25), transparent 65%),
+        linear-gradient(145deg, rgba(9,10,18,0.96), rgba(12,13,22,0.96));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: var(--gold);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.7);
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .page-header-main {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .page-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .page-subtitle {
+      font-size: 12px;
+      color: var(--text-sub);
+    }
+
+    /* 通用卡片 */
+    .card {
+      border-radius: var(--radius-lg);
+      padding: 12px;
+      background:
+        radial-gradient(circle at top left, rgba(255,126,179,0.22), transparent 60%),
+        radial-gradient(circle at bottom right, rgba(245,210,122,0.18), transparent 60%),
+        linear-gradient(160deg, #191d30, #05060c);
+      border: 1px solid rgba(245,210,122,0.35);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.9);
+      margin-bottom: 14px;
+    }
+
+    .card-soft {
+      border-radius: var(--radius-lg);
+      padding: 12px;
+      background: linear-gradient(160deg, #141726, #070811);
+      border: 1px solid rgba(38,42,63,0.95);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.85);
+      margin-bottom: 12px;
+    }
+
+    .section-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .section-sub {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    /* 占位条 */
+    .ph-text {
+      height: 10px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #2e3144, #181b2a);
+      margin-bottom: 4px;
+    }
+
+    .w-100 { width: 100%; }
+    .w-90  { width: 90%; }
+    .w-80  { width: 80%; }
+    .w-70  { width: 70%; }
+    .w-60  { width: 60%; }
+
+    /* 顶部：总资产卡片（只做总览） */
+    .asset-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .asset-main {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .asset-label {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .asset-value-lg {
+      font-size: 22px;
+      font-weight: 600;
+      background: linear-gradient(135deg, var(--gold), var(--pink));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .asset-sub-row {
+      font-size: 11px;
+      color: var(--text-sub);
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .asset-tag {
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(245,210,122,0.6);
+      background: rgba(5,5,10,0.95);
+      color: var(--gold);
+      font-size: 10px;
+      white-space: nowrap;
+    }
+
+    .asset-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .btn-withdraw,
+    .btn-recharge {
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: none;
+      font-size: 11px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .btn-withdraw {
+      background: linear-gradient(135deg, var(--gold), var(--pink));
+      color: #050506;
+      box-shadow: 0 0 14px rgba(255,126,179,0.85);
+    }
+
+    .btn-recharge {
+      background: transparent;
+      border: 1px solid rgba(245,210,122,0.6);
+      color: var(--gold);
+    }
+
+    /* KPI 区（整体） */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .kpi-item {
+      padding: 6px;
+      border-radius: 10px;
+      background: rgba(9,9,16,0.96);
+      border: 1px solid rgba(38,42,63,0.9);
+      font-size: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .kpi-label {
+      color: var(--text-sub);
+    }
+
+    .kpi-value {
+      font-size: 12px;
+      color: var(--gold);
+    }
+
+    .kpi-item.highlight {
+      background:
+        radial-gradient(circle at top, rgba(255,216,111,0.22), transparent 60%),
+        linear-gradient(160deg, #181c30, #05060c);
+      border-color: rgba(245,210,122,0.7);
+    }
+
+    /* 收益结构：全局静态/动态/创作池/团队/其他（汇总口径） */
+    .chart-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .ph-chart-circle {
+      flex-shrink: 0;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 30% 20%, rgba(255,216,111,0.3), transparent 60%),
+        conic-gradient(
+          rgba(245,210,122,0.95) 0deg 90deg,
+          rgba(255,126,179,0.95) 90deg 150deg,
+          rgba(79,70,229,0.9) 150deg 210deg,
+          rgba(45,212,191,0.9) 210deg 270deg,
+          rgba(148,163,184,0.9) 270deg 360deg
+        );
+      box-shadow: 0 0 20px rgba(255,216,111,0.9);
+      position: relative;
+    }
+
+    .ph-chart-circle::after {
+      content: "";
+      position: absolute;
+      inset: 26%;
+      border-radius: 50%;
+      background: rgba(5,5,10,0.95);
+      box-shadow: 0 0 16px rgba(0,0,0,0.8);
+    }
+
+    .chart-legend {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 11px;
+    }
+
+    .legend-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .legend-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-sub);
+    }
+
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .legend-value {
+      color: var(--gold);
+      font-size: 11px;
+    }
+
+    .legend-tag {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    /* 全局历史趋势（只看整体，不分 DP / 徽章） */
+    .chart-tabs {
+      display: flex;
+      justify-content: flex-start;
+      gap: 6px;
+      margin-bottom: 8px;
+      font-size: 10px;
+    }
+
+    .chart-tab-pill {
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(245,210,122,0.4);
+      background: rgba(8,8,14,0.96);
+      color: var(--text-sub);
+      white-space: nowrap;
+    }
+
+    .chart-tab-pill.is-active {
+      background: linear-gradient(135deg, var(--gold), var(--pink));
+      color: #050506;
+      border: none;
+      box-shadow: 0 0 12px rgba(255,126,179,0.75);
+    }
+
+    .ph-chart-line {
+      width: 100%;
+      height: 110px;
+      border-radius: 14px;
+      background:
+        linear-gradient(180deg, rgba(255,126,179,0.16), transparent),
+        linear-gradient(135deg, #1a1d30, #05060c);
+      border: 1px solid rgba(38,42,63,0.9);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.9);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 资产分类小卡片（Coins / Diamonds / 徽章 / DP / 团队） */
+    .asset-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .asset-card-small {
+      padding: 8px;
+      border-radius: 14px;
+      background: linear-gradient(150deg, #151827, #070811);
+      border: 1px solid rgba(38,42,63,0.9);
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.85);
+    }
+
+    .asset-card-small-strong {
+      background:
+        radial-gradient(circle at top left, rgba(255,126,179,0.18), transparent 60%),
+        linear-gradient(150deg, #181c30, #05060c);
+      border-color: rgba(245,210,122,0.6);
+    }
+
+    .asset-small-label {
+      font-size: 11px;
+      color: var(--text-sub);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .asset-small-value {
+      font-size: 14px;
+      color: var(--gold);
+    }
+
+    .asset-small-tag {
+      font-size: 10px;
+      color: var(--gold);
+    }
+
+    .asset-row-full {
+      grid-column: 1 / -1;
+    }
+
+    /* 收益明细（只展示最近几条） */
+    .list-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-sub);
+      margin-bottom: 4px;
+    }
+
+    .record-list {
+      margin-top: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .record-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 8px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(160deg, #141726, #070811);
+      border: 1px solid rgba(38,42,63,0.95);
+      font-size: 11px;
+    }
+
+    .record-main {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .record-title {
+      font-size: 12px;
+    }
+
+    .record-meta {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    .record-amount {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .amount-positive {
+      color: var(--gold);
+      font-size: 12px;
+    }
+
+    .amount-type {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    /* 资产深度分析入口区（DP / 徽章 / 团队 / 计算器） */
+    .quick-grid {
+      margin-top: 4px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .quick-item {
+      padding: 8px;
+      border-radius: 14px;
+      background: linear-gradient(160deg, #151827, #070811);
+      border: 1px solid rgba(38,42,63,0.9);
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.85);
+      cursor: pointer; /* 让整个卡片可点，样式不变 */
+    }
+
+    .quick-label {
+      font-size: 11px;
+    }
+
+    .quick-desc {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    .quick-tag {
+      margin-top: 2px;
+      font-size: 10px;
+      color: var(--gold);
+    }
+
+    /* 查看全部明细点击样式（不下划线、不变蓝） */
+    .view-all-link {
+      cursor: pointer;
+      color: var(--gold);
+    }
+
+    /* 全局：禁用 a 标签默认下划线与默认蓝色，保持和父级一致 */
+    a {
+      text-decoration: none !important;
+      color: inherit !important;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <main class="page" id="page-wallet-v2">
+      <!-- 顶部栏 -->
+      <header class="page-header">
+        <button class="back-btn" onclick="history.back()">‹</button>
+        <div class="page-header-main">
+          <div class="page-title">钱包 & 收益总览</div>
+          <div class="page-subtitle">整体资产与收益的汇总视图占位（不含细节拆解）</div>
+        </div>
+      </header>
+
+      <!-- 一、总资产概览（只管全局） -->
+      <section class="card">
+        <div class="section-title-row">
+          <div class="section-title">总资产概览</div>
+          <div class="section-sub">包含金币 / 钻石 / DP / 徽章等折算后的总和占位</div>
+        </div>
+
+        <div class="asset-top-row">
+          <div class="asset-main">
+            <div class="asset-label">当前总资产折算占位</div>
+            <div class="asset-value-lg">0.0000 占位</div>
+            <div class="asset-sub-row">
+              <span>可用余额 占位</span>
+              <span>待结算 占位</span>
+            </div>
+          </div>
+          <div class="asset-right">
+            <button class="btn-withdraw">提现占位</button>
+            <button class="btn-recharge">充值占位</button>
+          </div>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi-item">
+            <div class="kpi-label">今日收益</div>
+            <div class="kpi-value">0.0000 占位</div>
+          </div>
+          <div class="kpi-item">
+            <div class="kpi-label">昨日收益</div>
+            <div class="kpi-value">0.0000 占位</div>
+          </div>
+          <div class="kpi-item">
+            <div class="kpi-label">近 7 日累计</div>
+            <div class="kpi-value">0.0000 占位</div>
+          </div>
+          <div class="kpi-item">
+            <div class="kpi-label">近 30 日累计</div>
+            <div class="kpi-value">0.0000 占位</div>
+          </div>
+          <div class="kpi-item highlight">
+            <div class="kpi-label">历史总收益</div>
+            <div class="kpi-value">0.0000 占位</div>
+          </div>
+          <div class="kpi-item">
+            <div class="kpi-label">历史总提现</div>
+            <div class="kpi-value">0.0000 占位</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 二、全局收益结构（静态 / 动态 / 创作池 / 团队 / 其他） -->
+      <section class="card-soft">
+        <div class="section-title-row">
+          <div class="section-title">全局收益结构占位</div>
+          <div class="section-sub">所有资产合并口径下的收益构成（非 DP 专属）</div>
+        </div>
+        <div class="chart-row">
+          <div class="ph-chart-circle"></div>
+          <div class="chart-legend">
+            <div class="legend-item">
+              <div class="legend-left">
+                <span class="legend-dot" style="background:#f5d27a;"></span>
+                <span>静态收益</span>
+              </div>
+              <span class="legend-value">0.0000 占位</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-left">
+                <span class="legend-dot" style="background:#ff7eb3;"></span>
+                <span>动态收益</span>
+              </div>
+              <span class="legend-value">0.0000 占位</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-left">
+                <span class="legend-dot" style="background:#4f46e5;"></span>
+                <span>创作池释放</span>
+              </div>
+              <span class="legend-value">0.0000 占位</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-left">
+                <span class="legend-dot" style="background:#14b8a6;"></span>
+                <span>团队收益</span>
+              </div>
+              <span class="legend-value">0.0000 占位</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-left">
+                <span class="legend-dot" style="background:#9ca3af;"></span>
+                <span>其他</span>
+              </div>
+              <span class="legend-value">0.0000 占位</span>
+            </div>
+            <div class="legend-tag">* 仅作为全局结构展示，更细的拆分在各资产二级页中查看。</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 三、全局历史趋势（整体收益 / 提现） -->
+      <section class="card-soft">
+        <div class="section-title-row">
+          <div class="section-title">历史趋势总览占位</div>
+          <div class="section-sub">整体维度的收益 / 提现变化（不区分 DP / 徽章 / 团队）</div>
+        </div>
+        <div class="chart-tabs">
+          <span class="chart-tab-pill is-active">收益趋势</span>
+          <span class="chart-tab-pill">提现趋势</span>
+          <span class="chart-tab-pill">净收益趋势</span>
+        </div>
+        <div class="ph-chart-line"></div>
+      </section>
+
+      <!-- 四、资产分类概览（轻量级，不做深度分析） -->
+      <section class="card-soft">
+        <div class="section-title-row">
+          <div class="section-title">资产分类概览占位</div>
+          <div class="section-sub">不同资产类型在总资产中的占比（汇总口径）</div>
+        </div>
+        <div class="asset-grid">
+          <div class="asset-card-small">
+            <div class="asset-small-label">
+              <span>金币</span>
+              <span class="asset-small-tag">消费资产占位</span>
+            </div>
+            <div class="asset-small-value">0 占位</div>
+          </div>
+          <div class="asset-card-small">
+            <div class="asset-small-label">
+              <span>钻石</span>
+              <span class="asset-small-tag">内部资产占位</span>
+            </div>
+            <div class="asset-small-value">0 占位</div>
+          </div>
+          <div class="asset-card-small asset-card-small-strong">
+            <div class="asset-small-label">
+              <span>DP 资产</span>
+              <span class="asset-small-tag">可进入 DP 深度页占位</span>
+            </div>
+            <div class="asset-small-value">0.0000 占位</div>
+          </div>
+          <div class="asset-card-small">
+            <div class="asset-small-label">
+              <span>徽章价值</span>
+              <span class="asset-small-tag">按规则折算占位</span>
+            </div>
+            <div class="asset-small-value">0 占位</div>
+          </div>
+          <div class="asset-card-small asset-row-full">
+            <div class="asset-small-label">
+              <span>团队相关收益</span>
+              <span class="asset-small-tag">与团队结构挂钩，占位</span>
+            </div>
+            <div class="asset-small-value">0.0000 占位</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 五、最近收益明细（只展示少量，更多去专门页） -->
+      <section class="card-soft">
+        <div class="section-title-row">
+          <div class="section-title">最近收益明细占位</div>
+          <div class="section-sub">仅展示最近几条全局记录，更多明细在专门页查看</div>
+        </div>
+        <div class="list-header">
+          <span>最近 3 条记录占位</span>
+          <span
+            class="view-all-link"
+            onclick="location.href='33.资产流水明细模板.html'"
+          >查看全部明细占位 →</span>
+        </div>
+        <div class="record-list">
+          <article class="record-item">
+            <div class="record-main">
+              <div class="record-title">收益类型占位 · 文案占位</div>
+              <div class="record-meta">时间占位 · 来源占位（短剧 / 徽章 / 团队等）</div>
+            </div>
+            <div class="record-amount">
+              <span class="amount-positive">+0.0000 占位</span>
+              <span class="amount-type">收益占位</span>
+            </div>
+          </article>
+
+          <article class="record-item">
+            <div class="record-main">
+              <div class="record-title">收益类型占位 · 文案占位</div>
+              <div class="record-meta">时间占位 · 来源占位</div>
+            </div>
+            <div class="record-amount">
+              <span class="amount-positive">+0.0000 占位</span>
+              <span class="amount-type">收益占位</span>
+            </div>
+          </article>
+
+          <article class="record-item">
+            <div class="record-main">
+              <div class="record-title">提现记录占位 · 文案占位</div>
+              <div class="record-meta">时间占位 · 提现渠道占位</div>
+            </div>
+            <div class="record-amount">
+              <span class="amount-positive">-0.0000 占位</span>
+              <span class="amount-type">提现占位</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 六、深度分析入口（跳去 DP / 徽章 / 团队 / 计算器） -->
+      <section class="card-soft">
+        <div class="section-title-row">
+          <div class="section-title">资产深度分析入口占位</div>
+          <div class="section-sub">各类资产有独立「专科页面」负责深度分析</div>
+        </div>
+        <div class="quick-grid">
+          <!-- DP 收益总览 → 9 -->
+          <div class="quick-item" onclick="location.href='9.DP收益总览.html'">
+            <div class="quick-label">DP 收益总览</div>
+            <div class="quick-desc">查看与 DP 相关的所有持仓 / 释放 / 收益明细</div>
+            <div class="quick-tag">进入 DP 页占位 →</div>
+          </div>
+
+          <!-- 徽章收益可视化 → 8 -->
+          <div class="quick-item" onclick="location.href='8.徽章收益可视化.html'">
+            <div class="quick-label">徽章收益可视化</div>
+            <div class="quick-desc">按徽章阵容拆分收益结构，查看单徽章贡献</div>
+            <div class="quick-tag">进入徽章页占位 →</div>
+          </div>
+
+          <!-- 团队收益总览 → 11 -->
+          <div class="quick-item" onclick="location.href='11.团队收益总览.html'">
+            <div class="quick-label">团队收益总览</div>
+            <div class="quick-desc">查看直推 / 间推团队贡献与结构健康度</div>
+            <div class="quick-tag">进入团队页占位 →</div>
+          </div>
+
+          <!-- 徽章收益计算器 → 10 -->
+          <div class="quick-item" onclick="location.href='10.徽章收益计算器.html'">
+            <div class="quick-label">徽章收益计算器</div>
+            <div class="quick-desc">模拟不同徽章配置下的未来收益</div>
+            <div class="quick-tag">进入计算器占位 →</div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

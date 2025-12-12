@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>操作失败通用页 · 模板</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <style>
+    :root{
+      --bg:#050506;
+      --card:#111218;
+      --card-soft:#101019;
+      --line:#262a3f;
+      --gold:#f5d27a;
+      --pink:#ff7eb3;
+      --red:#fb7185;
+      --text-main:#ffffff;
+      --text-sub:#9ea1b6;
+      --radius-lg:22px;
+      --radius-md:16px;
+      --radius-sm:999px;
+      --shadow-soft:0 20px 45px rgba(0,0,0,0.65);
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html,body{
+      width:100%;
+      height:100%;
+      background:var(--bg);
+      color:var(--text-main);
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",sans-serif;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    .app{
+      max-width:430px;
+      margin:0 auto;
+      min-height:100vh;
+      padding:0 14px 20px;
+      display:flex;
+      flex-direction:column;
+      background:radial-gradient(circle at 0 0,rgba(255,255,255,.06),rgba(0,0,0,1));
+    }
+
+    /* 顶部栏 */
+    .page-header{
+      height:56px;
+      margin:0 -14px;
+      padding:0 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      background:linear-gradient(to bottom,rgba(0,0,0,.95),rgba(0,0,0,0));
+    }
+    .header-left{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .back-btn{
+      width:32px;
+      height:32px;
+      border-radius:var(--radius-sm);
+      border:1px solid rgba(245,210,122,.45);
+      background:rgba(0,0,0,.35);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+      color:var(--gold);
+      flex-shrink:0;
+    }
+    .header-title{
+      font-size:16px;
+      font-weight:600;
+    }
+    .header-right{
+      font-size:11px;
+      color:var(--text-sub);
+    }
+
+    /* 主失败卡片 */
+    .main-card{
+      margin-top:18px;
+      padding:20px 16px 16px;
+      border-radius:var(--radius-lg);
+      background:radial-gradient(circle at 0 0,rgba(248,113,113,.18),rgba(10,10,20,1));
+      border:1px solid rgba(248,113,113,.8);
+      box-shadow:var(--shadow-soft);
+      text-align:center;
+    }
+
+    .icon-wrap{
+      width:80px;
+      height:80px;
+      border-radius:999px;
+      margin:0 auto 10px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:36px;
+      color:#fecaca;
+      background:radial-gradient(circle at 30% 0%,#fecaca,#fb7185 45%,#7f1d1d 100%);
+      box-shadow:0 0 0 2px rgba(15,23,42,1),
+                 0 0 40px rgba(248,113,113,.8);
+    }
+
+    .type-pill{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:2px 8px;
+      border-radius:999px;
+      border:1px solid rgba(248,113,113,.9);
+      font-size:11px;
+      color:#fecaca;
+      margin-bottom:4px;
+    }
+
+    .main-title{
+      font-size:20px;
+      font-weight:600;
+      margin-bottom:4px;
+      color:var(--red);
+    }
+
+    .main-sub{
+      font-size:12px;
+      color:var(--text-sub);
+      line-height:1.8;
+      margin-bottom:8px;
+    }
+
+    /* 关键信息行（可选） */
+    .info-card{
+      margin-top:4px;
+      padding:10px 10px;
+      border-radius:16px;
+      background:var(--card-soft);
+      border:1px solid rgba(38,42,63,.9);
+      font-size:12px;
+      text-align:left;
+    }
+    .info-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+      margin-bottom:4px;
+    }
+    .info-row:last-child{margin-bottom:0;}
+    .info-label{
+      color:var(--text-sub);
+      flex-shrink:0;
+    }
+    .info-value{
+      flex:1;
+      min-width:0;
+      text-align:right;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .info-value.highlight{
+      color:var(--red);
+      font-weight:500;
+    }
+
+    .tips{
+      margin-top:8px;
+      font-size:11px;
+      color:var(--text-sub);
+      line-height:1.7;
+      text-align:left;
+    }
+    .tips span{
+      color:var(--gold);
+    }
+
+    /* 按钮区 */
+    .btn-main-row{
+      margin-top:14px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .btn-primary{
+      width:100%;
+      padding:11px 10px;
+      border-radius:var(--radius-sm);
+      background:linear-gradient(135deg,var(--gold),var(--pink));
+      border:none;
+      font-size:14px;
+      color:#050506;
+      font-weight:500;
+      text-align:center;
+      white-space:nowrap;
+    }
+    .btn-secondary{
+      width:100%;
+      padding:9px 10px;
+      border-radius:var(--radius-sm);
+      background:#050509;
+      border:1px solid rgba(148,163,184,.9);
+      font-size:13px;
+      color:var(--text-sub);
+      text-align:center;
+      white-space:nowrap;
+    }
+    .btn-text{
+      margin-top:6px;
+      font-size:11px;
+      color:var(--text-sub);
+      text-align:center;
+    }
+    .btn-text span{
+      color:var(--gold);
+    }
+
+    /* 场景示例区（可删） */
+    .scene-hint{
+      margin-top:16px;
+      padding:10px 12px;
+      border-radius:var(--radius-md);
+      background:var(--card-soft);
+      border:1px dashed rgba(148,163,184,.7);
+      font-size:11px;
+      color:var(--text-sub);
+      line-height:1.6;
+    }
+    .scene-title{
+      font-size:11px;
+      margin-bottom:4px;
+      color:var(--text-main);
+    }
+    .scene-list{
+      padding-left:14px;
+    }
+    .scene-list li{
+      margin-bottom:2px;
+    }
+
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- 顶部栏 -->
+  <header class="page-header">
+    <div class="header-left">
+      <button class="back-btn">‹</button>
+      <div class="header-title">操作失败（通用模板占位）</div>
+    </div>
+    <div class="header-right">错误处理占位</div>
+  </header>
+
+  <!-- 主失败卡片 -->
+  <section class="main-card">
+
+    <div class="icon-wrap">⚠️</div>
+
+    <!-- 这里写具体失败类型：支付失败 / 注册失败 / 购买失败 ... -->
+    <div class="type-pill">失败类型占位：支付失败 / 注册失败 / 购买失败</div>
+
+    <div class="main-title">操作未完成（占位）</div>
+    <div class="main-sub">
+      当前操作未成功。<br/>
+      具体原因（占位）：例如网络异常、余额不足、验证码错误、第三方支付通道异常等。
+      实际文案请根据场景覆盖（占位）。
+    </div>
+
+    <!-- 可选：关键字段展示，用于错误排查 -->
+    <div class="info-card">
+      <div class="info-row">
+        <div class="info-label">场景（占位）</div>
+        <div class="info-value">支付 / 注册 / 购买 等（占位）</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">错误代码（占位）</div>
+        <div class="info-value highlight">ERR-XXXX（由后端返回）</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">时间（占位）</div>
+        <div class="info-value">2025-01-15  14:21（占位）</div>
+      </div>
+    </div>
+
+    <div class="tips">
+      建议文案占位：<br/>
+      1）请先检查<span>网络状态 / 输入信息</span>是否正确；<br/>
+      2）如与支付 / 资产相关，请确认<span>账户余额或第三方支付状态</span>；<br/>
+      3）如多次失败，请保留本页截图并联系<span>在线客服</span>处理（占位）。
+    </div>
+
+    <!-- 主按钮区：根据场景替换文案与路由 -->
+    <div class="btn-main-row">
+      <button class="btn-primary">重新尝试当前操作（占位）</button>
+      <button class="btn-secondary">返回上一页 / 其他方式（占位）</button>
+      <div class="btn-text">
+        若问题持续存在，可前往 <span>客服中心</span> 提交工单或发起在线咨询（占位）。
+      </div>
+    </div>
+
+  </section>
+
+  <!-- 下方场景说明（开发用，线上可删） -->
+  <section class="scene-hint">
+    <div class="scene-title">使用建议（说明占位，上线后可删除）</div>
+    <ul class="scene-list">
+      <li>支付失败场景：按钮改为「重新支付」「查看订单详情」，顶部类型为「支付失败」。</li>
+      <li>注册失败场景：按钮改为「返回重新注册」「使用其他方式登录」。</li>
+      <li>购买失败场景：按钮改为「重新下单」「返回商品 / 剧集详情页」。</li>
+      <li>其他失败（如团队加入失败等）也可复用本页，只需替换文案和跳转。</li>
+    </ul>
+  </section>
+
+</div>
+</body>
+</html>

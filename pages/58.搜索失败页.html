@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>搜索结果 - 暂无内容</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+
+  <style>
+    :root {
+      --bg: #050509;
+      --card: #0f1119;
+      --card-soft: #151824;
+      --border-soft: #22263a;
+      --text-main: #f7f7fb;
+      --text-sub: #9ea1b6;
+      --accent-pink: #ff6ac8;
+      --accent-gold: #f6d57a;
+      --accent-blue: #2575ff;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+      --shadow-soft: 0 14px 40px rgba(0, 0, 0, 0.55);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: radial-gradient(circle at top, #191e34 0, #050509 55%);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+    }
+
+    .page {
+      max-width: 430px;
+      margin: 0 auto;
+      padding-bottom: 72px;
+    }
+
+    /* 顶部搜索导航（通用样式） */
+    .top-nav-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      padding: 10px 10px 8px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: linear-gradient(
+        to bottom,
+        rgba(5,5,9,0.96),
+        rgba(5,5,9,0.82),
+        rgba(5,5,9,0.0)
+      );
+    }
+
+    .top-nav {
+      display:flex;
+      align-items:center;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.14);
+      background: radial-gradient(circle at top,#242a40dd 0,#151826dd 65%);
+      box-shadow:0 16px 40px rgba(0,0,0,0.85);
+    }
+
+    .nav-back {
+      width:28px;
+      height:28px;
+      border-radius:999px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:16px;
+      color:var(--text-main);
+      background:rgba(0,0,0,0.24);
+      margin-right:8px;
+    }
+
+    .nav-search-box {
+      flex:1;
+      display:flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      background:rgba(0,0,0,0.26);
+      color:var(--text-sub);
+      font-size:13px;
+      min-width:0;
+    }
+
+    .search-icon {
+      width:16px;
+      height:16px;
+      border-radius:999px;
+      border:2px solid var(--text-sub);
+      position:relative;
+      flex-shrink:0;
+    }
+    .search-icon::after {
+      content:"";
+      position:absolute;
+      right:-5px;
+      bottom:-5px;
+      width:7px;
+      height:2px;
+      border-radius:999px;
+      background:var(--text-sub);
+      transform:rotate(45deg);
+    }
+
+    .nav-search-text {
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .nav-clear-btn {
+      font-size:11px;
+      color:var(--accent-pink);
+      padding:2px 6px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.24);
+      background:rgba(0,0,0,0.28);
+      flex-shrink:0;
+    }
+
+    .nav-right-btn {
+      width:30px;
+      height:30px;
+      border-radius:999px;
+      margin-left:6px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid rgba(255,255,255,0.22);
+      background:rgba(0,0,0,0.26);
+      font-size:14px;
+      color:var(--accent-gold);
+    }
+
+    /* 提示条 */
+    .tip-bar {
+      margin: 6px 16px 10px;
+      font-size: 11px;
+      color: var(--text-sub);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+    }
+    .tip-pill {
+      padding:2px 8px;
+      border-radius:999px;
+      font-size:10px;
+      color:var(--accent-pink);
+      border:1px solid rgba(255,255,255,0.22);
+      background:rgba(0,0,0,0.26);
+      white-space:nowrap;
+    }
+
+    /* 主体空状态卡片 */
+    .empty-wrap {
+      padding: 16px 16px 10px;
+    }
+
+    .empty-card {
+      border-radius: var(--radius-lg);
+      background: radial-gradient(circle at 0 0,#f6d57a22 0,#151824 52%);
+      border: 1px solid rgba(255,255,255,0.18);
+      box-shadow: 0 18px 44px rgba(0,0,0,0.8);
+      padding: 18px 14px 16px;
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .empty-glow {
+      position:absolute;
+      right:-40px;
+      top:-40px;
+      width:120px;
+      height:120px;
+      background:radial-gradient(circle,#ff6ac8aa,#ff6ac800);
+      filter:blur(2px);
+      opacity:0.9;
+    }
+
+    .empty-icon-wrap {
+      margin-top:6px;
+      margin-bottom:10px;
+      display:flex;
+      justify-content:center;
+    }
+
+    .empty-icon {
+      width:72px;
+      height:72px;
+      border-radius:24px;
+      background:radial-gradient(circle at 30% 0,#fff8d9,#f0c65b,#c88b2c);
+      box-shadow:0 12px 30px rgba(0,0,0,0.75);
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .empty-icon::before {
+      content:"";
+      width:24px;
+      height:24px;
+      border-radius:999px;
+      border:3px solid #6b4a15;
+      border-top-color:transparent;
+      border-right-color:transparent;
+      transform:rotate(-30deg);
+    }
+    .empty-icon::after {
+      content:"";
+      position:absolute;
+      right:16px;
+      bottom:20px;
+      width:10px;
+      height:4px;
+      border-radius:999px;
+      background:#6b4a15;
+      transform:rotate(45deg);
+    }
+
+    .empty-title {
+      position:relative;
+      font-size:15px;
+      font-weight:600;
+      margin-bottom:6px;
+      z-index:1;
+    }
+
+    .empty-keyword {
+      color: var(--accent-gold);
+    }
+
+    .empty-sub {
+      position:relative;
+      font-size:12px;
+      color: var(--text-sub);
+      margin:0 8px 10px;
+      line-height:1.6;
+      z-index:1;
+    }
+
+    .empty-hint {
+      position:relative;
+      font-size:11px;
+      color: rgba(247,247,251,0.8);
+      margin-bottom:10px;
+      z-index:1;
+    }
+
+    /* 操作按钮组 */
+    .empty-actions {
+      position:relative;
+      margin-top:6px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      z-index:1;
+    }
+
+    .btn-primary {
+      padding:10px 0;
+      border-radius:999px;
+      border:none;
+      font-size:13px;
+      font-weight:600;
+      color:#111217;
+      background:linear-gradient(135deg,var(--accent-pink),var(--accent-gold));
+      box-shadow:0 10px 26px rgba(0,0,0,0.8);
+    }
+
+    .btn-ghost {
+      padding:9px 0;
+      border-radius:999px;
+      font-size:12px;
+      color:var(--text-main);
+      background:rgba(0,0,0,0.24);
+      border:1px solid rgba(255,255,255,0.22);
+    }
+
+    .btn-ghost span {
+      color:var(--accent-gold);
+    }
+
+    /* 推荐关键词区 */
+    .suggest-wrap {
+      padding: 4px 16px 6px;
+    }
+
+    .suggest-title {
+      font-size:12px;
+      color:var(--text-sub);
+      margin-bottom:6px;
+    }
+
+    .suggest-chips {
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .s-chip {
+      font-size:11px;
+      padding:5px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.18);
+      background:rgba(0,0,0,0.3);
+      color:rgba(247,247,251,0.96);
+    }
+
+    .s-chip.hot {
+      border:none;
+      background:linear-gradient(135deg,var(--accent-pink),var(--accent-gold));
+      color:#111217;
+      font-weight:600;
+    }
+
+    /* 底部提示 */
+    .bottom-tip {
+      margin-top:14px;
+      text-align:center;
+      font-size:11px;
+      color:var(--text-sub);
+      opacity:0.8;
+      padding-bottom:18px;
+    }
+
+  </style>
+</head>
+
+<body>
+<div class="page">
+
+  <!-- 顶部搜索栏（通用搜索失败状态） -->
+  <div class="top-nav-wrap">
+    <div class="top-nav">
+      <div class="nav-back">‹</div>
+
+      <div class="nav-search-box">
+        <div class="search-icon"></div>
+        <!-- 这里的关键字你可以在接入逻辑时动态替换 -->
+        <div class="nav-search-text">离婚后她成了全城团宠（占位搜索词）</div>
+        <div class="nav-clear-btn">清空（占位）</div>
+      </div>
+
+      <div class="nav-right-btn">⌕</div>
+    </div>
+  </div>
+
+  <!-- 顶部小提示 -->
+  <div class="tip-bar">
+    <span>没有找到与当前关键词完全匹配的短剧（占位）</span>
+    <span class="tip-pill">搜索失败 / 无结果（占位）</span>
+  </div>
+
+  <!-- 空状态主卡片 -->
+  <div class="empty-wrap">
+    <div class="empty-card">
+      <div class="empty-glow"></div>
+
+      <div class="empty-icon-wrap">
+        <div class="empty-icon"></div>
+      </div>
+
+      <div class="empty-title">
+        暂时没有找到与「<span class="empty-keyword">离婚后她成了全城团宠</span>」相关的短剧
+      </div>
+
+      <div class="empty-sub">
+        可能是标题太长、输入有错别字，或者这部短剧暂未上线。你可以尝试简化关键词，
+        例如保留核心情节、人物关系或情绪标签（占位）。
+      </div>
+
+      <div class="empty-hint">
+        建议尝试：
+        「离婚后」「全城团宠」「离婚」「团宠」等更短的关键词（占位）
+      </div>
+
+      <div class="empty-actions">
+        <button class="btn-primary">换个关键词再搜一次（占位）</button>
+        <button class="btn-ghost">返回首页看看 <span>大家都在追什么</span>（占位）</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 推荐关键词 / 热门搜索 -->
+  <div class="suggest-wrap">
+    <div class="suggest-title">也许你会对这些热门搜索感兴趣（占位）：</div>
+    <div class="suggest-chips">
+      <div class="s-chip hot">总裁夫人（占位）</div>
+      <div class="s-chip">先婚后爱（占位）</div>
+      <div class="s-chip">重生复仇（占位）</div>
+      <div class="s-chip">离婚后逆袭（占位）</div>
+      <div class="s-chip">他跪着求原谅（占位）</div>
+      <div class="s-chip">豪门团宠（占位）</div>
+      <div class="s-chip">替身文学（占位）</div>
+    </div>
+  </div>
+
+  <div class="bottom-tip">
+    这是一个通用的搜索失败页面，可以适配标题搜索 / 标签搜索 / 全站搜索等场景（占位说明文案）。
+  </div>
+
+</div>
+</body>
+</html>

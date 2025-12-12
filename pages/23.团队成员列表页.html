@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>团队成员列表 · 短剧平台（占位）</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
+<style>
+:root{
+  --bg:#050506;
+  --card:#111218;
+  --card-soft:#101019;
+  --line:#262a3f;
+  --gold:#f5d27a;
+  --pink:#ff7eb3;
+  --text-main:#ffffff;
+  --text-sub:#9ea1b6;
+  --radius:16px;
+}
+
+/* 全局 */
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{
+  width:100%;height:100%;
+  background:var(--bg);
+  color:var(--text-main);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",sans-serif;
+}
+.app{
+  max-width:430px;
+  margin:0 auto;
+  padding-bottom:16px;
+}
+
+/* 顶部栏 */
+.header-bar{
+  height:56px;
+  padding:0 14px;
+  display:flex;
+  align-items:center;
+  background:linear-gradient(to bottom,rgba(0,0,0,.85),rgba(0,0,0,0));
+}
+.icon-btn{
+  width:32px;height:32px;
+  border-radius:999px;
+  background:rgba(0,0,0,.35);
+  border:1px solid rgba(245,210,122,.4);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--gold);
+  font-size:16px;
+}
+.header-title{
+  margin-left:8px;
+  font-size:16px;
+  font-weight:600;
+}
+
+/* 卡片通用 */
+.card{
+  margin:10px 14px;
+  padding:12px 14px;
+  background:var(--card);
+  border-radius:var(--radius);
+  border:1px solid rgba(245,210,122,.12);
+}
+
+/* 顶部筛选区 */
+.filter-title{
+  font-size:13px;
+  color:var(--text-sub);
+  margin-bottom:6px;
+}
+
+.level-tabs{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-bottom:10px;
+}
+.tab-pill{
+  padding:5px 10px;
+  border-radius:999px;
+  font-size:12px;
+  border:1px solid rgba(245,210,122,.25);
+  background:#0c0d12;
+  color:var(--text-sub);
+}
+.tab-pill.active{
+  background:linear-gradient(135deg,var(--gold),var(--pink));
+  color:#050506;
+  border:none;
+}
+
+/* 搜索 + 筛选行 */
+.search-row{
+  margin-top:4px;
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.search-input{
+  flex:1;
+  min-width:0;
+  padding:8px 10px;
+  border-radius:999px;
+  background:#0c0d12;
+  border:1px solid rgba(245,210,122,.3);
+  font-size:13px;
+  color:var(--text-main);
+}
+.search-input::placeholder{
+  color:var(--text-sub);
+}
+.select-pill{
+  padding:8px 10px;
+  border-radius:999px;
+  background:#0c0d12;
+  border:1px solid rgba(245,210,122,.25);
+  font-size:12px;
+  color:var(--text-sub);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  min-width:110px;
+}
+
+/* 小提示 */
+.tip-small{
+  margin-top:6px;
+  font-size:11px;
+  color:var(--text-sub);
+}
+
+/* 成员列表卡片 */
+.list-card-title{
+  font-size:14px;
+  font-weight:500;
+  margin-bottom:4px;
+}
+.list-card-sub{
+  font-size:12px;
+  color:var(--text-sub);
+  margin-bottom:8px;
+}
+.line{
+  height:1px;
+  background:var(--line);
+  margin:8px 0;
+  opacity:.45;
+}
+
+/* 成员 item */
+.member-item{
+  display:flex;
+  padding:10px 0;
+  gap:10px;
+}
+.member-avatar{
+  width:40px;
+  height:40px;
+  border-radius:999px;
+  background:#0c0d12;
+  border:1px solid rgba(245,210,122,.4);
+  flex-shrink:0;
+}
+.member-main{
+  flex:1;
+  min-width:0;
+}
+.member-row-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.member-name{
+  font-size:14px;
+  font-weight:500;
+  max-width:140px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.level-tag{
+  padding:2px 8px;
+  border-radius:999px;
+  background:rgba(245,210,122,.1);
+  border:1px solid rgba(245,210,122,.4);
+  font-size:11px;
+  color:var(--gold);
+}
+.member-meta{
+  font-size:11px;
+  color:var(--text-sub);
+  margin-top:2px;
+}
+.member-meta strong{
+  color:var(--gold);
+}
+
+/* 右侧状态区 */
+.member-right{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:4px;
+  flex-shrink:0;
+}
+.status-tag{
+  padding:2px 8px;
+  border-radius:999px;
+  font-size:11px;
+  border:1px solid rgba(148,163,184,.6);
+  color:var(--text-sub);
+}
+.status-tag.active{
+  border-color:rgba(34,197,94,.8);
+  color:#4ade80;
+}
+.status-tag.sleep{
+  border-color:rgba(248,113,113,.8);
+  color:#f97373;
+}
+.detail-link{
+  font-size:11px;
+  color:var(--gold);
+}
+
+/* 空状态示例 */
+.empty-card{
+  margin:10px 14px 0;
+  padding:14px;
+  border-radius:var(--radius);
+  border:1px dashed rgba(148,163,184,.6);
+  background:rgba(15,23,42,.9);
+  font-size:12px;
+  color:var(--text-sub);
+}
+.empty-title{
+  font-size:13px;
+  margin-bottom:4px;
+}
+.empty-text span{
+  color:var(--gold);
+}
+
+.icon-btn,
+.tab-pill,
+.select-pill,
+.member-item,
+.empty-text span {
+  cursor: pointer;
+}
+
+</style>
+</head>
+
+<body>
+<div class="app">
+
+  <!-- 顶部栏 -->
+  <div class="header-bar">
+    <div class="icon-btn" onclick="history.back()" aria-label="返回">‹</div>
+    <div class="header-title">团队成员列表（占位）</div>
+  </div>
+
+  <!-- 筛选区 -->
+  <div class="card">
+    <div class="filter-title">按层级 / 状态筛选团队成员（占位）</div>
+
+    <div class="level-tabs">
+      <div class="tab-pill active" onclick="document.querySelectorAll('.tab-pill').forEach(x=>x.classList.remove('active'));this.classList.add('active');">全部（占位）</div>
+      <div class="tab-pill">第 1 代（直推）（占位）</div>
+      <div class="tab-pill">第 2 代（占位）</div>
+      <div class="tab-pill">第 3 代（占位）</div>
+      <div class="tab-pill">第 4 代（占位）</div>
+      <div class="tab-pill">第 5 代（占位）</div>
+    </div>
+
+    <div class="search-row">
+      <input class="search-input" placeholder="按 UID / 昵称搜索成员（占位）">
+      <div class="select-pill" onclick="location.href='73.筛选弹层.html'">
+        <span>排序：默认（占位）</span>
+        <span>⌄</span>
+      </div>
+      <div class="select-pill" onclick="location.href='73.筛选弹层.html'">
+        <span>状态：全部（占位）</span>
+        <span>⌄</span>
+      </div>
+    </div>
+
+    <div class="tip-small">
+      示例说明：可按 <span style="color:var(--gold);">层级 / 活跃状态 / 团队贡献</span> 做组合筛选（占位）。
+    </div>
+  </div>
+
+  <!-- 成员列表 -->
+  <div class="card">
+    <div class="list-card-title">成员列表（占位）</div>
+    <div class="list-card-sub">以下为当前筛选条件下的团队成员数据（占位）</div>
+
+    <!-- 成员 1 -->
+    <div class="member-item" onclick="location.href='34.团队中心详情页.html'">
+      <div class="member-avatar"></div>
+      <div class="member-main">
+        <div class="member-row-top">
+          <div class="member-name">昵称占位 · 用户 A</div>
+          <div class="level-tag">第 1 代（占位）</div>
+        </div>
+        <div class="member-meta">UID：12345678（占位） · 注册：2025-01-01 12:34（占位）</div>
+        <div class="member-meta">最近活跃：2025-01-10 21:35（占位）</div>
+        <div class="member-meta">团队贡献：<strong>123.45 DP</strong>（占位）</div>
+      </div>
+      <div class="member-right">
+        <div class="status-tag active">活跃（占位）</div>
+        <div class="detail-link">查看详情 &gt;</div>
+      </div>
+    </div>
+
+    <div class="line"></div>
+
+    <!-- 成员 2 -->
+    <div class="member-item">
+      <div class="member-avatar"></div>
+      <div class="member-main">
+        <div class="member-row-top">
+          <div class="member-name">昵称占位 · 用户 B</div>
+          <div class="level-tag">第 2 代（占位）</div>
+        </div>
+        <div class="member-meta">UID：23456789（占位） · 注册：2025-01-03 08:20（占位）</div>
+        <div class="member-meta">最近活跃：2025-01-08 09:10（占位）</div>
+        <div class="member-meta">团队贡献：<strong>45.67 DP</strong>（占位）</div>
+      </div>
+      <div class="member-right">
+        <div class="status-tag">一般（占位）</div>
+        <div class="detail-link">查看详情 &gt;</div>
+      </div>
+    </div>
+
+    <div class="line"></div>
+
+    <!-- 成员 3 -->
+    <div class="member-item">
+      <div class="member-avatar"></div>
+      <div class="member-main">
+        <div class="member-row-top">
+          <div class="member-name">昵称占位 · 用户 C</div>
+          <div class="level-tag">第 5 代（占位）</div>
+        </div>
+        <div class="member-meta">UID：34567890（占位） · 注册：2025-01-05 19:45（占位）</div>
+        <div class="member-meta">最近活跃：2024-12-28 10:00（占位）</div>
+        <div class="member-meta">团队贡献：<strong>8.90 DP</strong>（占位）</div>
+      </div>
+      <div class="member-right">
+        <div class="status-tag sleep">不活跃（占位）</div>
+        <div class="detail-link">查看详情 &gt;</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 空状态示例（可保留做占位，不接数据时显示） -->
+  <div class="empty-card">
+    <div class="empty-title">暂无符合条件的团队成员（占位）</div>
+    <div class="empty-text">
+      可以尝试切换 <span onclick="location.href='73.筛选弹层.html'">层级筛选</span>、调整 <span onclick="location.href='73.筛选弹层.html'">状态 / 排序</span>，
+      或检查当前账号是否已邀请过成员（占位）。
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>客服中心首页 · 模板</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <style>
+    :root{
+      --bg:#050506;
+      --card:#111218;
+      --card-soft:#101019;
+      --line:#262a3f;
+      --gold:#f5d27a;
+      --pink:#ff7eb3;
+      --text-main:#ffffff;
+      --text-sub:#9ea1b6;
+      --radius-lg:20px;
+      --radius-md:14px;
+      --radius-sm:999px;
+      --shadow-soft:0 18px 40px rgba(0,0,0,0.6);
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html,body{
+      width:100%;
+      height:100%;
+      background:var(--bg);
+      color:var(--text-main);
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",sans-serif;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    .app{
+      max-width:430px;
+      margin:0 auto;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      padding-bottom:18px;
+    }
+
+    /* 顶部栏 */
+    .page-header{
+      height:56px;
+      padding:0 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      background:linear-gradient(to bottom,rgba(0,0,0,.95),rgba(0,0,0,0));
+      position:sticky;
+      top:0;
+      z-index:10;
+    }
+    .header-left{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .back-btn{
+      width:32px;
+      height:32px;
+      border-radius:var(--radius-sm);
+      border:1px solid rgba(245,210,122,.45);
+      background:rgba(0,0,0,.35);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+      color:var(--gold);
+      flex-shrink:0;
+    }
+    .header-title{
+      font-size:16px;
+      font-weight:600;
+    }
+    .header-right{
+      font-size:11px;
+      color:var(--text-sub);
+    }
+
+    /* 顶部说明 */
+    .hint{
+      margin:6px 14px 8px;
+      font-size:11px;
+      color:var(--text-sub);
+      line-height:1.6;
+    }
+
+    /* 搜索框 */
+    .search-wrap{
+      margin:0 14px 8px;
+    }
+    .search-box{
+      height:36px;
+      border-radius:var(--radius-sm);
+      background:rgba(17,18,24,.7);
+      border:1px solid rgba(148,163,184,.45);
+      display:flex;
+      align-items:center;
+      padding:0 10px;
+      gap:6px;
+      font-size:13px;
+    }
+    .search-icon{
+      font-size:14px;
+      color:var(--text-sub);
+    }
+    .search-input{
+      flex:1;
+      border:none;
+      outline:none;
+      background:none;
+      color:var(--text-main);
+    }
+
+    /* 快捷入口 */
+    .quick-row{
+      margin:8px 14px 10px;
+      display:flex;
+      gap:8px;
+    }
+    .quick-card{
+      flex:1;
+      min-width:0;
+      padding:9px 8px;
+      border-radius:var(--radius-md);
+      background:radial-gradient(circle at 0 0,rgba(245,210,122,.16),rgba(10,10,20,1));
+      border:1px solid rgba(245,210,122,.5);
+      box-shadow:var(--shadow-soft);
+      font-size:12px;
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+    }
+    .quick-card.secondary{
+      background:radial-gradient(circle at 0 0,rgba(148,163,184,.18),rgba(10,10,20,1));
+      border-color:rgba(148,163,184,.9);
+    }
+    .quick-card.soft{
+      background:var(--card-soft);
+      border-color:rgba(38,42,63,.9);
+      box-shadow:none;
+    }
+    .quick-title{
+      font-size:12px;
+      font-weight:500;
+    }
+    .quick-desc{
+      font-size:10px;
+      color:var(--text-sub);
+      line-height:1.4;
+    }
+    .quick-tag{
+      margin-top:2px;
+      align-self:flex-start;
+      padding:2px 6px;
+      border-radius:999px;
+      border:1px solid rgba(245,210,122,.6);
+      font-size:10px;
+      color:var(--gold);
+      background:rgba(0,0,0,.45);
+    }
+
+    /* FAQ 分类区块 */
+    .section{
+      margin:10px 14px 0;
+      border-radius:var(--radius-lg);
+      background:var(--card-soft);
+      border:1px solid rgba(38,42,63,.9);
+      overflow:hidden;
+    }
+    .section-header{
+      padding:8px 12px 4px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .section-title{
+      font-size:13px;
+      font-weight:500;
+    }
+    .section-more{
+      font-size:11px;
+      color:var(--text-sub);
+    }
+
+    .faq-item{
+      padding:9px 12px;
+      border-top:1px solid rgba(24,29,53,.9);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+    }
+    .faq-q{
+      font-size:12px;
+      line-height:1.4;
+    }
+    .faq-tag{
+      font-size:10px;
+      color:var(--text-sub);
+      border-radius:999px;
+      padding:2px 6px;
+      border:1px solid rgba(148,163,184,.7);
+      white-space:nowrap;
+    }
+
+    /* 底部提示 */
+    .footer-tip{
+      margin:12px 14px 0;
+      font-size:10px;
+      color:var(--text-sub);
+      text-align:center;
+      line-height:1.6;
+    }
+    .footer-tip span{
+      color:var(--gold);
+    }
+
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- 顶部栏 -->
+  <header class="page-header">
+    <div class="header-left">
+      <button class="back-btn">‹</button>
+      <div class="header-title">客服中心（占位）</div>
+    </div>
+    <div class="header-right">服务时间占位</div>
+  </header>
+
+  <!-- 顶部说明 -->
+  <div class="hint">
+    这里是客服中心首页 UI 占位。上方支持搜索常见问题，下方有快捷入口和常见问题分类列表（占位文案）。
+  </div>
+
+  <!-- 搜索框 -->
+  <div class="search-wrap">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" placeholder="搜索问题，例如：无法登录 / 提现进度（占位）" />
+    </div>
+  </div>
+
+  <!-- 快捷入口：在线客服 / 提交工单 / 消息记录 -->
+  <div class="quick-row">
+    <div class="quick-card">
+      <div class="quick-title">在线客服（占位）</div>
+      <div class="quick-desc">进入实时聊天窗口，与人工或机器人客服对话（占位）。</div>
+      <div class="quick-tag">推荐</div>
+    </div>
+    <div class="quick-card secondary">
+      <div class="quick-title">提交工单（占位）</div>
+      <div class="quick-desc">用于反馈复杂问题，支持上传截图与详细说明（占位）。</div>
+    </div>
+    <div class="quick-card soft">
+      <div class="quick-title">消息记录（占位）</div>
+      <div class="quick-desc">查看与客服的历史对话和工单处理进度（占位）。</div>
+    </div>
+  </div>
+
+  <!-- FAQ 区块：账号与安全 -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-title">账号与安全（占位）</div>
+      <div class="section-more">更多 · 进入详情（占位）</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">忘记密码 / 无法登录时怎么办？（占位）</div>
+      <div class="faq-tag">登录问题</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">如何绑定 / 修改手机号？（占位）</div>
+      <div class="faq-tag">手机号</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">如何提升账号安全等级？（占位）</div>
+      <div class="faq-tag">安全</div>
+    </div>
+  </section>
+
+  <!-- FAQ 区块：充值 / 资产 / 提现 -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-title">充值 · 资产 · 提现（占位）</div>
+      <div class="section-more">更多 · 进入详情（占位）</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">充值成功但资产未到账怎么办？（占位）</div>
+      <div class="faq-tag">充值</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">金币、钻石、DP、徽章之间如何换算？（占位）</div>
+      <div class="faq-tag">资产说明</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">提现申请后多久能到账？（占位）</div>
+      <div class="faq-tag">提现</div>
+    </div>
+  </section>
+
+  <!-- FAQ 区块：看剧体验 -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-title">看剧体验与权限（占位）</div>
+      <div class="section-more">更多 · 进入详情（占位）</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">为什么部分剧集需要 VIP / DP 解锁？（占位）</div>
+      <div class="faq-tag">权限</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">播放卡顿 / 无法加载时如何处理？（占位）</div>
+      <div class="faq-tag">播放问题</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">如何切换语言 / 字幕？（占位）</div>
+      <div class="faq-tag">字幕</div>
+    </div>
+  </section>
+
+  <!-- FAQ 区块：活动与福利 -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-title">活动与福利（占位）</div>
+      <div class="section-more">更多 · 进入详情（占位）</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">如何参与签到、抽奖、任务活动？（占位）</div>
+      <div class="faq-tag">活动</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">活动奖励多久发放？在哪里查看？（占位）</div>
+      <div class="faq-tag">奖励</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">活动页面打不开 / 显示异常怎么办？（占位）</div>
+      <div class="faq-tag">页面</div>
+    </div>
+  </section>
+
+  <!-- 底部提示 -->
+  <div class="footer-tip">
+    以上内容仅为 FAQ 结构占位。<br/>
+    实际问题列表、跳转逻辑与在线客服链接，将在接入后由<span>运营 / 客服配置</span>（占位说明）。
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>搜索入口首页（非结果态）· 模板</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <style>
+    :root{
+      --bg:#050506;
+      --card:#111218;
+      --card-soft:#101019;
+      --line:#262a3f;
+      --gold:#f5d27a;
+      --pink:#ff7eb3;
+      --text-main:#ffffff;
+      --text-sub:#9ea1b6;
+      --radius-lg:18px;
+      --radius-md:14px;
+      --radius-sm:999px;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html,body{
+      width:100%;
+      height:100%;
+      background:var(--bg);
+      color:var(--text-main);
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",sans-serif;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    .app{
+      max-width:430px;
+      margin:0 auto;
+      min-height:100vh;
+      padding-bottom:16px;
+    }
+
+    /* 顶部搜索栏 */
+    .page-header{
+      padding:8px 14px 6px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      background:linear-gradient(to bottom,rgba(0,0,0,.9),rgba(0,0,0,0));
+      position:sticky;
+      top:0;
+      z-index:10;
+    }
+    .back-btn{
+      width:30px;
+      height:30px;
+      border-radius:var(--radius-sm);
+      border:1px solid rgba(245,210,122,.4);
+      background:rgba(0,0,0,.35);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--gold);
+      font-size:18px;
+      flex-shrink:0;
+    }
+    .search-box{
+      flex:1;
+      min-width:0;
+      height:36px;
+      border-radius:999px;
+      border:1px solid rgba(245,210,122,.4);
+      background:#0c0d12;
+      padding:0 12px;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .search-icon{
+      font-size:14px;
+      color:var(--text-sub);
+    }
+    .search-input-ph{
+      flex:1;
+      min-width:0;
+      font-size:13px;
+      color:var(--text-sub);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .search-mic{
+      font-size:14px;
+      color:var(--text-sub);
+    }
+    .cancel-text{
+      font-size:13px;
+      color:var(--text-sub);
+      flex-shrink:0;
+    }
+
+    /* 小标题 */
+    .section-title{
+      margin:12px 14px 6px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:12px;
+      color:var(--text-sub);
+    }
+    .section-title-main{
+      font-size:13px;
+      color:var(--text-main);
+    }
+    .section-title-sub{
+      font-size:11px;
+      color:var(--text-sub);
+    }
+
+    /* 热搜 chips */
+    .card{
+      margin:0 14px;
+      padding:8px 10px 10px;
+      border-radius:var(--radius-lg);
+      background:var(--card);
+      border:1px solid rgba(245,210,122,.12);
+    }
+    .chip-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:4px;
+    }
+    .chip{
+      padding:6px 10px;
+      border-radius:var(--radius-sm);
+      border:1px solid rgba(245,210,122,.25);
+      background:#0c0d12;
+      font-size:12px;
+      color:var(--text-sub);
+      white-space:nowrap;
+    }
+    .chip.hot{
+      border:none;
+      background:linear-gradient(135deg,var(--gold),var(--pink));
+      color:#050506;
+      font-weight:500;
+    }
+
+    /* 历史记录列表 */
+    .history-list{
+      margin:0 14px;
+      border-radius:var(--radius-lg);
+      background:var(--card);
+      border:1px solid rgba(38,42,63,.9);
+      padding:6px 10px;
+      font-size:12px;
+      color:var(--text-sub);
+    }
+    .history-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:6px 0;
+    }
+    .history-row + .history-row{
+      border-top:1px dashed rgba(38,42,63,.7);
+    }
+    .history-left{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      min-width:0;
+    }
+    .history-icon{
+      width:18px;
+      height:18px;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,.9);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:11px;
+      color:var(--text-sub);
+      flex-shrink:0;
+    }
+    .history-text{
+      font-size:12px;
+      color:var(--text-main);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .history-right{
+      font-size:11px;
+      color:var(--text-sub);
+      flex-shrink:0;
+    }
+
+    /* 快捷分类网格 */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:8px;
+      margin:0 14px;
+    }
+    .category-card{
+      padding:10px 10px;
+      border-radius:var(--radius-md);
+      background:var(--card);
+      border:1px solid rgba(245,210,122,.16);
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      font-size:12px;
+    }
+    .category-top{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .cat-icon{
+      width:26px;
+      height:26px;
+      border-radius:999px;
+      background:radial-gradient(circle at 30% 10%,rgba(255,255,255,.18),rgba(0,0,0,.9));
+      border:1px solid rgba(245,210,122,.45);
+      flex-shrink:0;
+    }
+    .cat-name{
+      font-size:13px;
+      font-weight:500;
+    }
+    .cat-desc{
+      font-size:11px;
+      color:var(--text-sub);
+    }
+    .cat-pill-row{
+      margin-top:4px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:4px;
+      font-size:10px;
+    }
+    .cat-pill{
+      padding:2px 6px;
+      border-radius:999px;
+      border:1px dashed rgba(245,210,122,.35);
+      color:var(--text-sub);
+    }
+
+    /* 空状态（无历史时可用） */
+    .empty-block{
+      margin:0 14px;
+      margin-top:4px;
+      padding:10px 12px;
+      border-radius:var(--radius-lg);
+      border:1px dashed rgba(148,163,184,.9);
+      background:rgba(15,23,42,.96);
+      font-size:11px;
+      color:var(--text-sub);
+    }
+    .empty-title{
+      font-size:13px;
+      font-weight:500;
+      color:var(--text-main);
+      margin-bottom:2px;
+    }
+    .empty-block span{
+      color:var(--gold);
+    }
+
+    /* 全局：禁用 a 默认蓝色与下划线，保持视觉统一 */
+    a {
+      text-decoration: none !important;
+      color: inherit !important;
+    }
+
+    /* 容器从 div 改为 a 后，保持原布局 */
+    a.history-row { display: flex; }
+    a.category-card { display: flex; flex-direction: column; }
+    a.chip { display: inline-flex; }
+
+    .search-box {cursor: pointer;}
+
+    .empty-block span {cursor: pointer;}
+
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- 顶部搜索 -->
+  <header class="page-header">
+    <button class="back-btn" onclick="history.back()">‹</button>
+    <div class="search-box" onclick="location.href='27.搜索结果页.html'">
+      <div class="search-icon">🔍</div>
+      <div class="search-input-ph">
+        搜索剧名 / 主角 / 标签（占位）
+      </div>
+      <div class="search-mic">🎤</div>
+    </div>
+    <div class="cancel-text" onclick="history.back()">取消</div>
+  </header>
+
+  <!-- 热门搜索 -->
+  <div class="section-title">
+    <div class="section-title-main">热门搜索（占位）</div>
+    <div class="section-title-sub">热门词仅为示意，占位内容</div>
+  </div>
+  <section class="card">
+    <div class="chip-row">
+      <a class="chip hot" href="27.搜索结果页.html">总裁甜宠（占位）</a>
+      <a class="chip" href="27.搜索结果页.html">复仇爽剧（占位）</a>
+      <a class="chip" href="27.搜索结果页.html">重生逆袭（占位）</a>
+      <a class="chip" href="27.搜索结果页.html">古装虐恋（占位）</a>
+      <a class="chip" href="27.搜索结果页.html">姐狗恋（占位）</a>
+      <a class="chip" href="27.搜索结果页.html">高能反转（占位）</a>
+      <a class="chip" href="27.搜索结果页.html">都市职场（占位）</a>
+      <a class="chip" href="27.搜索结果页.html">短时速刷（占位）</a>
+    </div>
+  </section>
+
+  <!-- 搜索历史 -->
+  <div class="section-title">
+    <div class="section-title-main">搜索历史（占位）</div>
+    <div class="section-title-sub">清空 / 管理历史记录逻辑后续接入（占位）</div>
+  </div>
+  <section class="history-list">
+    <!-- 示例有历史记录的状态 -->
+    <a class="history-row" href="27.搜索结果页.html">
+      <div class="history-left">
+        <div class="history-icon">⏱</div>
+        <div class="history-text">落魄千金重生后（占位）</div>
+      </div>
+      <div class="history-right">刚刚（占位）</div>
+    </a>
+
+    <a class="history-row" href="27.搜索结果页.html">
+      <div class="history-left">
+        <div class="history-icon">⏱</div>
+        <div class="history-text">总裁前妻超难哄（占位）</div>
+      </div>
+      <div class="history-right">昨天（占位）</div>
+    </a>
+
+    <a class="history-row" href="27.搜索结果页.html">
+      <div class="history-left">
+        <div class="history-icon">⏱</div>
+        <div class="history-text">古装短剧 / 完结（占位）</div>
+      </div>
+      <div class="history-right">3 天前（占位）</div>
+    </a>
+  </section>
+
+  <!-- 如果后端发现无历史，可显示这一块替换上面的列表（暂时一起放占位） -->
+  <section class="empty-block">
+    <div class="empty-title">暂无任何搜索历史（占位）</div>
+    <div>
+      当前账号还没有产生搜索记录。你可以从上方的<span onclick="location.href='27.搜索结果页.html'">热门搜索</span>选择任意关键词，
+      或在搜索框中直接输入剧名、主角或你感兴趣的标签，系统会自动记录搜索历史（占位）。
+    </div>
+  </section>
+
+  <!-- 快捷分类入口 -->
+  <div class="section-title" style="margin-top:12px;">
+    <div class="section-title-main">快捷分类入口（占位）</div>
+    <div class="section-title-sub">点击直接跳转到对应分类 / 筛选页（占位）</div>
+  </div>
+
+  <section class="grid">
+    <a class="category-card" href="28.分类页.html">
+      <div class="category-top">
+        <div class="cat-icon"></div>
+        <div>
+          <div class="cat-name">都市甜宠（占位）</div>
+          <div class="cat-desc">偏情感轻松、适合日常速刷（占位）</div>
+        </div>
+      </div>
+      <div class="cat-pill-row">
+        <div class="cat-pill">总裁</div>
+        <div class="cat-pill">先婚后爱</div>
+        <div class="cat-pill">追妻火葬场</div>
+      </div>
+    </a>
+
+    <a class="category-card" href="28.分类页.html">
+      <div class="category-top">
+        <div class="cat-icon"></div>
+        <div>
+          <div class="cat-name">高能反转（占位）</div>
+          <div class="cat-desc">剧情密集、反转频繁的短剧（占位）</div>
+        </div>
+      </div>
+      <div class="cat-pill-row">
+        <div class="cat-pill">复仇</div>
+        <div class="cat-pill">反杀</div>
+        <div class="cat-pill">爽文改编</div>
+      </div>
+    </a>
+
+    <a class="category-card" href="28.分类页.html">
+      <div class="category-top">
+        <div class="cat-icon"></div>
+        <div>
+          <div class="cat-name">古装虐恋（占位）</div>
+          <div class="cat-desc">古风场景 + 情绪拉满（占位）</div>
+        </div>
+      </div>
+      <div class="cat-pill-row">
+        <div class="cat-pill">权谋</div>
+        <div class="cat-pill">重生</div>
+        <div class="cat-pill">虐心</div>
+      </div>
+    </a>
+
+    <a class="category-card" href="28.分类页.html">
+      <div class="category-top">
+        <div class="cat-icon"></div>
+        <div>
+          <div class="cat-name">完结剧场（占位）</div>
+          <div class="cat-desc">全集已更完，一次刷完不等更新（占位）</div>
+        </div>
+      </div>
+      <div class="cat-pill-row">
+        <div class="cat-pill">已完结</div>
+        <div class="cat-pill">长线剧情</div>
+      </div>
+    </a>
+  </section>
+
+</div>
+</body>
+</html>

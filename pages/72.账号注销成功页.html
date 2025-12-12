@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>88.账号注销成功页</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+
+<style>
+:root {
+  --bg: #050509;
+  --card: #0f1119;
+  --card-soft: #151824;
+  --text-main: #f7f7fb;
+  --text-sub: #9ea1b6;
+  --accent-pink: #ff6ac8;
+  --accent-gold: #f6d57a;
+  --shadow-soft: 0 20px 50px rgba(0,0,0,0.75);
+  --radius-lg: 24px;
+  --radius-md: 16px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at top,#191e34 0,#050509 55%);
+  color:var(--text-main);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",sans-serif;
+}
+
+.page{
+  max-width:430px;
+  margin:0 auto;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  padding:24px 16px 32px;
+}
+
+.header{
+  display:flex;
+  align-items:center;
+  margin-bottom:10px;
+}
+.header-title{
+  font-size:16px;
+  font-weight:600;
+}
+
+/* 中央成功卡片 */
+.success-wrap{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.success-card{
+  width:100%;
+  max-width:360px;
+  background:var(--card);
+  border-radius:var(--radius-lg);
+  border:1px solid rgba(255,255,255,0.12);
+  box-shadow:var(--shadow-soft);
+  padding:22px 18px 18px;
+  position:relative;
+  overflow:hidden;
+}
+.success-card::before{
+  content:"";
+  position:absolute;
+  inset:-40%;
+  background:
+    radial-gradient(circle at 15% 0,rgba(255,106,200,0.32),transparent 75%),
+    radial-gradient(circle at 85% 10%,rgba(246,213,122,0.28),transparent 72%);
+  opacity:.9;
+}
+.success-inner{
+  position:relative;
+  z-index:2;
+  text-align:center;
+}
+
+/* 图标 */
+.icon-ring{
+  width:64px;
+  height:64px;
+  margin:4px auto 12px;
+  border-radius:50%;
+  background:radial-gradient(circle at 30% 0,#fff9da,#f3c566,#c57f23);
+  box-shadow:0 12px 26px rgba(0,0,0,0.75);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+}
+.icon-ring::before{
+  content:"✓";
+  font-size:30px;
+  font-weight:700;
+  color:#2b1a04;
+}
+
+/* 文案 */
+.title-main{
+  font-size:17px;
+  font-weight:700;
+  margin-bottom:6px;
+  letter-spacing:0.4px;
+}
+.title-sub{
+  font-size:13px;
+  color:var(--text-sub);
+  line-height:1.7;
+  margin-bottom:10px;
+}
+.account-hint{
+  font-size:12px;
+  color:var(--text-sub);
+  line-height:1.7;
+  margin-bottom:6px;
+}
+.account-hint span{
+  color:var(--accent-gold);
+  font-weight:500;
+}
+.notice-line{
+  font-size:11px;
+  color:var(--text-sub);
+  opacity:.75;
+}
+
+/* 按钮区 */
+.btn-area{
+  margin-top:18px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.btn{
+  width:100%;
+  padding:11px 0;
+  border-radius:999px;
+  border:none;
+  font-size:14px;
+  font-weight:600;
+}
+.btn-primary{
+  background:linear-gradient(135deg,#ff6ac8,#f6d57a);
+  color:#2c060c;
+}
+.btn-ghost{
+  background:rgba(0,0,0,0.28);
+  border:1px solid rgba(255,255,255,0.24);
+  color:var(--text-main);
+  font-size:13px;
+}
+
+/* 底部小提示 */
+.footer-tip{
+  margin-top:14px;
+  font-size:11px;
+  color:var(--text-sub);
+  text-align:center;
+  opacity:.7;
+}
+
+/* 可点击手感（不影响视觉） */
+.btn-primary,
+.btn-ghost,
+.footer-tip {
+  cursor: pointer;
+}
+
+/* 全局兜底：防止未来插入 a 出现默认样式 */
+a {
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+</style>
+</head>
+
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="header-title">账号注销成功（占位）</div>
+  </div>
+
+  <div class="success-wrap">
+    <div class="success-card">
+      <div class="success-inner">
+
+        <div class="icon-ring"></div>
+
+        <div class="title-main">你的账号已成功注销（占位）</div>
+        <div class="title-sub">
+          当前账号相关的观影记录、钱包资产与团队关系已清空，后续将无法再使用本账号登录。（占位）
+        </div>
+
+        <div class="account-hint">
+          原账号：<span>user***923（占位）</span> 已失效，如需继续使用平台，请注册新账号。（占位）
+        </div>
+
+        <div class="notice-line">
+          为保障安全，建议你检查该账号是否绑定了其他服务，并及时完成解除或更换。（占位）
+        </div>
+
+        <div class="btn-area">
+          <button class="btn btn-primary" onclick="location.href='20.注册页.html'">
+            注册新账号 / 立即体验（占位）
+          </button>
+          <button class="btn btn-ghost" onclick="location.href='../index.html'">
+            返回首页（占位）
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-tip" onclick="location.href='49.客服中心首页.html'">
+    如有疑问，可通过「客服中心」提交工单，我们会在合理范围内提供支持。（占位）
+  </div>
+
+</div>
+</body>
+</html>

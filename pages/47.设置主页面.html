@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>设置主页面 · 模板</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+
+  <style>
+    :root{
+      --bg:#050506;
+      --card:#111218;
+      --card-soft:#101019;
+      --line:#262a3f;
+      --gold:#f5d27a;
+      --pink:#ff7eb3;
+      --text-main:#ffffff;
+      --text-sub:#9ea1b6;
+      --radius-lg:20px;
+      --radius-md:14px;
+      --radius-sm:999px;
+      --shadow-soft:0 18px 40px rgba(0,0,0,0.6);
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html,body{
+      width:100%;
+      height:100%;
+      background:var(--bg);
+      color:var(--text-main);
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",sans-serif;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    .app{
+      max-width:430px;
+      margin:0 auto;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      padding-bottom:18px;
+    }
+
+    /* 顶部栏 */
+    .page-header{
+      height:56px;
+      padding:0 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      background:linear-gradient(to bottom,rgba(0,0,0,.95),rgba(0,0,0,0));
+      position:sticky;
+      top:0;
+      z-index:10;
+    }
+    .header-left{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .back-btn{
+      width:32px;
+      height:32px;
+      border-radius:var(--radius-sm);
+      border:1px solid rgba(245,210,122,.45);
+      background:rgba(0,0,0,.35);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+      color:var(--gold);
+      flex-shrink:0;
+    }
+    .header-title{
+      font-size:16px;
+      font-weight:600;
+    }
+    .header-right{
+      font-size:11px;
+      color:var(--text-sub);
+    }
+
+    .hint{
+      margin:4px 14px 0;
+      font-size:11px;
+      color:var(--text-sub);
+    }
+
+    /* 分组容器 */
+    .section{
+      margin:10px 14px 0;
+      border-radius:var(--radius-lg);
+      background:var(--card-soft);
+      border:1px solid rgba(38,42,63,.9);
+      overflow:hidden;
+      box-shadow:0 10px 26px rgba(0,0,0,.5);
+    }
+
+    .section-title{
+      padding:8px 12px 4px;
+      font-size:11px;
+      color:var(--text-sub);
+      opacity:.9;
+    }
+
+    .item{
+      padding:10px 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      border-top:1px solid rgba(24,29,53,.9);
+    }
+    .item:first-of-type{
+      border-top:none;
+    }
+
+    .item-left{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      min-width:0;
+    }
+    .item-label{
+      font-size:13px;
+      font-weight:500;
+    }
+    .item-desc{
+      font-size:11px;
+      color:var(--text-sub);
+      line-height:1.5;
+    }
+    .item-right{
+      flex-shrink:0;
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:11px;
+      color:var(--text-sub);
+    }
+
+    .arrow{
+      width:18px;
+      text-align:right;
+      opacity:.8;
+    }
+
+    .badge{
+      padding:2px 6px;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,.8);
+      font-size:10px;
+      color:var(--text-sub);
+    }
+    .badge-gold{
+      border:none;
+      background:linear-gradient(135deg,var(--gold),var(--pink));
+      color:#050506;
+      font-weight:500;
+    }
+
+    /* 假开关（UI 占位，不带逻辑） */
+    .switch{
+      width:40px;
+      height:22px;
+      border-radius:999px;
+      background:#111218;
+      border:1px solid rgba(148,163,184,.8);
+      position:relative;
+    }
+    .switch-knob{
+      position:absolute;
+      top:2px;
+      left:2px;
+      width:16px;
+      height:16px;
+      border-radius:999px;
+      background:#9ea1b6;
+    }
+    .switch.on{
+      background:linear-gradient(135deg,var(--gold),var(--pink));
+      border:none;
+    }
+    .switch.on .switch-knob{
+      left:auto;
+      right:2px;
+      background:#050506;
+    }
+
+    /* 危险区块 / 退出登录 */
+    .danger-section{
+      margin:14px 14px 0;
+      padding:10px 12px;
+      border-radius:var(--radius-md);
+      background:#2b0f14;
+      border:1px solid rgba(248,113,113,.8);
+      color:#fecaca;
+      font-size:11px;
+    }
+    .danger-title{
+      font-size:12px;
+      margin-bottom:4px;
+    }
+    .btn-logout{
+      margin-top:8px;
+      width:100%;
+      padding:9px 10px;
+      border-radius:var(--radius-sm);
+      background:rgba(248,113,113,.12);
+      border:1px solid rgba(248,113,113,.9);
+      color:#fecaca;
+      font-size:13px;
+      text-align:center;
+    }
+
+    .footer-tip{
+      margin:10px 14px 0;
+      font-size:10px;
+      color:var(--text-sub);
+      text-align:center;
+    }
+
+    /* 可点击手感（不影响移动端视觉） */
+    .back-btn,
+    .header-right,
+    .item,
+    .btn-logout {
+      cursor: pointer;
+    }
+
+    /* 全局兜底：防止未来插入 a 出现蓝色/下划线 */
+    a{
+      text-decoration:none !important;
+      color:inherit !important;
+    }
+
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- 顶部栏 -->
+  <header class="page-header">
+    <div class="header-left">
+      <button class="back-btn" onclick="history.back()">‹</button>
+      <div class="header-title">设置（占位）</div>
+    </div>
+    <div class="header-right" onclick="location.href='26.客服页-帮助中心页.html'">设置说明占位</div>
+  </header>
+
+  <div class="hint">
+    本页为设置主页面结构示意，具体文案与跳转逻辑由实际业务接入时配置（占位）。
+  </div>
+
+  <!-- ① 账号与安全 -->
+  <section class="section">
+    <div class="section-title">账号与安全（占位）</div>
+
+    <div class="item" onclick="location.href='17.用户资料编辑页.html'">
+      <div class="item-left">
+        <div class="item-label">账号信息（占位）</div>
+        <div class="item-desc">展示当前登录的手机号 / 邮箱 / UID 等基础信息（占位）。</div>
+      </div>
+      <div class="item-right">
+        <span class="badge">UID: 12345678（占位）</span>
+        <span class="arrow">›</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="location.href='18.绑定-修改手机号.html'">
+      <div class="item-left">
+        <div class="item-label">绑定 / 更换手机号（占位）</div>
+        <div class="item-desc">用于登录验证和找回账号，建议尽早绑定（占位）。</div>
+      </div>
+      <div class="item-right">
+        <span>已绑定（占位）</span>
+        <span class="arrow">›</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="location.href='18.绑定-修改手机号.html'">
+      <div class="item-left">
+        <div class="item-label">登录密码 / 安全设置（占位）</div>
+        <div class="item-desc">可选：设置或修改登录密码、二次验证、安全提示等（占位）。</div>
+      </div>
+      <div class="item-right">
+        <span class="arrow">›</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ② 偏好设置 -->
+  <section class="section">
+    <div class="section-title">偏好设置（占位）</div>
+
+    <div class="item" onclick="location.href='48.语言设置页.html'">
+      <div class="item-left">
+        <div class="item-label">语言设置（占位）</div>
+        <div class="item-desc">选择界面显示语言，例如：中文 / 越南语 / 英文（占位）。</div>
+      </div>
+      <div class="item-right">
+        <span>当前：简体中文（占位）</span>
+        <span class="arrow">›</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="location.reload()">
+      <div class="item-left">
+        <div class="item-label">消息通知设置（占位）</div>
+        <div class="item-desc">新剧更新 / 活动提醒 / 收益变动等通知开关（UI 占位）。</div>
+      </div>
+      <div class="item-right">
+        <!-- 仅 UI，实际开关逻辑后续接入 -->
+        <div class="switch on">
+          <div class="switch-knob"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="item" onclick="location.reload()">
+      <div class="item-left">
+        <div class="item-label">播放偏好（占位）</div>
+        <div class="item-desc">例如：移动网络是否自动播放、是否跳过片头等（占位）。</div>
+      </div>
+      <div class="item-right">
+        <span class="arrow">›</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="location.reload()">
+      <div class="item-left">
+        <div class="item-label">清理缓存 / 刷新数据（占位）</div>
+        <div class="item-desc">释放本地缓存、重新拉取基础配置与资源（占位）。</div>
+      </div>
+      <div class="item-right">
+        <span class="badge">清理（占位）</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ③ 法律与关于 -->
+  <section class="section">
+    <div class="section-title">法律与关于（占位）</div>
+
+    <div class="item" onclick="location.href='39.用户协议 / 隐私政策 / 风险声明.html'">
+      <div class="item-left">
+        <div class="item-label">用户协议（占位）</div>
+        <div class="item-desc">跳转至详细用户服务协议页面（占位）。</div>
+      </div>
+      <div class="item-right">
+        <span class="arrow">›</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="location.href='39.用户协议 / 隐私政策 / 风险声明.html'">
+      <div class="item-left">
+        <div class="item-label">隐私政策（占位）</div>
+        <div class="item-desc">说明数据收集与使用方式的隐私条款（占位）。</div>
+      </div>
+      <div class="item-right">
+        <span class="arrow">›</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="location.href='39.用户协议 / 隐私政策 / 风险声明.html'">
+      <div class="item-left">
+        <div class="item-label">风险声明 / 免责声明（占位）</div>
+        <div class="item-desc">展示与资产、收益相关的风险提示与免责声明（占位）。</div>
+      </div>
+      <div class="item-right">
+        <span class="arrow">›</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="location.href='49.客服中心首页.html'">
+      <div class="item-left">
+        <div class="item-label">关于我们 / 版本信息（占位）</div>
+        <div class="item-desc">展示平台主体信息、版本号、更新说明等（占位）。</div>
+      </div>
+      <div class="item-right">
+        <span class="badge-gold">v1.0.0（占位）</span>
+        <span class="arrow">›</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ④ 危险操作区：退出登录 -->
+  <div class="danger-section">
+    <div class="danger-title">安全提醒（占位）</div>
+    <div>
+      在公共设备上使用完毕后，建议退出当前账号，避免账号与资产被他人使用（占位说明）。
+    </div>
+    <button class="btn-logout" onclick="location.href='70.退出登录确认弹层.html'">退出登录（占位）</button>
+  </div>
+
+  <div class="footer-tip">
+    本页仅为 UI 结构占位，所有跳转行为与状态逻辑需接入真实业务后再实现（占位说明）。
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>团队收益总览</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <style>
+    :root {
+      --bg: #050506;
+      --bg-card: #111427;
+      --bg-card-soft: #151725;
+      --border-subtle: #262a3f;
+      --gold: #f5d27a;
+      --pink: #ff7eb3;
+      --green: #22c55e;
+      --red: #f97373;
+      --text-main: #f7f7fb;
+      --text-sub: #9ea1b6;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 999px;
+      --shadow-soft: 0 18px 40px rgba(0,0,0,0.55);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      min-height: 100vh;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      margin: 0 auto;
+      padding-bottom: 16px;
+      position: relative;
+    }
+
+    @media (min-width: 768px) {
+      .app {
+        max-width: 520px;
+        margin: 16px auto;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: var(--shadow-soft);
+      }
+    }
+
+    .page {
+      padding: 12px 16px 24px;
+    }
+
+    /* 顶部栏 */
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 0 10px;
+    }
+
+    .back-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      border: 1px solid rgba(245,210,122,0.4);
+      background:
+        radial-gradient(circle at top, rgba(255,126,179,0.25), transparent 65%),
+        linear-gradient(145deg, rgba(9,10,18,0.96), rgba(12,13,22,0.96));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: var(--gold);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.7);
+      flex-shrink: 0;
+    }
+
+    .back-btn,
+    .back-btn:link,
+    .back-btn:visited,
+    .back-btn:hover,
+    .back-btn:active {
+      text-decoration: none !important;
+      color: inherit;
+    }
+
+    .page-header-main {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .page-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .page-subtitle {
+      font-size: 12px;
+      color: var(--text-sub);
+    }
+
+    .section-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .section-sub {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    /* 通用卡片 */
+    .card {
+      border-radius: var(--radius-lg);
+      padding: 12px;
+      background:
+        radial-gradient(circle at top left, rgba(255,126,179,0.22), transparent 60%),
+        radial-gradient(circle at bottom right, rgba(245,210,122,0.18), transparent 60%),
+        linear-gradient(160deg, #191d30, #05060c);
+      border: 1px solid rgba(245,210,122,0.35);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.9);
+      margin-bottom: 14px;
+    }
+
+    .card-soft {
+      border-radius: var(--radius-lg);
+      padding: 12px;
+      background: linear-gradient(160deg, #141726, #070811);
+      border: 1px solid rgba(38,42,63,0.95);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.85);
+      margin-bottom: 12px;
+    }
+
+    /* 顶部总览 */
+    .team-top-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .kpi-box {
+      padding: 8px;
+      border-radius: 12px;
+      background: rgba(9,9,16,0.96);
+      border: 1px solid rgba(38,42,63,0.9);
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .kpi-box.highlight {
+      background:
+        radial-gradient(circle at top, rgba(255,216,111,0.22), transparent 60%),
+        linear-gradient(160deg, #181c30, #05060c);
+      border-color: rgba(245,210,122,0.7);
+    }
+
+    .kpi-label {
+      color: var(--text-sub);
+    }
+
+    .kpi-value {
+      font-size: 14px;
+      color: var(--gold);
+    }
+
+    .kpi-tag {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    /* 五层结构总览 */
+    .layer-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .layer-card {
+      padding: 8px;
+      border-radius: 14px;
+      background: linear-gradient(150deg, #151827, #070811);
+      border: 1px solid rgba(38,42,63,0.9);
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.85);
+    }
+
+    .layer-card.highlight {
+      background:
+        radial-gradient(circle at top, rgba(255,216,111,0.18), transparent 60%),
+        linear-gradient(150deg, #181c30, #05060c);
+      border-color: rgba(245,210,122,0.6);
+    }
+
+    .layer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .layer-name {
+      font-size: 12px;
+    }
+
+    .layer-tag {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    .layer-meta-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    .layer-value {
+      font-size: 11px;
+      color: var(--gold);
+    }
+
+    /* 漏斗占位图 */
+    .ph-funnel {
+      width: 100%;
+      height: 120px;
+      border-radius: 14px;
+      background:
+        linear-gradient(180deg, rgba(255,126,179,0.16), transparent),
+        linear-gradient(135deg, #1a1d30, #05060c);
+      border: 1px solid rgba(38,42,63,0.9);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.9);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 收益结构：按层拆分 */
+    .chart-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .ph-chart-circle {
+      flex-shrink: 0;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 30% 20%, rgba(255,216,111,0.3), transparent 60%),
+        conic-gradient(
+          rgba(245,210,122,0.95) 0deg 90deg,
+          rgba(255,126,179,0.95) 90deg 150deg,
+          rgba(79,70,229,0.9) 150deg 210deg,
+          rgba(45,212,191,0.9) 210deg 260deg,
+          rgba(244,114,182,0.9) 260deg 310deg,
+          rgba(148,163,184,0.9) 310deg 360deg
+        );
+      box-shadow: 0 0 20px rgba(255,216,111,0.9);
+      position: relative;
+    }
+
+    .ph-chart-circle::after {
+      content: "";
+      position: absolute;
+      inset: 26%;
+      border-radius: 50%;
+      background: rgba(5,5,10,0.95);
+      box-shadow: 0 0 16px rgba(0,0,0,0.8);
+    }
+
+    .chart-legend {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 11px;
+    }
+
+    .legend-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .legend-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-sub);
+    }
+
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .legend-value {
+      color: var(--gold);
+      font-size: 11px;
+    }
+
+    .legend-tag {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    /* 时间切换 Tabs */
+    .chart-tabs {
+      display: flex;
+      justify-content: flex-start;
+      gap: 6px;
+      margin-bottom: 8px;
+      font-size: 10px;
+      overflow-x: auto;
+    }
+
+    .chart-tabs::-webkit-scrollbar {
+      height: 0;
+    }
+
+    .chart-tab-pill {
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(245,210,122,0.4);
+      background: rgba(8,8,14,0.96);
+      color: var(--text-sub);
+      white-space: nowrap;
+    }
+
+    .chart-tab-pill.is-active {
+      background: linear-gradient(135deg, var(--gold), var(--pink));
+      color: #050506;
+      border: none;
+      box-shadow: 0 0 12px rgba(255,126,179,0.75);
+    }
+
+    .ph-chart-line {
+      width: 100%;
+      height: 120px;
+      border-radius: 14px;
+      background:
+        linear-gradient(180deg, rgba(255,126,179,0.16), transparent),
+        linear-gradient(135deg, #1a1d30, #05060c);
+      border: 1px solid rgba(38,42,63,0.9);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.9);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Top 成员列表 */
+    .member-list {
+      margin-top: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .member-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding: 8px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(160deg, #141726, #070811);
+      border: 1px solid rgba(38,42,63,0.95);
+      font-size: 11px;
+    }
+
+    .member-main {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .member-title-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .member-name {
+      font-size: 12px;
+    }
+
+    .member-tag {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    .member-meta {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    .member-amount {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .member-dp {
+      font-size: 12px;
+      color: var(--gold);
+    }
+
+    .member-rate {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    /* 结构健康提示 */
+    .health-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .health-card {
+      padding: 8px;
+      border-radius: 14px;
+      background: linear-gradient(150deg, #151827, #070811);
+      border: 1px solid rgba(38,42,63,0.9);
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.85);
+    }
+
+    .health-title {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .health-value {
+      font-size: 13px;
+      color: var(--gold);
+    }
+
+    .health-tag {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    .health-ok {
+      color: var(--green);
+    }
+
+    .health-warn {
+      color: var(--red);
+    }
+
+    /* 底部入口 */
+    .quick-grid {
+      margin-top: 4px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .quick-item {
+      padding: 8px;
+      border-radius: 14px;
+      background: linear-gradient(160deg, #151827, #070811);
+      border: 1px solid rgba(38,42,63,0.9);
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.85);
+    }
+
+    .quick-label {
+      font-size: 11px;
+    }
+
+    .quick-desc {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    .quick-tag {
+      margin-top: 2px;
+      font-size: 10px;
+      color: var(--gold);
+    }
+
+    /* 全局：禁止 a 默认蓝色 / 下划线 */
+    a {
+      text-decoration: none !important;
+      color: inherit !important;
+    }
+
+    /* quick-item 使用 a 后，保持原有布局 */
+    a.quick-item {
+      display: flex;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="app">
+    <main class="page" id="page-team-overview">
+      <!-- 顶部栏 -->
+      <header class="page-header">
+        <button class="back-btn" onclick="history.back()">‹</button>
+        <div class="page-header-main">
+          <div class="page-title">团队收益总览</div>
+          <div class="page-subtitle">固定五层结构：第 1 层为直推，向下共 5 层 的收益可视化占位</div>
+        </div>
+      </header>
+
+      <!-- 一、团队整体概览 -->
+      <section class="card">
+        <div class="section-title-row">
+          <div class="section-title">团队整体数据</div>
+          <div class="section-sub">总人数 · 活跃人数 · 团队 DP 收益占位</div>
+        </div>
+
+        <div class="team-top-row">
+          <div class="kpi-box highlight">
+            <div class="kpi-label">团队总人数</div>
+            <div class="kpi-value">0 人 占位</div>
+            <div class="kpi-tag">包含 1–5 层所有成员</div>
+          </div>
+          <div class="kpi-box">
+            <div class="kpi-label">活跃成员数</div>
+            <div class="kpi-value">0 人 占位</div>
+            <div class="kpi-tag">最近 7 日有贡献 DP 的成员</div>
+          </div>
+          <div class="kpi-box">
+            <div class="kpi-label">今日团队 DP 收益</div>
+            <div class="kpi-value">0.0000 DP 占位</div>
+          </div>
+          <div class="kpi-box">
+            <div class="kpi-label">近 30 日团队 DP</div>
+            <div class="kpi-value">0.0000 DP 占位</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 二、五层结构总览（1~5 层） -->
+      <section class="card-soft">
+        <div class="section-title-row">
+          <div class="section-title">五层团队结构</div>
+          <div class="section-sub">固定五层：第 1 层为你的直推，依次向下到第 5 层</div>
+        </div>
+
+        <div class="layer-grid">
+          <article class="layer-card highlight">
+            <div class="layer-header">
+              <span class="layer-name">第 1 层 · 直推 占位</span>
+              <span class="layer-tag">你的直接邀请</span>
+            </div>
+            <div class="layer-meta-row">
+              <span>人数</span>
+              <span class="layer-value">0 人 占位</span>
+            </div>
+            <div class="layer-meta-row">
+              <span>贡献 DP 收益</span>
+              <span class="layer-value">0.0000 DP 占位</span>
+            </div>
+          </article>
+
+          <article class="layer-card">
+            <div class="layer-header">
+              <span class="layer-name">第 2 层 占位</span>
+              <span class="layer-tag">由直推发展而来</span>
+            </div>
+            <div class="layer-meta-row">
+              <span>人数</span>
+              <span class="layer-value">0 人 占位</span>
+            </div>
+            <div class="layer-meta-row">
+              <span>贡献 DP 收益</span>
+              <span class="layer-value">0.0000 DP 占位</span>
+            </div>
+          </article>
+
+          <article class="layer-card">
+            <div class="layer-header">
+              <span class="layer-name">第 3 层 占位</span>
+              <span class="layer-tag">由第 2 层向下</span>
+            </div>
+            <div class="layer-meta-row">
+              <span>人数</span>
+              <span class="layer-value">0 人 占位</span>
+            </div>
+            <div class="layer-meta-row">
+              <span>贡献 DP 收益</span>
+              <span class="layer-value">0.0000 DP 占位</span>
+            </div>
+          </article>
+
+          <article class="layer-card">
+            <div class="layer-header">
+              <span class="layer-name">第 4 层 占位</span>
+              <span class="layer-tag">由第 3 层向下</span>
+            </div>
+            <div class="layer-meta-row">
+              <span>人数</span>
+              <span class="layer-value">0 人 占位</span>
+            </div>
+            <div class="layer-meta-row">
+              <span>贡献 DP 收益</span>
+              <span class="layer-value">0.0000 DP 占位</span>
+            </div>
+          </article>
+
+          <article class="layer-card">
+            <div class="layer-header">
+              <span class="layer-name">第 5 层 占位</span>
+              <span class="layer-tag">最深一层</span>
+            </div>
+            <div class="layer-meta-row">
+              <span>人数</span>
+              <span class="layer-value">0 人 占位</span>
+            </div>
+            <div class="layer-meta-row">
+              <span>贡献 DP 收益</span>
+              <span class="layer-value">0.0000 DP 占位</span>
+            </div>
+          </article>
+
+          <article class="layer-card">
+            <div class="layer-header">
+              <span class="layer-name">团队合计 占位</span>
+              <span class="layer-tag">1–5 层统计总览</span>
+            </div>
+            <div class="layer-meta-row">
+              <span>总人数</span>
+              <span class="layer-value">0 人 占位</span>
+            </div>
+            <div class="layer-meta-row">
+              <span>团队总 DP 收益</span>
+              <span class="layer-value">0.0000 DP 占位</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 三、按层拆分的团队收益结构 -->
+      <section class="card-soft">
+        <div class="section-title-row">
+          <div class="section-title">按层拆分的团队收益结构</div>
+          <div class="section-sub">团队 DP 收益在 1–5 层之间的占比结构</div>
+        </div>
+        <div class="chart-row">
+          <div class="ph-chart-circle"></div>
+          <div class="chart-legend">
+            <div class="legend-item">
+              <div class="legend-left">
+                <span class="legend-dot" style="background:#f5d27a;"></span>
+                <span>第 1 层 · 直推</span>
+              </div>
+              <span class="legend-value">0.00% 占位</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-left">
+                <span class="legend-dot" style="background:#ff7eb3;"></span>
+                <span>第 2 层</span>
+              </div>
+              <span class="legend-value">0.00% 占位</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-left">
+                <span class="legend-dot" style="background:#4f46e5;"></span>
+                <span>第 3 层</span>
+              </div>
+              <span class="legend-value">0.00% 占位</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-left">
+                <span class="legend-dot" style="background:#14b8a6;"></span>
+                <span>第 4 层</span>
+              </div>
+              <span class="legend-value">0.00% 占位</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-left">
+                <span class="legend-dot" style="background:#9ca3af;"></span>
+                <span>第 5 层</span>
+              </div>
+              <span class="legend-value">0.00% 占位</span>
+            </div>
+            <div class="legend-tag">* 所有团队 DP 收益，按层维度进行汇总后展示占比。</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 四、团队收益趋势（时间维度） -->
+      <section class="card-soft">
+        <div class="section-title-row">
+          <div class="section-title">团队收益趋势</div>
+          <div class="section-sub">仅统计「团队贡献的 DP 收益」随时间的变化</div>
+        </div>
+        <div class="chart-tabs">
+          <span class="chart-tab-pill is-active">近 7 日</span>
+          <span class="chart-tab-pill">近 30 日</span>
+          <span class="chart-tab-pill">近 90 日</span>
+          <span class="chart-tab-pill">自定义时间</span>
+        </div>
+        <div class="ph-chart-line"></div>
+      </section>
+
+      <!-- 五、Top 贡献成员（脱敏） -->
+      <section class="card-soft">
+        <div class="section-title-row">
+          <div class="section-title">Top 贡献成员</div>
+          <div class="section-sub">按 DP 贡献排序的前几名成员（UID 脱敏显示）</div>
+        </div>
+
+        <div class="member-list">
+          <article class="member-item">
+            <div class="member-main">
+              <div class="member-title-row">
+                <span class="member-name">UID****1234 占位</span>
+                <span class="member-tag">第 1 层 · 直推 占位</span>
+              </div>
+              <div class="member-meta">最近 30 日贡献：0.0000 DP 占位 · 活跃天数：0 天 占位</div>
+            </div>
+            <div class="member-amount">
+              <span class="member-dp">+0.0000 DP 占位</span>
+              <span class="member-rate">占团队总收益 0.00% 占位</span>
+            </div>
+          </article>
+
+          <article class="member-item">
+            <div class="member-main">
+              <div class="member-title-row">
+                <span class="member-name">UID****5678 占位</span>
+                <span class="member-tag">第 2 层 占位</span>
+              </div>
+              <div class="member-meta">最近 30 日贡献：0.0000 DP 占位 · 活跃天数：0 天 占位</div>
+            </div>
+            <div class="member-amount">
+              <span class="member-dp">+0.0000 DP 占位</span>
+              <span class="member-rate">占团队总收益 0.00% 占位</span>
+            </div>
+          </article>
+
+          <article class="member-item">
+            <div class="member-main">
+              <div class="member-title-row">
+                <span class="member-name">UID****9999 占位</span>
+                <span class="member-tag">第 3 层 占位</span>
+              </div>
+              <div class="member-meta">最近 30 日贡献：0.0000 DP 占位 · 活跃天数：0 天 占位</div>
+            </div>
+            <div class="member-amount">
+              <span class="member-dp">+0.0000 DP 占位</span>
+              <span class="member-rate">占团队总收益 0.00% 占位</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 六、团队结构健康度 -->
+      <section class="card-soft">
+        <div class="section-title-row">
+          <div class="section-title">团队结构健康度</div>
+          <div class="section-sub">用于判断团队是否过度依赖少数成员、层级是否断层</div>
+        </div>
+        <div class="health-grid">
+          <div class="health-card">
+            <div class="health-title">Top1 成员贡献占比</div>
+            <div class="health-value health-warn">0.00% 占位</div>
+            <div class="health-tag">过高可能存在「单点依赖」风险，占位</div>
+          </div>
+          <div class="health-card">
+            <div class="health-title">前 10 名贡献占比</div>
+            <div class="health-value health-ok">0.00% 占位</div>
+            <div class="health-tag">越分散越健康，占位</div>
+          </div>
+          <div class="health-card">
+            <div class="health-title">层级覆盖情况</div>
+            <div class="health-value">1–5 层 占位</div>
+            <div class="health-tag">查看每层是否有人、是否有明显断层，占位</div>
+          </div>
+          <div class="health-card">
+            <div class="health-title">最近 30 日新增成员</div>
+            <div class="health-value">0 人 占位</div>
+            <div class="health-tag">判断团队增长速度，占位</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 七、关联入口 -->
+     <section class="card-soft">
+       <div class="section-title-row">
+         <div class="section-title">关联面板入口</div>
+         <div class="section-sub">与 DP / 钱包 / 徽章 / 计算器联动</div>
+       </div>
+       <div class="quick-grid">
+         <!-- 1. DP 收益总览 -->
+         <a class="quick-item" href="9.DP收益总览.html">
+           <div class="quick-label">DP 收益总览</div>
+           <div class="quick-desc">查看团队收益对整体 DP 收益的贡献情况</div>
+           <div class="quick-tag">进入 DP 页 占位 →</div>
+         </a>
+
+         <!-- 2. 钱包 & 收益总览 -->
+         <a class="quick-item" href="7.钱包%20%26%20收益总览二级页.html">
+           <div class="quick-label">钱包 & 收益总览</div>
+           <div class="quick-desc">在全局资产视角中查看团队收益占比</div>
+           <div class="quick-tag">返回钱包 占位 →</div>
+         </a>
+
+         <!-- 3. 徽章收益可视化 -->
+         <a class="quick-item" href="8.徽章收益可视化.html">
+           <div class="quick-label">徽章收益可视化</div>
+           <div class="quick-desc">对比团队收益与徽章收益的结构差异</div>
+           <div class="quick-tag">进入徽章页 占位 →</div>
+         </a>
+
+         <!-- 4. 徽章收益计算器 -->
+         <a class="quick-item" href="10.徽章收益计算器.html">
+           <div class="quick-label">徽章收益计算器</div>
+           <div class="quick-desc">搭配团队发展策略评估整体收益预期</div>
+           <div class="quick-tag">进入计算器 占位 →</div>
+         </a>
+       </div>
+     </section>
+    </main>
+  </div>
+</body>
+</html>

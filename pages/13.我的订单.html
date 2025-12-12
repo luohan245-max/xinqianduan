@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>我的订单 · 占位</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <style>
+    :root {
+      --bg: #050506;
+      --bg-card: #111427;
+      --bg-card-soft: #151725;
+      --border-subtle: #262a3f;
+      --gold: #f5d27a;
+      --pink: #ff7eb3;
+      --text-main: #f7f7fb;
+      --text-sub: #9ea1b6;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 999px;
+      --shadow-soft: 0 18px 40px rgba(0,0,0,0.55);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      min-height: 100vh;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      margin: 0 auto;
+      padding-bottom: 16px;
+      position: relative;
+    }
+
+    @media (min-width: 768px) {
+      .app {
+        max-width: 520px;
+        margin: 16px auto;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: var(--shadow-soft);
+      }
+    }
+
+    .page {
+      padding: 12px 16px 24px;
+    }
+
+    /* 顶部栏 */
+    .page-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      padding: 6px 0 8px;
+      background: linear-gradient(to bottom, rgba(5,5,6,0.96), rgba(5,5,6,0.85), rgba(5,5,6,0));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .header-left,
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .header-center {
+      flex: 1;
+      min-width: 0;
+      text-align: center;
+    }
+
+    .circle-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      border: 1px solid rgba(245,210,122,0.5);
+      background:
+        radial-gradient(circle at top, rgba(255,126,179,0.3), transparent 60%),
+        linear-gradient(145deg, #111320, #070811);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+      font-size: 16px;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.9);
+      cursor: pointer;
+    }
+
+    .page-title {
+      font-size: 15px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* 通用模块 */
+    .section {
+      margin-top: 8px;
+      margin-bottom: 10px;
+    }
+
+    .section-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .section-sub {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .card {
+      border-radius: var(--radius-lg);
+      padding: 12px;
+      background:
+        radial-gradient(circle at top left, rgba(255,126,179,0.22), transparent 60%),
+        radial-gradient(circle at bottom right, rgba(245,210,122,0.18), transparent 60%),
+        linear-gradient(160deg, #191d30, #05060c);
+      border: 1px solid rgba(245,210,122,0.35);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.9);
+      margin-bottom: 12px;
+    }
+
+    .card-soft {
+      border-radius: var(--radius-lg);
+      padding: 12px;
+      background: linear-gradient(160deg, #141726, #070811);
+      border: 1px solid rgba(38,42,63,0.95);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.85);
+      margin-bottom: 10px;
+    }
+
+    /* 图片占位 */
+    .ph-img-lg {
+      width: 100%;
+      height: 120px;
+      border-radius: 16px;
+      border: 1px dashed rgba(245,210,122,0.45);
+      background:
+        radial-gradient(circle at top, rgba(255,126,179,0.3), transparent 60%),
+        linear-gradient(145deg, #151827, #050506);
+      margin-bottom: 10px;
+    }
+
+    .order-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 1px dashed rgba(245,210,122,0.6);
+      background:
+        radial-gradient(circle at top, rgba(255,126,179,0.25), transparent 60%),
+        linear-gradient(145deg, #151827, #050506);
+      flex-shrink: 0;
+    }
+
+    /* 按钮 */
+    .btn-primary-wide {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, var(--gold), var(--pink));
+      color: #050506;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 0 18px rgba(255,126,179,0.8);
+      text-align: center;
+      margin-top: 6px;
+    }
+
+    .text-link {
+      font-size: 11px;
+      color: var(--gold);
+    }
+
+    /* 筛选区 */
+    .filter-section {
+      margin-top: 4px;
+      margin-bottom: 6px;
+    }
+
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .filter-pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(245,210,122,0.45);
+      background: rgba(10,10,18,0.96);
+      font-size: 11px;
+      color: var(--text-sub);
+      white-space: nowrap;
+    }
+
+    .filter-pill.is-active {
+      background: linear-gradient(135deg, var(--gold), var(--pink));
+      color: #050506;
+      border: none;
+      box-shadow: 0 0 12px rgba(255,126,179,0.7);
+    }
+
+    /* 订单列表 */
+    .order-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .order-item {
+      border-radius: var(--radius-md);
+      padding: 10px;
+      background: linear-gradient(160deg, #141726, #070811);
+      border: 1px solid rgba(38,42,63,0.95);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.85);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .order-top {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .order-main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .order-title {
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .order-sub {
+      font-size: 11px;
+      color: var(--text-sub);
+      line-height: 1.4;
+    }
+
+    .order-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .order-amount {
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .order-status {
+      font-size: 11px;
+    }
+
+    .status-completed {
+      color: var(--gold);
+    }
+
+    .status-pending {
+      color: var(--pink);
+    }
+
+    .status-failed {
+      color: #ff5c5c;
+    }
+
+    .order-detail-link {
+      font-size: 11px;
+      color: var(--gold);
+    }
+
+    .meta-dot::before {
+      content: "· ";
+    }
+
+    .hint-title {
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .hint-sub {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    /* 全局：禁用 a 默认下划线/蓝色，保持视觉不变 */
+    a {
+      text-decoration: none !important;
+      color: inherit !important;
+    }
+
+    /* order-item 从 article 改为 a 后，保持原卡片布局 */
+    a.order-item {
+      display: block;
+    }
+
+    .filter-pill {cursor: pointer;}
+
+  </style>
+</head>
+<body>
+  <div class="app">
+    <main class="page" id="page-orders">
+      <!-- 顶部栏 -->
+      <header class="page-header">
+        <div class="header-left">
+          <div class="circle-btn" onclick="history.back()">‹</div>
+        </div>
+        <div class="header-center">
+          <div class="page-title">我的订单</div>
+        </div>
+        <div class="header-right">
+          <div class="circle-btn" onclick="location.href='38.搜索入口首页.html'">⌕</div>
+        </div>
+      </header>
+
+      <!-- ① 无订单空状态占位 -->
+      <section class="section card">
+        <div class="section-title-row">
+          <div class="section-title">无订单时的展示占位</div>
+          <div class="section-sub">你接入真实数据后，仅在订单列表为空时展示此卡片</div>
+        </div>
+
+        <div class="ph-img-lg"></div>
+
+        <div class="hint-title">暂时还没有任何订单记录占位</div>
+        <div class="hint-sub">
+          这里是无订单时的说明占位文案，可引导用户去开通 VIP、去充值或参与活动等。
+        </div>
+
+        <button class="btn-primary-wide" onclick="location.href='25.VIP专区.html'">去开通 VIP / 去充值（占位）</button>
+      </section>
+
+      <!-- ② 筛选区（有订单时持续显示） -->
+      <section class="section filter-section">
+        <div class="section-title-row">
+          <div class="section-title">订单筛选占位</div>
+          <div class="section-sub">筛选逻辑由你后续接入，当前只做 UI 结构</div>
+        </div>
+
+        <div class="filter-row">
+          <span class="filter-pill is-active" onclick="location.href='73.筛选弹层.html'">全部</span>
+          <span class="filter-pill" onclick="location.href='73.筛选弹层.html'">VIP</span>
+          <span class="filter-pill" onclick="location.href='73.筛选弹层.html'">充值</span>
+          <span class="filter-pill" onclick="location.href='73.筛选弹层.html'">徽章</span>
+          <span class="filter-pill" onclick="location.href='73.筛选弹层.html'">DP</span>
+          <span class="filter-pill" onclick="location.href='73.筛选弹层.html'">其他</span>
+        </div>
+      </section>
+
+      <!-- ③ 有订单时的订单列表占位 -->
+      <section class="section card-soft">
+        <div class="section-title-row">
+          <div class="section-title">订单列表（有订单时示例）</div>
+          <div class="section-sub">下面是你描述的几条示例结构，占位用</div>
+        </div>
+
+        <div class="order-list">
+          <!-- 订单 1：VIP 月卡 -->
+          <a class="order-item" href="14.订单详情.html">
+            <div class="order-top">
+              <div class="order-icon"></div>
+              <div class="order-main">
+                <div class="order-title">VIP 月卡 · 订单标题占位</div>
+                <div class="order-sub">
+                  订单编号：987654321 占位<br>
+                  下单时间：2025-01-15 14:21 占位
+                </div>
+              </div>
+            </div>
+            <div class="order-bottom">
+              <div>
+                <span>金额：</span>
+                <span class="order-amount">89 DP（占位）</span>
+              </div>
+              <div>
+                <span class="order-status status-completed">状态：已完成（占位）</span>
+                <span class="meta-dot order-detail-link">查看详情 →</span>
+              </div>
+            </div>
+          </a>
+
+          <!-- 订单 2：徽章购买 -->
+          <a class="order-item" href="14.订单详情.html">
+            <div class="order-top">
+              <div class="order-icon"></div>
+              <div class="order-main">
+                <div class="order-title">徽章购买 · 日本徽章 3 枚占位</div>
+                <div class="order-sub">
+                  订单编号：123456789 占位<br>
+                  下单时间：2025-01-12 09:14 占位
+                </div>
+              </div>
+            </div>
+            <div class="order-bottom">
+              <div>
+                <span>金额：</span>
+                <span class="order-amount">30 DP（占位）</span>
+              </div>
+              <div>
+                <span class="order-status status-pending">状态：处理中（占位）</span>
+                <span class="meta-dot order-detail-link">查看详情 →</span>
+              </div>
+            </div>
+          </a>
+
+          <!-- 订单 3：示意失败状态 -->
+          <a class="order-item" href="14.订单详情.html">
+            <div class="order-top">
+              <div class="order-icon"></div>
+              <div class="order-main">
+                <div class="order-title">充值 · 短剧钱包充值占位</div>
+                <div class="order-sub">
+                  订单编号：555666777 占位<br>
+                  下单时间：2025-01-10 20:05 占位
+                </div>
+              </div>
+            </div>
+            <div class="order-bottom">
+              <div>
+                <span>金额：</span>
+                <span class="order-amount">100 DP（占位）</span>
+              </div>
+              <div>
+                <span class="order-status status-failed">状态：支付失败（占位）</span>
+                <span class="meta-dot order-detail-link">查看详情 →</span>
+              </div>
+            </div>
+          </a>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

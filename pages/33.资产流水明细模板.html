@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>资产流水明细 · 模板（占位）</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <style>
+    :root {
+      --bg: #050506;
+      --card: #111218;
+      --card-soft: #101019;
+      --line: #262a3f;
+      --gold: #f5d27a;
+      --pink: #ff7eb3;
+      --text-main: #ffffff;
+      --text-sub: #9ea1b6;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --radius-sm: 999px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+    }
+
+    body {
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .app {
+      max-width: 430px;
+      margin: 0 auto;
+      padding-bottom: 18px;
+      min-height: 100vh;
+    }
+
+    /* 顶部栏 */
+    .page-header {
+      height: 56px;
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(to bottom, rgba(0,0,0,.9), rgba(0,0,0,0));
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .back-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(245,210,122,.4);
+      background: rgba(0,0,0,.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .back-btn,
+    .back-btn:link,
+    .back-btn:visited,
+    .back-btn:hover,
+    .back-btn:active {
+      text-decoration: none !important;
+      color: inherit;
+    }
+
+    .header-title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .asset-tag {
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      background: #0c0d12;
+      border: 1px solid rgba(245,210,122,.45);
+      color: var(--gold);
+      font-size: 11px;
+    }
+
+    /* 顶部说明 */
+    .top-intro {
+      margin: 10px 14px 4px;
+    }
+
+    .top-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .top-sub {
+      font-size: 12px;
+      color: var(--text-sub);
+    }
+
+    /* 通用卡片 */
+    .card {
+      margin: 10px 14px;
+      padding: 10px 14px;
+      border-radius: var(--radius-lg);
+      background: var(--card);
+      border: 1px solid rgba(245,210,122,.12);
+    }
+
+    .card-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .card-sub {
+      font-size: 12px;
+      color: var(--text-sub);
+    }
+
+    /* 汇总区域 */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 8px 12px;
+      margin-top: 4px;
+      font-size: 12px;
+    }
+
+    .summary-item {
+      padding: 8px 10px;
+      border-radius: var(--radius-md);
+      background: var(--card-soft);
+      border: 1px solid rgba(245,210,122,.18);
+    }
+
+    .summary-label {
+      font-size: 11px;
+      color: var(--text-sub);
+      margin-bottom: 2px;
+    }
+
+    .summary-value {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .summary-value.income {
+      color: var(--gold);
+    }
+
+    .summary-value.expense {
+      color: var(--pink);
+    }
+
+    /* 筛选区 */
+    .filter-group {
+      margin-top: 4px;
+    }
+
+    .filter-label {
+      font-size: 11px;
+      color: var(--text-sub);
+      margin-bottom: 4px;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .chip {
+      padding: 5px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(245,210,122,.22);
+      background: #0c0d12;
+      font-size: 11px;
+      color: var(--text-sub);
+      white-space: nowrap;
+    }
+
+    .chip.active {
+      background: linear-gradient(135deg, var(--gold), var(--pink));
+      color: #050506;
+      border: none;
+    }
+
+    /* 列表区 */
+    .section-title {
+      margin: 6px 14px 0;
+      font-size: 12px;
+      color: var(--text-sub);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .tx-list {
+      margin: 4px 14px 0;
+    }
+
+    .tx-card {
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      border-radius: var(--radius-md);
+      background: var(--card);
+      border: 1px solid rgba(38,42,63,.9);
+    }
+
+    .tx-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tx-main {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .tx-title {
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+
+    .tx-meta {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .tx-right {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .tx-amount {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .tx-amount.in {
+      color: var(--gold);
+    }
+
+    .tx-amount.out {
+      color: var(--pink);
+    }
+
+    .tx-status {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(245,210,122,.35);
+      display: inline-block;
+    }
+
+    .tx-status.success {
+      color: var(--gold);
+      border-color: rgba(245,210,122,.7);
+    }
+
+    .tx-status.pending {
+      color: #fbbf24;
+      border-color: rgba(251,191,36,.7);
+    }
+
+    .tx-status.failed {
+      color: #fb7185;
+      border-color: rgba(248,113,113,.7);
+    }
+
+    .tx-bottom {
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px dashed rgba(38,42,63,.7);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tx-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      font-size: 10px;
+    }
+
+    .tx-tag {
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      border: 1px dashed rgba(245,210,122,.35);
+      color: var(--text-sub);
+    }
+
+    .tx-ref {
+      font-size: 10px;
+      color: var(--text-sub);
+      text-align: right;
+    }
+
+    .tx-ref span {
+      color: var(--gold);
+    }
+
+    .line {
+      height: 1px;
+      background: var(--line);
+      opacity: .45;
+      margin: 6px 0;
+    }
+
+    /* 空状态 */
+    .empty-block {
+      margin: 10px 14px 0;
+      padding: 14px 14px 16px;
+      border-radius: var(--radius-lg);
+      border: 1px dashed rgba(148,163,184,.8);
+      background: rgba(15,23,42,.95);
+      font-size: 12px;
+      color: var(--text-sub);
+    }
+
+    .empty-title {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 4px;
+      color: var(--text-main);
+    }
+
+    .empty-desc span {
+      color: var(--gold);
+    }
+
+    .empty-actions {
+      margin-top: 10px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-outline,
+    .btn-primary {
+      flex: 1;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      text-align: center;
+      border: 1px solid rgba(245,210,122,.5);
+    }
+
+    .btn-outline {
+      background: #0c0d12;
+      color: var(--gold);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold), var(--pink));
+      color: #050506;
+      border: none;
+    }
+
+    /* 全局：禁用 a 默认下划线/蓝色，保持视觉不变 */
+    a {
+      text-decoration: none !important;
+      color: inherit !important;
+    }
+
+    /* 把按钮从 div 改为 a 后，保持布局一致 */
+    a.btn-outline,
+    a.btn-primary {
+      display: block;
+    }
+
+    /* 把 tx-card 从 div 改为 a 后，保持原来的块级卡片效果 */
+    a.tx-card {
+      display: block;
+    }
+
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- 顶部栏 -->
+  <header class="page-header">
+    <div class="header-left">
+      <button class="back-btn" onclick="history.back()">‹</button>
+      <div class="header-title">资产流水明细（占位）</div>
+    </div>
+    <div class="header-right">
+      <div class="asset-tag">示例资产类型：DP（占位）</div>
+    </div>
+  </header>
+
+  <!-- 顶部说明 -->
+  <section class="top-intro">
+    <div class="top-title">最近资产变动记录总览（占位）</div>
+    <div class="top-sub">
+      此页面用于展示某一资产（金币 / 钻石 / DP / 徽章）的收入与支出明细。
+      目前所有金额与时间均为示意占位，接入接口后可替换为真实数据（占位）。
+    </div>
+  </section>
+
+  <!-- 汇总卡片 -->
+  <section class="card">
+    <div class="card-title-row">
+      <div class="card-title">收支汇总（占位）</div>
+      <div class="card-sub">可按时间段查看资产的整体流向（占位）</div>
+    </div>
+
+    <div class="summary-grid">
+      <div class="summary-item">
+        <div class="summary-label">今日收入（占位）</div>
+        <div class="summary-value income">+XX.XX 单位（占位）</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-label">今日支出（占位）</div>
+        <div class="summary-value expense">-YY.YY 单位（占位）</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-label">近 7 日净变动（占位）</div>
+        <div class="summary-value income">+AA.AA 单位（占位）</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-label">近 30 日净变动（占位）</div>
+        <div class="summary-value income">+BB.BB 单位（占位）</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 筛选卡片 -->
+  <section class="card">
+    <div class="card-title-row">
+      <div class="card-title">筛选与时间范围（占位）</div>
+      <div class="card-sub">这里的控件为 UI 占位，后续可接筛选逻辑（占位）</div>
+    </div>
+
+    <div class="filter-group">
+      <div class="filter-label">按时间（占位）</div>
+      <div class="chip-row">
+        <div class="chip active">全部（占位）</div>
+        <div class="chip">今天（占位）</div>
+        <div class="chip">近 7 日（占位）</div>
+        <div class="chip">近 30 日（占位）</div>
+        <div class="chip">自定义（占位）</div>
+      </div>
+    </div>
+
+    <div class="filter-group" style="margin-top:8px;">
+      <div class="filter-label">按方向（占位）</div>
+      <div class="chip-row">
+        <div class="chip active">全部（占位）</div>
+        <div class="chip">仅收入（占位）</div>
+        <div class="chip">仅支出（占位）</div>
+      </div>
+    </div>
+
+    <div class="filter-group" style="margin-top:8px;">
+      <div class="filter-label">按来源类型（占位）</div>
+      <div class="chip-row">
+        <div class="chip active">全部来源（占位）</div>
+        <div class="chip">看剧奖励（占位）</div>
+        <div class="chip">任务奖励（占位）</div>
+        <div class="chip">抽奖结果（占位）</div>
+        <div class="chip">充值 / 兑换（占位）</div>
+        <div class="chip">提现 / 扣减（占位）</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 流水列表标题 -->
+  <div class="section-title">
+    <span>流水记录列表（占位）</span>
+    <span>示例日期：2025-01-15（占位）</span>
+  </div>
+
+  <!-- 流水列表示例 -->
+  <section class="tx-list">
+
+    <a class="tx-card" href="14.订单详情.html">
+      <div class="tx-top">
+        <div class="tx-main">
+          <div class="tx-title">看剧奖励 · 某短剧标题占位</div>
+          <div class="tx-meta">时间：2025-01-15  14:21（占位）</div>
+        </div>
+        <div class="tx-right">
+          <div class="tx-amount in">+3.50 单位（占位）</div>
+          <div class="tx-status success">成功（占位）</div>
+        </div>
+      </div>
+      <div class="tx-bottom">
+        <div class="tx-tags">
+          <div class="tx-tag">来源：看剧奖励（占位）</div>
+          <div class="tx-tag">方向：收入（占位）</div>
+        </div>
+        <div class="tx-ref">
+          记录编号：<span>#TX202501150001（占位）</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="tx-card" href="14.订单详情.html">
+      <div class="tx-top">
+        <div class="tx-main">
+          <div class="tx-title">提现至外部钱包（占位）</div>
+          <div class="tx-meta">时间：2025-01-15  10:05（占位）</div>
+        </div>
+        <div class="tx-right">
+          <div class="tx-amount out">-20.00 单位（占位）</div>
+          <div class="tx-status pending">处理中（占位）</div>
+        </div>
+      </div>
+      <div class="tx-bottom">
+        <div class="tx-tags">
+          <div class="tx-tag">来源：提现（占位）</div>
+          <div class="tx-tag">方向：支出（占位）</div>
+        </div>
+        <div class="tx-ref">
+          记录编号：<span>#TX202501150002（占位）</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="tx-card" href="14.订单详情.html">
+      <div class="tx-top">
+        <div class="tx-main">
+          <div class="tx-title">抽奖获得 · 奖励占位</div>
+          <div class="tx-meta">时间：2025-01-14  22:11（占位）</div>
+        </div>
+        <div class="tx-right">
+          <div class="tx-amount in">+0.80 单位（占位）</div>
+          <div class="tx-status success">成功（占位）</div>
+        </div>
+      </div>
+      <div class="tx-bottom">
+        <div class="tx-tags">
+          <div class="tx-tag">来源：抽奖（占位）</div>
+          <div class="tx-tag">方向：收入（占位）</div>
+        </div>
+        <div class="tx-ref">
+          记录编号：<span>#TX202501140003（占位）</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="tx-card" href="14.订单详情.html">
+      <div class="tx-top">
+        <div class="tx-main">
+          <div class="tx-title">系统调整 · 异常订单回滚（占位）</div>
+          <div class="tx-meta">时间：2025-01-14  19:33（占位）</div>
+        </div>
+        <div class="tx-right">
+          <div class="tx-amount out">-1.00 单位（占位）</div>
+          <div class="tx-status failed">失败 / 已回滚（占位）</div>
+        </div>
+      </div>
+      <div class="tx-bottom">
+        <div class="tx-tags">
+          <div class="tx-tag">来源：系统调整（占位）</div>
+          <div class="tx-tag">方向：支出（占位）</div>
+        </div>
+        <div class="tx-ref">
+          记录编号：<span>#TX202501140004（占位）</span>
+        </div>
+      </div>
+    </a>
+
+  </section>
+
+  <!-- 空状态占位（无记录时可显示这一块，实际接数据后按条件切换） -->
+  <section class="empty-block">
+  <div class="empty-title">当前条件下暂无任何流水记录（占位）</div>
+  <div class="empty-desc">
+    你可以尝试调整<span>时间范围</span>或<span>来源类型</span>，或者前往首页/福利中心完成任务、看剧或参与活动，
+    之后这里会出现对应的资产变动记录（占位）。
+  </div>
+  <div class="empty-actions">
+    <a class="btn-outline" href="../index.html">
+  回到首页（占位）
+    </a>
+
+    <a class="btn-primary" href="3.福利中心.html">
+  去做任务 / 看剧（占位）
+    </a>
+  </div>
+</section>3
+
+</div>
+</body>
+</html>

@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>未登录提示 - 短剧H5</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+
+  <style>
+    :root {
+      --bg: #050509;
+      --card-soft: #151824;
+      --border-soft: #22263a;
+      --text-main: #f7f7fb;
+      --text-sub: #9ea1b6;
+      --accent-pink: #ff6ac8;
+      --accent-gold: #f6d57a;
+      --accent-blue: #2575ff;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --shadow-soft: 0 18px 50px rgba(0, 0, 0, 0.75);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 15% 0, #313863 0, transparent 55%),
+        radial-gradient(circle at 85% 10%, #ff6ac8 0, transparent 45%),
+        radial-gradient(circle at 50% 100%, #f6d57a33 0, transparent 55%),
+        #050509;
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow: hidden;
+    }
+
+    .wrap {
+      position: relative;
+      width: 100%;
+      max-width: 430px;
+      padding-bottom: 40px;
+    }
+
+    /* 背景漂浮光斑 */
+    .glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(38px);
+      opacity: 0.75;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+    .glow.g1 {
+      width: 220px;
+      height: 220px;
+      background: #ff6ac8;
+      top: -40px;
+      left: -40px;
+      animation: float1 9s ease-in-out infinite;
+    }
+    .glow.g2 {
+      width: 260px;
+      height: 260px;
+      background: #2575ff;
+      top: 40%;
+      right: -60px;
+      animation: float2 11s ease-in-out infinite;
+    }
+    .glow.g3 {
+      width: 200px;
+      height: 200px;
+      background: #f6d57a;
+      bottom: -60px;
+      left: 10%;
+      opacity: 0.55;
+      animation: float3 13s ease-in-out infinite;
+    }
+
+    @keyframes float1 {
+      0%,100% { transform: translate3d(0,0,0); }
+      50% { transform: translate3d(20px,16px,0); }
+    }
+    @keyframes float2 {
+      0%,100% { transform: translate3d(0,0,0); }
+      50% { transform: translate3d(-18px,-10px,0); }
+    }
+    @keyframes float3 {
+      0%,100% { transform: translate3d(0,0,0); }
+      50% { transform: translate3d(10px,-14px,0); }
+    }
+
+    .card {
+      position: relative;
+      z-index: 2;
+      background: radial-gradient(circle at 0 0,#272c45ee 0,#151824f0 55%,#090b12f0 100%);
+      border-radius: 26px;
+      padding: 18px 18px 20px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+    }
+
+    .card::before {
+      content:"";
+      position:absolute;
+      inset:0;
+      border-radius:inherit;
+      background: radial-gradient(circle at 20% 0,rgba(255,255,255,0.16),transparent 45%);
+      mix-blend-mode: soft-light;
+      opacity: 0.6;
+      pointer-events:none;
+    }
+
+    .card-header {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:10px;
+      position:relative;
+      z-index:2;
+    }
+    .tag {
+      padding:3px 8px;
+      border-radius:999px;
+      font-size:11px;
+      background:rgba(255,255,255,0.08);
+      border:1px solid rgba(255,255,255,0.18);
+      display:flex;
+      align-items:center;
+      gap:4px;
+    }
+    .tag-dot {
+      width:6px;
+      height:6px;
+      border-radius:999px;
+      background:linear-gradient(135deg,var(--accent-pink),var(--accent-gold));
+      box-shadow:0 0 8px rgba(246,213,122,0.8);
+    }
+    .tag span { color:var(--text-sub); }
+
+    .close {
+      width:24px;
+      height:24px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.25);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:14px;
+      color:var(--text-sub);
+      background:rgba(0,0,0,0.25);
+    }
+
+    .card-main {
+      position:relative;
+      z-index:2;
+      display:flex;
+      gap:14px;
+      margin-top:4px;
+    }
+
+    /* 左侧插画 */
+    .hero-illust {
+      flex:0 0 90px;
+      position:relative;
+      height:108px;
+    }
+    .hero-circle {
+      position:absolute;
+      inset:8px 0 0;
+      border-radius:24px;
+      background:
+        radial-gradient(circle at 20% 0,#ffe9b8 0,#f6d57a 35%,#f28e5a 75%);
+      box-shadow:0 14px 35px rgba(0,0,0,0.8);
+    }
+    .hero-ticket {
+      position:absolute;
+      bottom:-4px;
+      left:10px;
+      right:10px;
+      height:40px;
+      border-radius:14px;
+      background:linear-gradient(135deg,#20253a,#11131f);
+      border:1px solid rgba(255,255,255,0.12);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      font-size:11px;
+      color:var(--text-sub);
+      box-shadow:0 10px 22px rgba(0,0,0,0.85);
+    }
+    .hero-coin {
+      width:22px;
+      height:22px;
+      border-radius:999px;
+      background:radial-gradient(circle at 30% 0,#fff7d0,#f6d57a,#c98725);
+      box-shadow:0 0 10px rgba(246,213,122,0.85);
+      position:relative;
+      animation: coin-bob 2.2s ease-in-out infinite;
+    }
+    .hero-coin::after {
+      content:"DP";
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:9px;
+      color:#4a2b05;
+      font-weight:700;
+    }
+
+    @keyframes coin-bob {
+      0%,100% { transform:translateY(0); }
+      50% { transform:translateY(-4px); }
+    }
+
+    /* 右侧文字 */
+    .hero-text {
+      flex: 1;
+    }
+    .hero-title {
+      font-size:18px;
+      font-weight:700;
+      letter-spacing:0.4px;
+      margin-bottom:6px;
+    }
+    .hero-sub {
+      font-size:12px;
+      color:var(--text-sub);
+      line-height:1.5;
+      margin-bottom:10px;
+    }
+    .hero-bullets {
+      list-style:none;
+      font-size:12px;
+      color:var(--text-sub);
+      display:grid;
+      row-gap:4px;
+    }
+    .hero-bullets li {
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .hero-bullets li::before {
+      content:"";
+      width:6px;
+      height:6px;
+      border-radius:999px;
+      background:linear-gradient(135deg,var(--accent-pink),var(--accent-blue));
+    }
+
+    .card-footer {
+      margin-top:16px;
+      position:relative;
+      z-index:2;
+    }
+    .btn-primary {
+      width:100%;
+      padding:11px 14px;
+      border-radius:999px;
+      border:none;
+      font-size:15px;
+      font-weight:600;
+      color:#1a0a12;
+      background:linear-gradient(120deg,var(--accent-pink),var(--accent-gold));
+      box-shadow:0 10px 26px rgba(0,0,0,0.85);
+      cursor:pointer;
+      position:relative;
+      overflow:hidden;
+    }
+    .btn-primary::after {
+      content:"";
+      position:absolute;
+      left:-40%;
+      top:0;
+      width:40%;
+      height:100%;
+      background:linear-gradient(120deg,rgba(255,255,255,0.65),transparent);
+      transform:skewX(-24deg) translateX(-100%);
+      animation: shine 4s ease-in-out infinite;
+    }
+
+    @keyframes shine {
+      0%,70% { transform:skewX(-24deg) translateX(-120%); }
+      80% { transform:skewX(-24deg) translateX(260%); }
+      100% { transform:skewX(-24deg) translateX(260%); }
+    }
+
+    .btn-row {
+      margin-top:10px;
+      display:flex;
+      gap:10px;
+    }
+    .btn-ghost,
+    .btn-link {
+      flex:1;
+      padding:9px 10px;
+      border-radius:999px;
+      font-size:12px;
+      border:1px solid rgba(255,255,255,0.22);
+      background:rgba(5,5,9,0.45);
+      color:var(--text-sub);
+      text-align:center;
+      cursor:pointer;
+    }
+    .btn-link {
+      flex:none;
+      padding:0;
+      border:none;
+      background:transparent;
+      text-decoration:underline;
+      text-underline-offset:3px;
+      opacity:0.75;
+    }
+
+    .hint {
+      margin-top:10px;
+      font-size:11px;
+      color:var(--text-sub);
+      opacity:0.8;
+    }
+
+    /* 小 Toast 提示 */
+    .toast {
+      position:fixed;
+      left:50%;
+      bottom:78px;
+      transform:translateX(-50%) translateY(40px);
+      padding:7px 12px;
+      border-radius:999px;
+      background:rgba(0,0,0,0.82);
+      border:1px solid rgba(255,255,255,0.16);
+      font-size:11px;
+      color:var(--text-main);
+      opacity:0;
+      pointer-events:none;
+      transition:all .35s ease;
+      z-index:50;
+    }
+    .toast.show {
+      opacity:1;
+      transform:translateX(-50%) translateY(0);
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="wrap">
+  <!-- 背景光斑 -->
+  <div class="glow g1"></div>
+  <div class="glow g2"></div>
+  <div class="glow g3"></div>
+
+  <!-- 主卡片 -->
+  <div class="card">
+    <div class="card-header">
+      <div class="tag">
+        <span class="tag-dot"></span>
+        <span>登录提醒（占位）</span>
+      </div>
+      <div class="close">✕</div>
+    </div>
+
+    <div class="card-main">
+      <!-- 左侧插画 -->
+      <div class="hero-illust">
+        <div class="hero-circle"></div>
+        <div class="hero-ticket">
+          <div class="hero-coin"></div>
+          <span>登录解锁 DP 收益（占位）</span>
+        </div>
+      </div>
+
+      <!-- 右侧文字 -->
+      <div class="hero-text">
+        <div class="hero-title">登录后继续这个操作</div>
+        <div class="hero-sub">
+          当前操作仅对已登录用户开放。登录后可以同步你的观看记录、账号资产与收益数据（占位）。
+        </div>
+        <ul class="hero-bullets">
+          <li>跨设备同步观看历史与追剧进度（占位）</li>
+          <li>领取平台福利、活动奖励与红包（占位）</li>
+          <li>记录 DP 收益、资产变化与安全日志（占位）</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <button class="btn-primary" id="btnLogin">立即登录 / 注册（占位）</button>
+
+      <div class="btn-row">
+        <button class="btn-ghost" id="btnGuest">先逛逛，稍后登录（占位）</button>
+        <button class="btn-link" id="btnHome">返回首页（占位）</button>
+      </div>
+
+      <div class="hint">
+        小提示：登录过程不会消耗任何 DP 或余额，你可以随时退出账号（占位）。
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">已切换为游客浏览模式（占位）</div>
+
+<script>
+  // 立即登录 / 注册 → 跳到登录页（19）
+  document.getElementById('btnLogin').addEventListener('click', () => {
+    location.href = '19.登录页.html';
+  });
+
+  // 游客访问 → 回首页
+  document.getElementById('btnGuest').addEventListener('click', () => {
+    location.href = '../index.html';
+  });
+
+  // 返回首页按钮
+  document.getElementById('btnHome').addEventListener('click', () => {
+    location.href = '../index.html';
+  });
+
+  // 右上角关闭按钮
+  document.querySelector('.close').addEventListener('click', () => {
+    location.href = '../index.html';
+  });
+</script>
+
+</body>
+</html>

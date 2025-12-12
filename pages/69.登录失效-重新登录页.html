@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>登录失效 - 重新登录</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+
+  <style>
+    :root {
+      --bg: #050509;
+      --card: #0f1119;
+      --card-soft: #151824;
+      --text-main: #f7f7fb;
+      --text-sub: #9ea1b6;
+      --accent-pink: #ff6ac8;
+      --accent-gold: #f6d57a;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at top, #191e34 0, #050509 55%);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: 16px 14px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .title-main {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .title-sub {
+      font-size: 13px;
+      color: var(--text-sub);
+    }
+
+    .card-error {
+      margin-top: 18px;
+      border-radius: 20px;
+      padding: 14px 12px 16px;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(255,106,200,0.24), transparent 55%),
+        radial-gradient(circle at 100% 0%, rgba(246,213,122,0.22), transparent 55%),
+        linear-gradient(145deg, #111427, #050509);
+      border: 1px solid rgba(246,213,122,0.45);
+      box-shadow: 0 14px 32px rgba(0,0,0,0.9);
+      display: flex;
+      gap: 12px;
+    }
+
+    .icon-wrap {
+      width: 42px;
+      height: 42px;
+      border-radius: 16px;
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,0.35), transparent 60%),
+        linear-gradient(145deg, #25101a, #0b0609);
+      border: 1px solid rgba(255,126,179,0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      color: var(--accent-pink);
+      flex-shrink: 0;
+    }
+
+    .error-text-main {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .error-text-sub {
+      font-size: 12px;
+      color: var(--text-sub);
+      line-height: 1.5;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(255,255,255,0.18);
+      font-size: 11px;
+      margin-top: 6px;
+      color: var(--text-sub);
+    }
+
+    .info-card {
+      margin-top: 12px;
+      border-radius: 16px;
+      padding: 10px 10px 11px;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(255,106,200,0.16), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(246,213,122,0.14), transparent 60%),
+        linear-gradient(145deg, #111427, #050509);
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 10px 26px rgba(0,0,0,0.85);
+      font-size: 12px;
+      color: var(--text-sub);
+      line-height: 1.5;
+    }
+
+    .info-list {
+      margin-top: 6px;
+      padding-left: 12px;
+    }
+
+    .info-list li {
+      margin-bottom: 2px;
+    }
+
+    .strong {
+      color: var(--accent-gold);
+    }
+
+    .btn-group {
+      margin-top: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 11px 14px;
+      border-radius: 999px;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .btn-main {
+      background: linear-gradient(135deg, var(--accent-gold), var(--accent-pink));
+      color: #050509;
+      box-shadow: 0 0 18px rgba(255,126,179,0.8);
+    }
+
+    .btn-second {
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,0.3), transparent 60%),
+        linear-gradient(145deg, #151824, #050509);
+      color: var(--text-main);
+      border: 1px solid rgba(246,213,122,0.5);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-sub);
+      font-size: 13px;
+    }
+
+    .btn-ghost span {
+      color: var(--accent-gold);
+    }
+
+    .bottom-text {
+      margin-top: 18px;
+      font-size: 11px;
+      color: var(--text-sub);
+      text-align: center;
+      line-height: 1.5;
+      opacity: 0.85;
+    }
+
+    .tip {
+      margin-top: 10px;
+      font-size: 11px;
+      color: var(--text-sub);
+      line-height: 1.5;
+    }
+
+    /* 可点击手感（不改变任何视觉） */
+    .bottom-text {
+      cursor: pointer;
+    }
+
+    /* 全局兜底：防止未来插入 a 出现默认样式 */
+    a {
+      text-decoration: none !important;
+      color: inherit !important;
+    }
+
+  </style>
+</head>
+
+<body>
+<div class="app">
+  <main>
+    <h1 class="title-main">登录状态已失效（占位）</h1>
+    <p class="title-sub">
+      为保障你的账号与资产安全，需要重新登录后才能继续使用全部功能。（占位）
+    </p>
+
+    <section class="card-error">
+      <div class="icon-wrap">!</div>
+      <div>
+        <div class="error-text-main">检测到登录已过期或在其他设备登录（占位）</div>
+        <div class="error-text-sub">
+          可能的原因包括：长时间未操作、账号在新设备登录、或安全策略更新等。（占位）
+        </div>
+        <div class="pill">
+          <span>· 当前设备：占位机型 / 占位网络</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="info-card">
+      <div>为了保护你的账号资产，我们建议你：</div>
+      <ul class="info-list">
+        <li>1. 立即 <span class="strong">重新登录账号</span>，确认是本人操作。（占位）</li>
+        <li>2. 若发现异常，可尽快修改密码并联系平台客服。（占位）</li>
+        <li>3. 避免在公共设备上长时间保持登录状态。（占位）</li>
+      </ul>
+
+      <div class="btn-group">
+        <!-- 主 CTA：重新登录并返回刚才页面 → 跳转到 19.登录页.html -->
+        <button class="btn btn-main" onclick="location.href='19.登录页.html'">
+          重新登录并返回刚才页面（占位）
+        </button>
+
+        <!-- 次要 CTA：使用其他账号登录 → 也先统一跳到 19.登录页.html -->
+        <button class="btn btn-second" onclick="location.href='19.登录页.html'">
+          使用其他账号登录（占位）
+        </button>
+
+        <!-- 暂不登录：带用户回到首页 index.html -->
+        <button class="btn-ghost" onclick="location.href='../index.html'">
+          暂不登录，<span>回到首页浏览（占位）</span>
+        </button>
+      </div>
+
+      <div class="tip">
+        重新登录后，你的观影记录、钱包资产、团队数据会自动同步，不会丢失。（占位）<br/>
+        若你近期未主动操作，请及时检查账号安全。（占位）
+      </div>
+
+    </section>
+  </main>
+
+  <div class="bottom-text" onclick="location.href='49.客服中心首页.html'">
+    登录相关问题，可在「客服中心 / 帮助中心」中查看常见问答或联系客服。（占位）
+  </div>
+</div>
+</body>
+</html>

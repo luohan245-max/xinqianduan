@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>短剧播放页</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
+<style>
+:root {
+  --bg: #050506;
+  --gold: #f5d27a;
+  --pink: #ff7eb3;
+  --text-main: #ffffff;
+  --text-sub: #9ea1b6;
+}
+
+/* 全局 */
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{
+  height:100%;
+  background:var(--bg);
+  color:var(--text-main);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",sans-serif;
+  overflow:hidden;
+}
+.app{
+  width:100%;
+  height:100%;
+  max-width:430px;
+  margin:0 auto;
+  position:relative;
+}
+
+/* 顶部栏 */
+.header-bar{
+  position:absolute;
+  top:0;left:0;right:0;
+  height:56px;
+  padding:0 14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:linear-gradient(to bottom,rgba(0,0,0,.8),rgba(0,0,0,0));
+  z-index:20;
+}
+.header-left,.header-right{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.header-title{
+  font-size:14px;
+  font-weight:500;
+  max-width:170px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.icon-btn{
+  width:30px;
+  height:30px;
+  border-radius:999px;
+  border:1px solid rgba(245,210,122,.45);
+  background:rgba(0,0,0,.35);
+  backdrop-filter:blur(6px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--gold);
+  font-size:15px;
+  text-decoration:none;
+}
+
+/* 视频区域 */
+.video-area{
+  width:100%;
+  height:100%;
+  background:#000;
+  position:relative;
+  overflow:hidden;
+}
+.video-ph{
+  width:100%;
+  height:100%;
+  background:#111; /* 视频占位 */
+}
+
+/* 中央播放按钮 */
+.play-btn-center{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:60px;height:60px;
+  border-radius:999px;
+  background:rgba(0,0,0,.45);
+  border:2px solid rgba(245,210,122,.85);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--gold);
+  font-size:24px;
+}
+
+/* 右侧竖排按钮 */
+.side-actions{
+  position:absolute;
+  top:50%;
+  right:16px;
+  transform:translateY(-50%);
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  z-index:30;
+}
+.side-block{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:2px;
+}
+.side-btn{
+  width:40px;height:40px;
+  border-radius:999px;
+  background:rgba(0,0,0,.32);
+  border:1px solid rgba(245,210,122,.28);
+  backdrop-filter:blur(8px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  color:var(--gold);
+}
+.side-num{
+  font-size:10px;
+  color:var(--text-sub);
+}
+
+/* 半透明简介小条（常驻，位于剧集栏上方） */
+.info-strip{
+  position:absolute;
+  left:0;right:0;
+  bottom:52px;               /* 预留下面剧集栏高度 */
+  padding:6px 12px;
+  background:rgba(0,0,0,.45);
+  backdrop-filter:blur(10px);
+  border-top:1px solid rgba(245,210,122,.35);
+  border-bottom:1px solid rgba(245,210,122,.1);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  z-index:25;
+}
+.info-strip-main{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  max-width:260px;
+}
+.info-strip-ep{
+  font-size:11px;
+  color:var(--gold);
+}
+.info-strip-title{
+  font-size:12px;
+  color:var(--text-main);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.info-strip-more{
+  font-size:11px;
+  color:var(--gold);
+}
+
+/* 最底部横向剧集栏 */
+.episode-bar{
+  position:absolute;
+  left:0;right:0;
+  bottom:8px;
+  padding:6px 10px;
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  z-index:24;
+}
+.episode-pill{
+  padding:6px 12px;
+  border-radius:999px;
+  border:1px solid rgba(245,210,122,.45);
+  background:rgba(0,0,0,.5);
+  white-space:nowrap;
+  font-size:12px;
+  color:var(--text-main);
+}
+.episode-pill.active{
+  background:linear-gradient(135deg,var(--gold),var(--pink));
+  color:#050506;
+  border:none;
+  box-shadow:0 0 12px rgba(255,126,179,.75);
+}
+
+/* 弹出的完整简介面板（示例：默认显示，后续用 JS 控制显示/隐藏） */
+.info-modal{
+  position:absolute;
+  left:0;right:0;
+  bottom:0;
+  height:55%;                 /* 半屏高度占位 */
+  background:
+    linear-gradient(160deg,rgba(21,22,35,.97),rgba(5,5,8,.98));
+  border-top:1px solid rgba(245,210,122,.4);
+  box-shadow:0 -12px 30px rgba(0,0,0,.9);
+  padding:10px 14px 16px;
+  z-index:40;
+}
+.info-modal-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:6px;
+}
+.info-modal-title{
+  font-size:14px;
+  font-weight:500;
+  max-width:230px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.info-modal-close{
+  font-size:18px;
+  color:var(--text-sub);
+}
+.info-modal-sub{
+  font-size:11px;
+  color:var(--text-sub);
+  margin-bottom:4px;
+}
+.modal-tag-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:4px;
+  margin-bottom:6px;
+}
+.modal-tag{
+  padding:2px 6px;
+  border-radius:999px;
+  border:1px solid rgba(245,210,122,.4);
+  font-size:10px;
+  color:var(--text-sub);
+}
+.modal-text{
+  margin-top:2px;
+  font-size:12px;
+  line-height:1.55;
+  color:var(--text-sub);
+  max-height:calc(100% - 72px);
+  overflow-y:auto;
+}
+.modal-tip{
+  font-size:10px;
+  color:var(--gold);
+  margin-top:6px;
+}
+
+.icon-btn,
+.play-btn-center,
+.side-btn,
+.info-strip-more,
+.episode-pill,
+.info-modal-close {cursor: pointer;}
+
+</style>
+</head>
+
+<body>
+<div class="app">
+
+  <!-- 顶部栏 -->
+  <div class="header-bar">
+    <div class="header-left">
+      <!-- 返回 6.短剧详情页.html -->
+      <a class="icon-btn" href="javascript:void(0)" onclick="history.back()">‹</a>
+      <div class="header-title">短剧标题占位</div>
+    </div>
+    <div class="header-right">
+      <div class="icon-btn" onclick="location.href='38.搜索入口首页.html'">🔍</div>
+      <div class="icon-btn" onclick="history.back()">⋯</div>
+    </div>
+  </div>
+
+  <!-- 播放区域 -->
+  <div class="video-area">
+    <div class="video-ph"></div>
+
+    <!-- 中心播放按钮 -->
+    <div class="play-btn-center" onclick="history.back()">▶</div>
+
+    <!-- 右侧悬浮按钮 -->
+    <div class="side-actions">
+      <div class="side-block">
+        <div class="side-btn" onclick="history.back()">❤️</div>
+        <div class="side-num">128</div>
+      </div>
+      <div class="side-block">
+        <div class="side-btn" onclick="location.href='6.短剧详情页.html'">💬</div>
+        <div class="side-num">56</div>
+      </div>
+      <div class="side-block">
+        <div class="side-btn" onclick="location.href='15.我的收藏.html'">⭐</div>
+        <div class="side-num">收藏</div>
+      </div>
+      <div class="side-block">
+        <div class="side-btn" onclick="history.back()">⤴</div>
+        <div class="side-num">分享</div>
+      </div>
+    </div>
+
+    <!-- 半透明简介小条（常驻，位于剧集栏上方） -->
+    <div class="info-strip">
+      <div class="info-strip-main">
+        <div class="info-strip-ep">第1集 · 剧集占位</div>
+        <div class="info-strip-title">短剧标题占位 · 都市甜宠向</div>
+      </div>
+      <div class="info-strip-more" onclick="history.back()">点击展开（占位）</div>
+    </div>
+
+    <!-- 底部横向剧集栏 -->
+    <div class="episode-bar">
+      <div class="episode-pill active" onclick="history.back()">第1集</div>
+      <div class="episode-pill" onclick="history.back()">第2集</div>
+      <div class="episode-pill" onclick="history.back()">第3集</div>
+      <div class="episode-pill" onclick="history.back()">第4集</div>
+      <div class="episode-pill" onclick="history.back()">第5集</div>
+      <div class="episode-pill" onclick="history.back()">第6集</div>
+      <div class="episode-pill" onclick="history.back()">更多…</div>
+    </div>
+
+    <!-- 完整简介面板占位（现在默认显示，后续你可用 JS 控制显示/隐藏） -->
+    <div class="info-modal">
+      <div class="info-modal-header">
+        <div class="info-modal-title">短剧标题占位 · 都市甜宠向</div>
+        <div class="info-modal-close" onclick="history.back()">×</div>
+      </div>
+      <div class="info-modal-sub">当前集数：第1集 · 集标题占位</div>
+
+      <div class="modal-tag-row">
+        <div class="modal-tag">都市</div>
+        <div class="modal-tag">甜宠</div>
+        <div class="modal-tag">反转</div>
+      </div>
+
+      <div class="modal-text">
+        剧情简介占位：这里是一段该短剧的完整剧情简介文本，用于展示更详尽的内容介绍。
+        示例说明：主角在错位的婚约与利益冲突中不断做出选择，看似轻松甜宠的关系背后，
+        实则埋藏着多重反转与阴谋。随着每一集推进，观众会逐步看到人物关系的撕裂与重组，
+        同时也会看到关于家庭、金钱与情感的多重博弈……
+        <br><br>
+        以上全部为文案占位区域，后续可以替换为真实的接口内容。
+      </div>
+
+      <div class="modal-tip">本面板仅为视觉占位示例，后续可通过点击“小条”来控制打开/关闭。</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

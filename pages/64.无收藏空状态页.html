@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>我的收藏 - 空状态</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <style>
+    :root{
+      --bg:#050509;
+      --card:#0f1119;
+      --card-soft:#151824;
+      --text-main:#f7f7fb;
+      --text-sub:#9ea1b6;
+      --accent-pink:#ff6ac8;
+      --accent-gold:#f6d57a;
+      --radius-lg:22px;
+      --shadow-soft:0 16px 40px rgba(0,0,0,0.7);
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{
+      background:#050509;
+      color:var(--text-main);
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",sans-serif;
+    }
+    .page{
+      max-width:430px;
+      margin:0 auto;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+    .header{
+      padding:12px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      border-bottom:1px solid rgba(255,255,255,0.08);
+      background:radial-gradient(circle at top,#171c32,#050509);
+    }
+    .back{
+      font-size:18px;
+      padding:4px 6px;
+    }
+    .title{
+      font-size:16px;
+      font-weight:600;
+    }
+    .placeholder{
+      flex:1;
+      padding:32px 18px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .card{
+      width:100%;
+      background:radial-gradient(circle at top,#1f2439,#10131f);
+      border-radius:24px;
+      padding:26px 20px 22px;
+      box-shadow:var(--shadow-soft);
+      border:1px solid rgba(255,255,255,0.1);
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:-45%;
+      background:
+        radial-gradient(circle at 15% 0,rgba(255,106,200,0.32),transparent 60%),
+        radial-gradient(circle at 85% 10%,rgba(246,213,122,0.22),transparent 60%);
+      opacity:.9;
+    }
+    .inner{position:relative;z-index:2;}
+    .icon-heart{
+      width:64px;height:64px;
+      margin:0 auto 14px;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,0.18);
+      background:radial-gradient(circle at 30% 0,#282d45,#10131f);
+      display:flex;align-items:center;justify-content:center;
+      box-shadow:0 12px 26px rgba(0,0,0,0.75);
+      position:relative;
+    }
+    .icon-heart::before{
+      content:"";
+      width:30px;height:26px;
+      background:
+        radial-gradient(circle at 30% 0,#fff,#ff8ad6,#ff6ac8);
+      clip-path:path("M15 27 C-4 13 5 -2 15 5 C25 -2 34 13 15 27 Z");
+      /* 简单心形占位 */
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:4px 9px;
+      border-radius:999px;
+      background:rgba(0,0,0,0.4);
+      border:1px solid rgba(255,255,255,0.16);
+      font-size:11px;
+      color:var(--accent-gold);
+      margin-bottom:8px;
+    }
+    .dot{
+      width:6px;height:6px;border-radius:50%;
+      background:radial-gradient(circle,var(--accent-gold),#f39a3f);
+    }
+    .empty-title{
+      font-size:16px;
+      font-weight:600;
+      margin-bottom:6px;
+    }
+    .empty-sub{
+      font-size:13px;
+      color:var(--text-sub);
+      line-height:1.7;
+      margin-bottom:16px;
+    }
+    .btn-main{
+      width:100%;
+      border-radius:999px;
+      padding:10px 0;
+      border:none;
+      font-size:14px;
+      font-weight:600;
+      background:linear-gradient(135deg,var(--accent-pink),var(--accent-gold));
+      color:#050509;
+      margin-bottom:8px;
+    }
+    .btn-sub{
+      width:100%;
+      border-radius:999px;
+      padding:9px 0;
+      border:1px solid rgba(255,255,255,0.18);
+      background:rgba(0,0,0,0.35);
+      color:var(--text-sub);
+      font-size:13px;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <header class="header">
+    <div class="back">‹</div>
+    <div class="title">我的收藏（占位）</div>
+    <div style="width:24px;"></div>
+  </header>
+
+  <div class="placeholder">
+    <div class="card">
+      <div class="inner">
+        <div class="icon-heart"></div>
+        <div class="chip">
+          <div class="dot"></div>
+          <span>暂无任何收藏内容（占位）</span>
+        </div>
+        <div class="empty-title">你还没有标记喜欢的短剧（占位）</div>
+        <div class="empty-sub">
+          看剧时点一下「收藏」就会出现在这里，方便你随时继续追更。（占位）
+        </div>
+        <button class="btn-main">去首页逛逛好剧（占位）</button>
+        <button class="btn-sub">看看「热播排行榜」（占位）</button>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

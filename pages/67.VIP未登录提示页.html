@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>VIP专区 - 未登录提示</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+
+  <style>
+    :root {
+      --bg: #050509;
+      --card: #0f1119;
+      --text-main: #f7f7fb;
+      --text-sub: #9ea1b6;
+      --accent-pink: #ff6ac8;
+      --accent-gold: #f6d57a;
+      --shadow-soft: 0 18px 46px rgba(0,0,0,0.75);
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      background: radial-gradient(circle at top, #191e34 0, #050509 55%);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+    }
+
+    .page {
+      max-width: 430px;
+      margin: 0 auto;
+      min-height: 100vh;
+      padding: 24px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .card {
+      width:100%;
+      background: radial-gradient(circle at top,#20263d,#0f1119);
+      border-radius:26px;
+      padding:28px 20px 24px;
+      text-align:center;
+      border:1px solid rgba(255,255,255,0.12);
+      box-shadow: var(--shadow-soft);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .card::before {
+      content:"";
+      position:absolute;
+      inset:-45%;
+      background:
+        radial-gradient(circle at 15% 0,rgba(255,106,200,0.32),transparent 70%),
+        radial-gradient(circle at 85% 10%,rgba(246,213,122,0.22),transparent 70%);
+      opacity:0.9;
+    }
+
+    .inner { position:relative; z-index:2; }
+
+    /* 图标：VIP皇冠 */
+    .crown {
+      width:80px;
+      height:80px;
+      margin:0 auto 16px;
+      border-radius:50%;
+      background: radial-gradient(circle at 30% 0,#292f47,#10131f);
+      border:1px solid rgba(255,255,255,0.18);
+      box-shadow:0 14px 28px rgba(0,0,0,0.75);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+    }
+    .crown::before {
+      content:"👑";
+      font-size:36px;
+      color:var(--accent-gold);
+      filter: drop-shadow(0 0 4px rgba(246,213,122,0.8));
+    }
+
+    .title {
+      font-size:18px;
+      font-weight:600;
+      margin-bottom:6px;
+    }
+
+    .subtitle {
+      font-size:13px;
+      color:var(--text-sub);
+      line-height:1.7;
+      margin-bottom:16px;
+      padding:0 10px;
+    }
+
+    .vip-box {
+      background:rgba(0,0,0,0.45);
+      border:1px dashed rgba(255,255,255,0.16);
+      padding:12px;
+      border-radius:16px;
+      font-size:12px;
+      color:var(--text-sub);
+      margin-bottom:18px;
+      line-height:1.6;
+      text-align:left;
+    }
+    .vip-title {
+      color:var(--accent-gold);
+      margin-bottom:6px;
+      font-size:12px;
+    }
+
+    .btn-main, .btn-sub {
+      width:100%;
+      border-radius:999px;
+      padding:11px 0;
+      border:none;
+      font-size:14px;
+      font-weight:600;
+      margin-bottom:10px;
+      cursor:pointer;
+    }
+
+    .btn-main {
+      background:linear-gradient(135deg,var(--accent-pink),var(--accent-gold));
+      color:#050509;
+    }
+
+    .btn-sub {
+      background:rgba(0,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.16);
+      color:var(--text-sub);
+      font-size:13px;
+    }
+
+    .bottom {
+      margin-top:10px;
+      font-size:11px;
+      color:var(--text-sub);
+      opacity:.7;
+    }
+
+  </style>
+</head>
+
+<body>
+<div class="page">
+  <div class="card">
+    <div class="inner">
+
+      <div class="crown"></div>
+
+      <div class="title">VIP 专区需要登录后访问（占位）</div>
+
+      <div class="subtitle">
+        登录后你可以畅享专属剧场、提前看全集、热门内容高清加速等特权。（占位）
+      </div>
+
+      <div class="vip-box">
+        <div class="vip-title">VIP 可享权益（占位）：</div>
+        • 最新短剧全集抢先看（占位）<br>
+        • 无广告沉浸式观剧（占位）<br>
+        • VIP 专属剧场内容（占位）<br>
+        • 每日高速播放额度（占位）
+      </div>
+
+      <!-- 主按钮：去登录页 19.登录页.html -->
+      <button class="btn-main" onclick="location.href='19.登录页.html'">
+        立即登录 / 注册（占位）
+      </button>
+
+      <!-- 次按钮：先去首页逛逛 -->
+      <button class="btn-sub" onclick="location.href='../index.html'">
+        我先看看其它内容（占位）
+      </button>
+
+      <div class="bottom">
+        * 登录后将自动跳回 VIP 页面（占位）
+      </div>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>

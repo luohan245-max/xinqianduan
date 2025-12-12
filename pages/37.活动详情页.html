@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>活动详情 · 模板（占位）</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <style>
+    :root{
+      --bg:#050506;
+      --card:#111218;
+      --card-soft:#101019;
+      --line:#262a3f;
+      --gold:#f5d27a;
+      --pink:#ff7eb3;
+      --text-main:#ffffff;
+      --text-sub:#9ea1b6;
+      --radius-lg:18px;
+      --radius-md:14px;
+      --radius-sm:999px;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html,body{
+      width:100%;
+      height:100%;
+      background:var(--bg);
+      color:var(--text-main);
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",sans-serif;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    .app{
+      max-width:430px;
+      margin:0 auto;
+      padding-bottom:20px;
+      min-height:100vh;
+    }
+
+    /* 顶部栏 */
+    .page-header{
+      height:56px;
+      padding:0 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      background:linear-gradient(to bottom,rgba(0,0,0,.9),rgba(0,0,0,0));
+      position:sticky;
+      top:0;
+      z-index:10;
+    }
+    .header-left{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .back-btn{
+      width:32px;
+      height:32px;
+      border-radius:var(--radius-sm);
+      border:1px solid rgba(245,210,122,.4);
+      background:rgba(0,0,0,.35);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--gold);
+      font-size:18px;
+      flex-shrink:0;
+    }
+    .header-title{
+      font-size:16px;
+      font-weight:600;
+    }
+    .header-right{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:11px;
+      color:var(--text-sub);
+    }
+    .icon-btn{
+      width:30px;
+      height:30px;
+      border-radius:var(--radius-sm);
+      border:1px solid rgba(148,163,184,.8);
+      background:#0c0d12;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:16px;
+      color:var(--text-sub);
+    }
+
+    /* 顶部 Banner + 标题区 */
+    .banner-wrap{
+      margin:0 14px;
+      border-radius:var(--radius-lg);
+      overflow:hidden;
+      border:1px solid rgba(245,210,122,.25);
+      background:radial-gradient(circle at 20% 0%,rgba(255,255,255,.18),rgba(0,0,0,1));
+      margin-top:4px;
+    }
+    .banner-img-ph{
+      width:100%;
+      height:160px;
+      background:linear-gradient(135deg,#15151f,#080812);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:12px;
+      color:var(--text-sub);
+    }
+    .banner-footer{
+      padding:8px 10px 10px;
+      background:rgba(5,6,10,.92);
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .activity-title{
+      font-size:17px;
+      font-weight:600;
+    }
+    .activity-sub{
+      font-size:12px;
+      color:var(--text-sub);
+    }
+    .activity-tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      font-size:10px;
+    }
+    .act-tag{
+      padding:3px 8px;
+      border-radius:var(--radius-sm);
+      border:1px solid rgba(245,210,122,.5);
+      color:var(--gold);
+      background:#050507;
+    }
+    .act-tag.status{
+      border-color:rgba(52,211,153,.8);
+      color:#4ade80;
+    }
+    .act-tag.soon{
+      border-color:rgba(251,191,36,.85);
+      color:#fbbf24;
+    }
+    .act-tag.ended{
+      border-color:rgba(148,163,184,.9);
+      color:#e5e7eb;
+    }
+
+    /* 信息卡片：时间 / 条件 / 奖励概览 */
+    .card{
+      margin:10px 14px;
+      padding:10px 14px;
+      border-radius:var(--radius-lg);
+      background:var(--card);
+      border:1px solid rgba(245,210,122,.12);
+    }
+    .card-title-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:6px;
+    }
+    .card-title{
+      font-size:14px;
+      font-weight:500;
+    }
+    .card-sub{
+      font-size:12px;
+      color:var(--text-sub);
+    }
+
+    .info-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:8px 12px;
+      font-size:12px;
+      margin-top:4px;
+    }
+    .info-item{
+      padding:8px 10px;
+      border-radius:var(--radius-md);
+      background:var(--card-soft);
+      border:1px solid rgba(245,210,122,.18);
+    }
+    .info-label{
+      font-size:11px;
+      color:var(--text-sub);
+      margin-bottom:2px;
+    }
+    .info-value{
+      font-size:13px;
+      font-weight:500;
+    }
+    .info-value.highlight{
+      color:var(--gold);
+    }
+
+    .info-row{
+      margin-top:6px;
+      font-size:12px;
+      color:var(--text-sub);
+      line-height:1.6;
+    }
+    .info-row span{
+      color:var(--gold);
+    }
+
+    /* 步骤卡片 */
+    .step-list{
+      font-size:12px;
+      color:var(--text-sub);
+      margin-top:4px;
+    }
+    .step-item{
+      display:flex;
+      gap:8px;
+      margin-top:6px;
+    }
+    .step-index{
+      width:18px;
+      height:18px;
+      border-radius:999px;
+      border:1px solid rgba(245,210,122,.7);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:11px;
+      color:var(--gold);
+      flex-shrink:0;
+    }
+    .step-main{
+      flex:1;
+      min-width:0;
+    }
+    .step-title{
+      font-size:12px;
+      color:var(--text-main);
+    }
+    .step-desc{
+      font-size:11px;
+      color:var(--text-sub);
+    }
+
+    /* 奖励列表 */
+    .reward-card{
+      margin-top:6px;
+      padding:8px 10px;
+      border-radius:var(--radius-md);
+      background:var(--card-soft);
+      border:1px solid rgba(38,42,63,.9);
+      font-size:12px;
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+    }
+    .reward-left{
+      flex:1;
+      min-width:0;
+    }
+    .reward-title{
+      font-size:13px;
+      font-weight:500;
+      margin-bottom:2px;
+    }
+    .reward-desc{
+      font-size:11px;
+      color:var(--text-sub);
+    }
+    .reward-right{
+      text-align:right;
+      flex-shrink:0;
+      font-size:11px;
+    }
+    .reward-amount{
+      color:var(--gold);
+      font-weight:600;
+      margin-bottom:2px;
+    }
+    .reward-tag{
+      padding:2px 6px;
+      border-radius:var(--radius-sm);
+      border:1px solid rgba(245,210,122,.45);
+      display:inline-block;
+    }
+
+    /* 进度区 */
+    .progress-block{
+      margin-top:4px;
+      font-size:12px;
+      color:var(--text-sub);
+    }
+    .progress-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:4px;
+    }
+    .progress-main{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+    }
+    .progress-main span{
+      color:var(--gold);
+    }
+    .progress-percent{
+      font-size:11px;
+    }
+    .progress-bar-wrap{
+      width:100%;
+      height:8px;
+      border-radius:999px;
+      background:#05060b;
+      border:1px solid rgba(38,42,63,.9);
+      overflow:hidden;
+    }
+    .progress-bar{
+      height:100%;
+      border-radius:999px;
+      background:linear-gradient(135deg,var(--gold),var(--pink));
+      width:40%; /* 示例占位 */
+    }
+
+    /* 行动按钮 */
+    .action-card{
+      margin:10px 14px 0;
+      padding:10px 14px;
+      border-radius:var(--radius-lg);
+      background:var(--card);
+      border:1px solid rgba(245,210,122,.18);
+      font-size:12px;
+    }
+    .action-desc{
+      color:var(--text-sub);
+      margin-bottom:8px;
+    }
+    .action-desc span{
+      color:var(--gold);
+    }
+    .action-row{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .btn-primary{
+      flex:1;
+      min-width:0;
+      padding:9px 10px;
+      border-radius:var(--radius-sm);
+      background:linear-gradient(135deg,var(--gold),var(--pink));
+      border:none;
+      font-size:13px;
+      color:#050506;
+      text-align:center;
+      white-space:nowrap;
+    }
+    .btn-outline{
+      flex:1;
+      min-width:0;
+      padding:9px 10px;
+      border-radius:var(--radius-sm);
+      background:#0c0d12;
+      border:1px solid rgba(245,210,122,.5);
+      font-size:13px;
+      color:var(--gold);
+      text-align:center;
+      white-space:nowrap;
+    }
+
+    /* 活动规则长文 */
+    .rule-card{
+      margin:10px 14px 0;
+      padding:10px 14px 12px;
+      border-radius:var(--radius-lg);
+      background:#0c0d12;
+      border:1px solid rgba(38,42,63,.9);
+      font-size:12px;
+      color:var(--text-sub);
+      line-height:1.7;
+    }
+    .rule-title{
+      font-size:13px;
+      font-weight:500;
+      margin-bottom:4px;
+      color:var(--text-main);
+    }
+    .rule-card p + p{
+      margin-top:4px;
+    }
+    .rule-list{
+      margin-top:4px;
+      padding-left:1.1em;
+    }
+    .rule-list li{
+      margin:2px 0;
+    }
+
+    /* 底部提示 */
+    .tip-block{
+      margin:8px 14px 0;
+      padding:10px 12px;
+      border-radius:var(--radius-lg);
+      border:1px dashed rgba(148,163,184,.85);
+      background:rgba(15,23,42,.96);
+      font-size:11px;
+      color:var(--text-sub);
+    }
+    .tip-block span{
+      color:var(--gold);
+    }
+
+    /* 交互兜底：可点击手感（不影响移动端视觉） */
+    .back-btn,
+    .icon-btn,
+    .btn-primary,
+    .btn-outline {
+      cursor: pointer;
+    }
+
+    /* 全局兜底：防止未来加 a 出现蓝色/下划线 */
+    a {
+      text-decoration: none !important;
+      color: inherit !important;
+    }
+
+    .info-row span {cursor: pointer;}
+
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- 顶部栏 -->
+  <header class="page-header">
+    <div class="header-left">
+      <button class="back-btn" onclick="history.back()">‹</button>
+      <div class="header-title">活动详情（占位）</div>
+    </div>
+    <div class="header-right">
+      <button class="icon-btn" onclick="location.href='46.活动中心页.html'">⟳</button>
+      <button class="icon-btn" onclick="location.href='46.活动中心页.html'">⤴</button>
+    </div>
+  </header>
+
+  <!-- Banner + 活动标题 -->
+  <section class="banner-wrap">
+    <div class="banner-img-ph">
+      活动主视觉 Banner 占位（示意图）
+    </div>
+    <div class="banner-footer">
+      <div class="activity-title">示例活动名称占位 · 连续看剧领奖励</div>
+      <div class="activity-sub">
+        简短一句话说明：在活动期间内完成指定看剧任务，即可领取金币 / 徽章 / DP 奖励（占位）。
+      </div>
+      <div class="activity-tags">
+        <div class="act-tag status">进行中（占位）</div>
+        <div class="act-tag">日常活动（占位）</div>
+        <div class="act-tag">参与门槛低（占位）</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 一、时间 / 条件 / 奖励概览 -->
+  <section class="card">
+    <div class="card-title-row">
+      <div class="card-title">关键信息（占位）</div>
+      <div class="card-sub">活动时间、参与条件与奖励概览（占位）</div>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-item">
+        <div class="info-label">活动时间（占位）</div>
+        <div class="info-value highlight">2025-01-10 ~ 2025-01-20</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">当前状态（占位）</div>
+        <div class="info-value">进行中 / 即将开始 / 已结束（占位）</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">参与条件（占位）</div>
+        <div class="info-value">所有注册用户 / VIP 专属 / 徽章持有者（占位）</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">奖励类型（占位）</div>
+        <div class="info-value">金币 + 徽章 + DP（占位）</div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      举例说明占位：例如本活动面向<span>所有已完成手机号绑定的用户</span>开放，
+      每日完成指定看剧任务即可解锁<span>基础金币奖励</span>与<span>额外徽章 / DP 奖励</span>，
+      具体数值以下方「奖励说明」为准（占位）。
+    </div>
+  </section>
+
+  <!-- 二、参与步骤 -->
+  <section class="card">
+    <div class="card-title-row">
+      <div class="card-title">参与步骤（占位）</div>
+      <div class="card-sub">按照步骤完成任务即可获得奖励（占位）</div>
+    </div>
+
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-index">1</div>
+        <div class="step-main">
+          <div class="step-title">完成当日看剧任务（占位）</div>
+          <div class="step-desc">
+            示例：在活动期间内，每日观看指定短剧累计满 X 集或观看时长满 Y 分钟，即视为完成当日任务（占位）。
+          </div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-index">2</div>
+        <div class="step-main">
+          <div class="step-title">前往<span onclick="location.href='3.福利中心.html'">福利中心</span> /<span onclick="location.href='46.活动中心页.html'">活动页</span>领取（占位）
+          </div>
+          <div class="step-desc">
+            当日任务达成后，可在本活动页或福利中心对应入口点击「领取奖励」，系统会自动发放至你的钱包（占位）。
+          </div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-index">3</div>
+        <div class="step-main">
+          <div class="step-title">在钱包 / 流水明细中查看记录（占位）</div>
+          <div class="step-desc">
+            领取成功后，你可以在<span onclick="location.href='7.钱包 & 收益总览二级页.html'">钱包 & 收益总览</span>以及<span onclick="location.href='33.资产流水明细模板.html'">资产流水明细</span>中查看对应记录与金额（占位）。
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 三、奖励说明 -->
+  <section class="card">
+    <div class="card-title-row">
+      <div class="card-title">奖励说明（占位）</div>
+      <div class="card-sub">不同完成度对应不同奖励档位（占位）</div>
+    </div>
+
+    <div class="reward-card">
+      <div class="reward-left">
+        <div class="reward-title">基础档 · 完成当日看剧任务（占位）</div>
+        <div class="reward-desc">
+          示例：当日观看累计 ≥ X 集或观看时长 ≥ Y 分钟，即可获得基础金币奖励，用于平台内消费与兑换（占位）。
+        </div>
+      </div>
+      <div class="reward-right">
+        <div class="reward-amount">奖励：+XX 金币（占位）</div>
+        <div class="reward-tag">每日可领 1 次（占位）</div>
+      </div>
+    </div>
+
+    <div class="reward-card">
+      <div class="reward-left">
+        <div class="reward-title">进阶档 · 连续 N 日完成任务（占位）</div>
+        <div class="reward-desc">
+          示例：连续 N 日完成当日看剧任务，可额外获得指定国家徽章 X 枚，用于参与徽章收益与后续活动（占位）。
+        </div>
+      </div>
+      <div class="reward-right">
+        <div class="reward-amount">奖励：徽章 X 枚（占位）</div>
+        <div class="reward-tag">活动期内限 1 次（占位）</div>
+      </div>
+    </div>
+
+    <div class="reward-card">
+      <div class="reward-left">
+        <div class="reward-title">高阶档 · 活动总任务完成（占位）</div>
+        <div class="reward-desc">
+          示例：在整个活动周期内累计完成 M 次每日任务，即可额外获得 DP 奖励，用于平台内部资产使用（占位）。
+        </div>
+      </div>
+      <div class="reward-right">
+        <div class="reward-amount">奖励：+YY.YY DP（占位）</div>
+        <div class="reward-tag">达成后自动发放（占位）</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 四、我的进度 -->
+  <section class="card">
+    <div class="card-title-row">
+      <div class="card-title">我的进度（占位）</div>
+      <div class="card-sub">以下数据为 UI 示例占位，后续接真实接口（占位）</div>
+    </div>
+
+    <div class="progress-block">
+      <div class="progress-row">
+        <div class="progress-main">
+          <div>已完成当日任务天数：<span>3 / 10 天（占位）</span></div>
+          <div>活动期内累计完成任务：<span>5 次（占位）</span></div>
+        </div>
+        <div class="progress-percent">
+          进度示意：30%（占位）
+        </div>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar"></div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      提示示意占位：当你完成更多天数 / 次数后，此处的进度条会更新，达到某些阶段时还可以解锁额外奖励或隐藏档位奖励（占位）。
+    </div>
+  </section>
+
+  <!-- 五、行动按钮 -->
+  <section class="action-card">
+    <div class="action-desc">
+      建议引导文案占位：立即前往<span onclick="location.href='2.推荐页.html'">推荐页</span> /<span onclick="location.href='6.短剧详情页.html'">指定短剧</span> /<span onclick="location.href='3.福利中心.html'">福利中心</span>完成活动任务，完成后记得返回本页或福利中心领取奖励。
+    </div>
+    <div class="action-row">
+      <button class="btn-primary" onclick="location.href='2.推荐页.html'">去看指定短剧 / 完成任务（占位）</button>
+      <button class="btn-outline" onclick="location.href='33.资产流水明细模板.html'">查看我的奖励记录（占位）</button>
+    </div>
+  </section>
+
+  <!-- 六、活动规则长文（精简版） -->
+  <section class="rule-card">
+    <div class="rule-title">活动规则说明（占位）</div>
+    <p>
+      以下为 UI 结构示意，实际规则请根据你的运营方案替换：
+    </p>
+    <ul class="rule-list">
+      <li>1）活动时间、参与资格、奖励发放时间等以最终公告为准（占位）。</li>
+      <li>2）如出现异常行为（例如作弊刷量、恶意多账号操作等），平台有权暂停或取消活动资格（占位）。</li>
+      <li>3）奖励结算逻辑（包括金币、徽章与 DP）以后台系统计算为准，本页面展示仅为参考示意（占位）。</li>
+      <li>4）活动期间如遇系统维护、不可抗力等情况，平台将视情况调整或延长活动时间，并另行公告（占位）。</li>
+    </ul>
+  </section>
+
+  <!-- 底部提示 -->
+  <section class="tip-block">
+    提示：本页面为<span>活动详情 / H5 活动模板</span>的 UI 骨架，适用于「看剧任务」「签到连击」
+    「拉新活动」「徽章专场」等多种活动形式。你可以保留整体结构，仅替换
+    Banner、时间、步骤说明与奖励档位文案，即可快速生成多场活动页面（占位）。
+  </section>
+
+</div>
+</body>
+</html>

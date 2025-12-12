@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>VIP 开通 & 说明 · 占位</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <style>
+    :root {
+      --bg: #050506;
+      --bg-card: #111427;
+      --bg-card-soft: #151725;
+      --border-subtle: #262a3f;
+      --gold: #f5d27a;
+      --pink: #ff7eb3;
+      --text-main: #f7f7fb;
+      --text-sub: #9ea1b6;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 999px;
+      --shadow-soft: 0 18px 40px rgba(0,0,0,0.55);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      min-height: 100vh;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      margin: 0 auto;
+      padding-bottom: 16px;
+      position: relative;
+    }
+
+    @media (min-width: 768px) {
+      .app {
+        max-width: 520px;
+        margin: 16px auto;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: var(--shadow-soft);
+      }
+    }
+
+    .page {
+      padding: 12px 16px 24px;
+    }
+
+    /* 顶部栏 */
+    .page-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      padding: 6px 0 8px;
+      background: linear-gradient(to bottom, rgba(5,5,6,0.96), rgba(5,5,6,0.85), rgba(5,5,6,0));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .header-left,
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .header-center {
+      flex: 1;
+      min-width: 0;
+      text-align: center;
+    }
+
+    .circle-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      border: 1px solid rgba(245,210,122,0.5);
+      background:
+        radial-gradient(circle at top, rgba(255,126,179,0.3), transparent 60%),
+        linear-gradient(145deg, #111320, #070811);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+      font-size: 16px;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.9);
+      cursor: pointer;
+    }
+
+    .page-title {
+      font-size: 15px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* 通用 */
+    .section {
+      margin-top: 8px;
+      margin-bottom: 10px;
+    }
+
+    .section-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .section-sub {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .card {
+      border-radius: var(--radius-lg);
+      padding: 12px;
+      background:
+        radial-gradient(circle at top left, rgba(255,126,179,0.22), transparent 60%),
+        radial-gradient(circle at bottom right, rgba(245,210,122,0.18), transparent 60%),
+        linear-gradient(160deg, #191d30, #05060c);
+      border: 1px solid rgba(245,210,122,0.35);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.9);
+      margin-bottom: 12px;
+    }
+
+    .card-soft {
+      border-radius: var(--radius-lg);
+      padding: 12px;
+      background: linear-gradient(160deg, #141726, #070811);
+      border: 1px solid rgba(38,42,63,0.95);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.85);
+      margin-bottom: 10px;
+    }
+
+    .tag-pill {
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(245,210,122,0.4);
+      background: rgba(10,10,18,0.96);
+      font-size: 11px;
+      color: var(--text-sub);
+      white-space: nowrap;
+    }
+
+    .tag-pill.highlight {
+      background: linear-gradient(135deg, var(--gold), var(--pink));
+      color: #050506;
+      border: none;
+      box-shadow: 0 0 12px rgba(255,126,179,0.75);
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .meta-dot::before {
+      content: "· ";
+    }
+
+    .btn-primary-wide {
+      width: 100%;
+      padding: 11px 14px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, var(--gold), var(--pink));
+      color: #050506;
+      font-size: 15px;
+      font-weight: 600;
+      box-shadow: 0 0 18px rgba(255,126,179,0.8);
+      text-align: center;
+    }
+
+    .btn-outline {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(245,210,122,0.6);
+      background: rgba(10,10,18,0.96);
+      color: var(--gold);
+      font-size: 11px;
+    }
+
+    /* 图片占位框 */
+    .ph-img {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      border: 1px dashed rgba(245,210,122,0.45);
+      background:
+        radial-gradient(circle at top, rgba(255,126,179,0.25), transparent 60%),
+        linear-gradient(145deg, #151827, #050506);
+      flex-shrink: 0;
+    }
+
+    .ph-img-circle {
+      border-radius: 999px;
+    }
+
+    /* 一、当前 VIP 状态卡片 */
+    .vip-status-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .vip-level-title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .vip-level-tag-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .vip-status-middle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 6px;
+      margin-bottom: 8px;
+      font-size: 12px;
+      color: var(--text-sub);
+    }
+
+    .vip-status-middle strong {
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    .vip-status-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-sub);
+      margin-top: 4px;
+    }
+
+    /* 二、VIP 套餐选择 */
+    .plan-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .plan-item {
+      display: flex;
+      gap: 10px;
+      padding: 10px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(160deg, #141726, #070811);
+      border: 1px solid rgba(38,42,63,0.95);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.85);
+      align-items: center;
+    }
+
+    .plan-item.is-recommend {
+      border-color: rgba(245,210,122,0.8);
+      box-shadow: 0 0 20px rgba(255,126,179,0.6);
+    }
+
+    .plan-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .plan-title-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .plan-title {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .plan-sub {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .plan-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .plan-price {
+      font-size: 16px;
+      color: var(--gold);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .plan-radio {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      border: 1px solid rgba(245,210,122,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .plan-radio-inner {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: transparent;
+    }
+
+    .plan-item.is-recommend .plan-radio-inner {
+      background: linear-gradient(135deg, var(--gold), var(--pink));
+      box-shadow: 0 0 8px rgba(255,126,179,0.8);
+    }
+
+    /* 三、VIP 权益列表 */
+    .benefit-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .benefit-item {
+      border-radius: 14px;
+      padding: 8px;
+      background: linear-gradient(150deg, #151827, #070811);
+      border: 1px solid rgba(38,42,63,0.9);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.85);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 11px;
+    }
+
+    .benefit-head {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .benefit-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      border: 1px dashed rgba(245,210,122,0.6);
+      background:
+        radial-gradient(circle at top, rgba(255,126,179,0.25), transparent 60%),
+        linear-gradient(145deg, #151827, #050506);
+      flex-shrink: 0;
+    }
+
+    .benefit-title {
+      font-size: 12px;
+    }
+
+    .benefit-desc {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    /* 四、支付方式与说明 */
+    .pay-method-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+      margin-bottom: 8px;
+    }
+
+    .pay-pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(245,210,122,0.45);
+      background: rgba(10,10,18,0.96);
+      font-size: 11px;
+      color: var(--text-sub);
+      white-space: nowrap;
+    }
+
+    .pay-pill.is-active {
+      background: linear-gradient(135deg, var(--gold), var(--pink));
+      color: #050506;
+      border: none;
+      box-shadow: 0 0 12px rgba(255,126,179,0.7);
+    }
+
+    .agree-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-sub);
+      margin-top: 4px;
+      margin-bottom: 8px;
+    }
+
+    .checkbox-box {
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      border: 1px solid rgba(245,210,122,0.6);
+      background: rgba(10,10,18,0.96);
+      flex-shrink: 0;
+    }
+
+    .vip-notice-list {
+      margin-top: 6px;
+      font-size: 10px;
+      color: var(--text-sub);
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .btn-outline { cursor: pointer; }
+    .agree-row span { cursor: pointer; }
+    .vip-notice-list span { cursor: pointer; }
+
+  </style>
+</head>
+<body>
+  <div class="app">
+    <main class="page" id="page-vip">
+      <!-- 顶部栏 -->
+      <header class="page-header">
+        <div class="header-left">
+          <div class="circle-btn" onclick="history.back()" aria-label="返回">‹</div>
+        </div>
+        <div class="header-center">
+          <div class="page-title">VIP 开通 & 说明</div>
+        </div>
+        <div class="header-right">
+          <div class="circle-btn" onclick="location.href='26.客服页-帮助中心页.html'" aria-label="帮助">?</div>
+        </div>
+      </header>
+
+      <!-- 一、当前 VIP 状态 -->
+      <section class="section card">
+        <div class="vip-status-top">
+          <div>
+            <div class="vip-level-title">当前身份：普通用户占位</div>
+            <div class="vip-level-tag-row">
+              <span class="tag-pill highlight">开通后升级为 VIP 占位</span>
+              <span class="tag-pill">支持多档套餐占位</span>
+            </div>
+          </div>
+          <div class="ph-img ph-img-circle"></div>
+        </div>
+
+        <div class="vip-status-middle">
+          <div>到期时间占位：--/--/--</div>
+          <div>剩余：<strong>0 天</strong> 占位</div>
+        </div>
+
+        <button class="btn-primary-wide" style="margin-top:4px;" onclick="location.href='43.支付结果页.html'">立即开通 VIP（占位）</button>
+
+        <div class="vip-status-bottom">
+          <span>累计开通天数占位：0 天 · 累计消费占位：0 DP</span>
+          <span class="btn-outline" onclick="location.href='39.用户协议 : 隐私政策 : 风险声明.html'">查看 VIP 规则占位</span>
+        </div>
+      </section>
+
+      <!-- 二、VIP 套餐选择 -->
+      <section class="section card-soft">
+        <div class="section-title-row">
+          <div class="section-title">VIP 套餐选择</div>
+          <div class="section-sub">这里只是布局和占位，真实价格和规则你后续替换</div>
+        </div>
+
+        <div class="plan-list">
+          <!-- 月卡 -->
+          <article class="plan-item">
+            <div class="ph-img"></div>
+            <div class="plan-main">
+              <div class="plan-title-row">
+                <div class="plan-title">月卡占位</div>
+                <span class="tag-pill">适合短期体验占位</span>
+              </div>
+              <div class="plan-sub">有效期占位：30 天 · 全站 VIP 剧集可看占位</div>
+              <div class="plan-meta-row">
+                <span>每日折算占位：约 XX 金币 / 天</span>
+              </div>
+            </div>
+            <div class="plan-price">XX DP</div>
+            <div class="plan-radio">
+              <div class="plan-radio-inner"></div>
+            </div>
+          </article>
+
+          <!-- 季卡（推荐） -->
+          <article class="plan-item is-recommend">
+            <div class="ph-img"></div>
+            <div class="plan-main">
+              <div class="plan-title-row">
+                <div class="plan-title">季卡占位</div>
+                <span class="tag-pill highlight">推荐占位</span>
+              </div>
+              <div class="plan-sub">有效期占位：90 天 · 价格更划算占位</div>
+              <div class="plan-meta-row">
+                <span>原价占位：XXX DP</span>
+                <span class="meta-dot">折扣占位：XX%</span>
+              </div>
+            </div>
+            <div class="plan-price">XXX DP</div>
+            <div class="plan-radio">
+              <div class="plan-radio-inner"></div>
+            </div>
+          </article>
+
+          <!-- 年卡（最划算） -->
+          <article class="plan-item">
+            <div class="ph-img"></div>
+            <div class="plan-main">
+              <div class="plan-title-row">
+                <div class="plan-title">年卡占位</div>
+                <span class="tag-pill">长期追剧用户占位</span>
+              </div>
+              <div class="plan-sub">有效期占位：365 天 · 含专属权益占位</div>
+              <div class="plan-meta-row">
+                <span>平均每天占位：约 XX DP / 天</span>
+              </div>
+            </div>
+            <div class="plan-price">XXXX DP</div>
+            <div class="plan-radio">
+              <div class="plan-radio-inner"></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 三、VIP 权益说明 -->
+      <section class="section card-soft">
+        <div class="section-title-row">
+          <div class="section-title">VIP 权益说明</div>
+          <div class="section-sub">每一项都是占位，你后续替换为真实权益文案即可</div>
+        </div>
+
+        <div class="benefit-grid">
+          <article class="benefit-item">
+            <div class="benefit-head">
+              <div class="benefit-icon"></div>
+              <div class="benefit-title">免广告观看占位</div>
+            </div>
+            <div class="benefit-desc">
+              播放短剧时默认不插入广告的说明占位，可根据真实策略调整。
+            </div>
+          </article>
+
+          <article class="benefit-item">
+            <div class="benefit-head">
+              <div class="benefit-icon"></div>
+              <div class="benefit-title">VIP 专属剧场占位</div>
+            </div>
+            <div class="benefit-desc">
+              进入 VIP 专区后可优先观看的独家短剧或提前解锁剧集占位。
+            </div>
+          </article>
+
+          <article class="benefit-item">
+            <div class="benefit-head">
+              <div class="benefit-icon"></div>
+              <div class="benefit-title">专属头像 / 徽章占位</div>
+            </div>
+            <div class="benefit-desc">
+              在个人中心和评论区展示 VIP 身份的头像框 / 徽章说明占位。
+            </div>
+          </article>
+
+          <article class="benefit-item">
+            <div class="benefit-head">
+              <div class="benefit-icon"></div>
+              <div class="benefit-title">VIP 福利中心入口占位</div>
+            </div>
+            <div class="benefit-desc">
+              在福利中心解锁额外签到奖励、抽奖次数或专属任务的说明占位。
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 四、支付方式 & 说明 -->
+      <section class="section card-soft">
+        <div class="section-title-row">
+          <div class="section-title">支付方式 & 确认</div>
+          <div class="section-sub">这里只做占位结构，具体支付渠道由你接入</div>
+        </div>
+
+        <div class="pay-method-row">
+          <span class="pay-pill is-active">金币 / 钻石支付占位</span>
+          <span class="pay-pill">DP 支付占位</span>
+          <span class="pay-pill">第三方渠道占位</span>
+          <span class="pay-pill">其他支付方式占位</span>
+        </div>
+
+        <div class="agree-row">
+          <div class="checkbox-box"></div>
+          <span onclick="location.href='39.用户协议 : 隐私政策 : 风险声明.html'">我已阅读并同意《VIP 服务协议占位》与《自动续费说明占位》</span>
+        </div>
+
+        <button class="btn-primary-wide" onclick="location.href='43.支付结果页.html'">确认开通 VIP（占位）</button>
+
+        <div class="vip-notice-list">
+          <div>· 本页面所有数据为示意占位，具体价格与规则以实际配置为准。</div>
+          <div>· 若涉及自动续费，请在协议中清晰标注扣费周期与取消方式占位。</div>
+          <div>· 可在「<span onclick="location.href='13.我的订单.html'">我的订单</span>」中查看每一次开通 / 续费记录占位。</div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

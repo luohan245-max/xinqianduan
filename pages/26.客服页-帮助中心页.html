@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>客服中心 · 短剧平台（占位）</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
+<style>
+:root{
+  --bg:#050506;
+  --card:#111218;
+  --card-soft:#101019;
+  --line:#262a3f;
+  --gold:#f5d27a;
+  --pink:#ff7eb3;
+  --text-main:#ffffff;
+  --text-sub:#9ea1b6;
+  --radius:16px;
+}
+
+/* 全局 */
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{
+  width:100%;height:100%;
+  background:var(--bg);
+  color:var(--text-main);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",sans-serif;
+}
+.app{
+  max-width:430px;
+  margin:0 auto;
+  padding-bottom:18px;
+}
+
+/* 顶部栏 */
+.header-bar{
+  height:56px;
+  padding:0 14px;
+  display:flex;
+  align-items:center;
+  background:linear-gradient(to bottom,rgba(0,0,0,.85),rgba(0,0,0,0));
+}
+.icon-btn{
+  width:32px;height:32px;
+  border-radius:999px;
+  background:rgba(0,0,0,.35);
+  border:1px solid rgba(245,210,122,.4);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--gold);
+  font-size:16px;
+}
+.header-title{
+  margin-left:8px;
+  font-size:16px;
+  font-weight:600;
+}
+
+/* 顶部简介 */
+.top-intro{
+  margin:10px 14px 4px;
+}
+.top-title{
+  font-size:18px;
+  font-weight:600;
+  margin-bottom:4px;
+}
+.top-sub{
+  font-size:12px;
+  color:var(--text-sub);
+}
+
+/* 通用卡片 */
+.card{
+  margin:10px 14px;
+  padding:12px 14px;
+  background:var(--card);
+  border-radius:var(--radius);
+  border:1px solid rgba(245,210,122,.12);
+}
+.card-title-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:6px;
+}
+.card-title{
+  font-size:14px;
+  font-weight:500;
+}
+.card-sub{
+  font-size:12px;
+  color:var(--text-sub);
+}
+
+/* 联系方式 Grid */
+.contact-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+}
+.contact-item{
+  padding:10px 10px;
+  border-radius:14px;
+  background:var(--card-soft);
+  border:1px solid rgba(245,210,122,.18);
+}
+.contact-label{
+  font-size:11px;
+  color:var(--text-sub);
+  margin-bottom:2px;
+}
+.contact-main{
+  font-size:13px;
+  font-weight:500;
+  margin-bottom:4px;
+}
+.contact-extra{
+  font-size:11px;
+  color:var(--text-sub);
+}
+
+/* 一键按钮样式（占位） */
+.btn-row{
+  margin-top:8px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.small-btn{
+  flex:1;
+  min-width:120px;
+  padding:8px 10px;
+  border-radius:999px;
+  font-size:12px;
+  text-align:center;
+  background:#0c0d12;
+  border:1px solid rgba(245,210,122,.4);
+  color:var(--gold);
+}
+.small-btn.primary{
+  background:linear-gradient(135deg,var(--gold),var(--pink));
+  color:#050506;
+  border:none;
+}
+
+/* 问题分类 */
+.category-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+  margin-top:4px;
+}
+.category-item{
+  padding:8px 10px;
+  border-radius:14px;
+  background:#0c0d12;
+  border:1px solid rgba(245,210,122,.18);
+}
+.category-title{
+  font-size:13px;
+  margin-bottom:4px;
+}
+.category-desc{
+  font-size:11px;
+  color:var(--text-sub);
+}
+
+/* FAQ 列表 */
+.faq-item{
+  padding:8px 0;
+  border-bottom:1px solid rgba(38,42,63,.6);
+}
+.faq-q{
+  font-size:13px;
+  margin-bottom:2px;
+}
+.faq-a{
+  font-size:11px;
+  color:var(--text-sub);
+}
+
+/* 反馈表单占位 */
+.feedback-label{
+  font-size:12px;
+  color:var(--text-sub);
+  margin-bottom:4px;
+}
+.feedback-input{
+  width:100%;
+  padding:8px 10px;
+  border-radius:10px;
+  background:#0c0d12;
+  border:1px solid rgba(245,210,122,.3);
+  font-size:12px;
+  color:var(--text-main);
+  margin-bottom:8px;
+}
+.feedback-input::placeholder{
+  color:var(--text-sub);
+}
+.feedback-textarea{
+  width:100%;
+  min-height:72px;
+  padding:8px 10px;
+  border-radius:10px;
+  background:#0c0d12;
+  border:1px solid rgba(245,210,122,.3);
+  font-size:12px;
+  color:var(--text-main);
+  resize:none;
+}
+.feedback-textarea::placeholder{
+  color:var(--text-sub);
+}
+
+/* 分割线软 */
+.tip-small{
+  margin-top:6px;
+  font-size:11px;
+  color:var(--text-sub);
+}
+.tip-small span{
+  color:var(--gold);
+}
+
+.icon-btn,
+.contact-item,
+.small-btn,
+.category-item,
+.faq-a span,
+.tip-small span {
+  cursor: pointer;
+}
+
+</style>
+</head>
+
+<body>
+<div class="app">
+
+  <!-- 顶部栏 -->
+  <div class="header-bar">
+    <div class="icon-btn" onclick="history.back()" aria-label="返回">‹</div>
+    <div class="header-title">客服中心（占位）</div>
+  </div>
+
+  <!-- 顶部简介 -->
+  <div class="top-intro">
+    <div class="top-title">需要帮助？（占位）</div>
+    <div class="top-sub">
+      这里是平台的统一客服与帮助入口，你可以通过在线客服、社交账号或提交问题的方式获得支持（占位）。
+    </div>
+  </div>
+
+  <!-- 快速联系入口 -->
+  <div class="card">
+    <div class="card-title-row">
+      <div class="card-title">联系方式总览（占位）</div>
+      <div class="card-sub">以下账号均为示意占位（后续可替换为真实链接）</div>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-item" onclick="location.href='32.联系客服-在线聊天.html'">
+        <div class="contact-label">在线客服（占位）</div>
+        <div class="contact-main">站内在线聊天入口（占位）</div>
+        <div class="contact-extra">适合紧急问题 / 账号相关咨询（占位）。</div>
+      </div>
+      <div class="contact-item" onclick="history.back()">
+        <div class="contact-label">Telegram 客服（占位）</div>
+        <div class="contact-main">@example_support（占位）</div>
+        <div class="contact-extra">建议处理越南 / 海外用户问题（占位）。</div>
+      </div>
+      <div class="contact-item" onclick="history.back()">
+        <div class="contact-label">邮箱（占位）</div>
+        <div class="contact-main">support@example.com（占位）</div>
+        <div class="contact-extra">适合提交凭证 / 申诉类问题（占位）。</div>
+      </div>
+      <div class="contact-item" onclick="history.back()">
+        <div class="contact-label">Facebook / Fanpage（占位）</div>
+        <div class="contact-main">FB 官方主页链接（占位）</div>
+        <div class="contact-extra">适合公域用户咨询与公告查看（占位）。</div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <div class="small-btn primary" onclick="location.href='32.联系客服-在线聊天.html'">一键打开在线客服（占位）</div>
+      <div class="small-btn" onclick="history.back()">复制邮箱地址（占位）</div>
+    </div>
+  </div>
+
+  <!-- 问题分类 -->
+  <div class="card">
+    <div class="card-title-row">
+      <div class="card-title">常见问题分类（占位）</div>
+      <div class="card-sub">可在后续接入 FAQ 列表页或折叠项（占位）</div>
+    </div>
+
+    <div class="category-grid">
+      <div class="category-item" onclick="history.back()">
+        <div class="category-title">账号与登录（占位）</div>
+        <div class="category-desc">手机号登录、验证码收不到、账号安全等（占位）。</div>
+      </div>
+      <div class="category-item" onclick="history.back()">
+        <div class="category-title">充值与 VIP（占位）</div>
+        <div class="category-desc">支付失败、VIP 未到账、订单问题等（占位）。</div>
+      </div>
+      <div class="category-item" onclick="history.back()">
+        <div class="category-title">收益与提现（占位）</div>
+        <div class="category-desc">金币 / 钻石 / DP / 徽章收益与提现相关（占位）。</div>
+      </div>
+      <div class="category-item" onclick="history.back()">
+        <div class="category-title">短剧内容问题（占位）</div>
+        <div class="category-desc">无法播放、卡顿、进度不同步、字幕问题等（占位）。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ 简短示例 -->
+  <div class="card">
+    <div class="card-title-row">
+      <div class="card-title">常见问题示例（占位）</div>
+      <div class="card-sub">后续可接入完整 FAQ 数据（占位）</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Q：验证码收不到怎么办？（占位）</div>
+      <div class="faq-a">A：可尝试切换网络、检查短信拦截或点击重新发送；多次失败可联系<span onclick="location.href='32.联系客服-在线聊天.html'">在线客服</span>（占位）。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Q：VIP 已扣费但未生效？（占位）</div>
+      <div class="faq-a">A：建议先重启 App / 页面，仍未恢复请提供订单截图与 UID 联系客服处理（占位）。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Q：收益数据更新不及时？（占位）</div>
+      <div class="faq-a">A：部分任务为 T+1 结算，如超过 24 小时仍未更新可提交工单（占位）。</div>
+    </div>
+  </div>
+
+  <!-- 问题反馈占位 -->
+  <div class="card">
+    <div class="card-title-row">
+      <div class="card-title">提交问题 / 反馈（占位）</div>
+      <div class="card-sub">后续可作为站内工单入口（占位）</div>
+    </div>
+
+    <div class="feedback-label">问题类型（占位）</div>
+    <input class="feedback-input" placeholder="请选择：账号 / 支付 / 收益 / 其他（占位）">
+
+    <div class="feedback-label">问题简要描述（占位）</div>
+    <textarea class="feedback-textarea" placeholder="请简单说明你遇到的问题或建议（占位）。"></textarea>
+
+    <div class="tip-small">
+      提示：此处仅为表单占位，后续可与 <span onclick="history.back()">工单系统 / 邮件发送 / TG Bot</span> 打通，实现自动收集与跟踪（占位）。
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

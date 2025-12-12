@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>徽章收益计算器</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <style>
+    :root {
+      --bg: #050506;
+      --bg-card: #111427;
+      --bg-card-soft: #151725;
+      --border-subtle: #262a3f;
+      --gold: #f5d27a;
+      --pink: #ff7eb3;
+      --green: #22c55e;
+      --red: #f97373;
+      --text-main: #f7f7fb;
+      --text-sub: #9ea1b6;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 999px;
+      --shadow-soft: 0 18px 40px rgba(0,0,0,0.55);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      min-height: 100vh;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      margin: 0 auto;
+      padding-bottom: 16px;
+      position: relative;
+    }
+
+    @media (min-width: 768px) {
+      .app {
+        max-width: 520px;
+        margin: 16px auto;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: var(--shadow-soft);
+      }
+    }
+
+    .page {
+      padding: 12px 16px 24px;
+    }
+
+    /* 顶部栏 */
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 0 10px;
+    }
+
+    .back-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      border: 1px solid rgba(245,210,122,0.4);
+      background:
+        radial-gradient(circle at top, rgba(255,126,179,0.25), transparent 65%),
+        linear-gradient(145deg, rgba(9,10,18,0.96), rgba(12,13,22,0.96));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: var(--gold);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.7);
+      flex-shrink: 0;
+    }
+
+    .page-header-main {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .page-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .page-subtitle {
+      font-size: 12px;
+      color: var(--text-sub);
+    }
+
+    .section-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .section-sub {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    /* 通用卡片 */
+    .card {
+      border-radius: var(--radius-lg);
+      padding: 12px;
+      background:
+        radial-gradient(circle at top left, rgba(255,126,179,0.22), transparent 60%),
+        radial-gradient(circle at bottom right, rgba(245,210,122,0.18), transparent 60%),
+        linear-gradient(160deg, #191d30, #05060c);
+      border: 1px solid rgba(245,210,122,0.35);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.9);
+      margin-bottom: 14px;
+    }
+
+    .card-soft {
+      border-radius: var(--radius-lg);
+      padding: 12px;
+      background: linear-gradient(160deg, #141726, #070811);
+      border: 1px solid rgba(38,42,63,0.95);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.85);
+      margin-bottom: 12px;
+    }
+
+    /* 占位图片 */
+    .ph-img {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      border: 1px dashed rgba(245,210,122,0.4);
+      background:
+        radial-gradient(circle at top, rgba(255,126,179,0.18), transparent 60%),
+        linear-gradient(145deg, #141726, #070811);
+      flex-shrink: 0;
+    }
+
+    .ph-img-circle {
+      border-radius: 999px;
+    }
+
+    /* Pill 选项 */
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(245,210,122,0.4);
+      background: rgba(8,8,14,0.96);
+      font-size: 11px;
+      color: var(--text-sub);
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .pill.is-active {
+      background: linear-gradient(135deg, var(--gold), var(--pink));
+      color: #050506;
+      border: none;
+      box-shadow: 0 0 12px rgba(255,126,179,0.75);
+    }
+
+    /* 输入控件 */
+    .field-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 8px;
+    }
+
+    .field-label {
+      font-size: 11px;
+      color: var(--text-sub);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .field-label span {
+      max-width: 75%;
+    }
+
+    .field-input {
+      width: 100%;
+      padding: 7px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(245,210,122,0.45);
+      background: rgba(10,10,18,0.96);
+      color: var(--text-main);
+      font-size: 12px;
+      outline: none;
+    }
+
+    .field-input::placeholder {
+      color: #6b7280;
+    }
+
+    .field-row-inline {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .field-small {
+      padding: 6px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(38,42,63,0.95);
+      background: rgba(9,9,16,0.96);
+      color: var(--text-main);
+      font-size: 11px;
+      outline: none;
+      width: 100%;
+    }
+
+    .field-small::placeholder {
+      color: #6b7280;
+    }
+
+    /* 按钮 */
+    .btn-primary {
+      margin-top: 10px;
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, var(--gold), var(--pink));
+      color: #050506;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 0 18px rgba(255,126,179,0.75);
+      cursor: pointer;
+    }
+
+    .btn-primary:active {
+      transform: translateY(1px);
+      box-shadow: 0 0 10px rgba(255,126,179,0.6);
+    }
+
+    /* 徽章组合输入列表 */
+    .badge-input-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .badge-input-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px;
+      border-radius: 14px;
+      background: linear-gradient(150deg, #151827, #070811);
+      border: 1px solid rgba(38,42,63,0.9);
+      font-size: 11px;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.85);
+    }
+
+    .badge-input-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .badge-input-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge-name {
+      font-size: 12px;
+    }
+
+    .badge-tag {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    .badge-metrics {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 10px;
+      color: var(--text-sub);
+      flex-wrap: wrap;
+    }
+
+    .badge-metrics span {
+      white-space: nowrap;
+    }
+
+    .badge-input-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 2px;
+    }
+
+    .badge-input-actions .field-small {
+      flex: 1;
+    }
+
+    .badge-input-actions .field-small.badge-count {
+      text-align: center;
+    }
+
+    /* 结果总览 KPI */
+    .result-kpi-grid {
+      margin-top: 8px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .result-kpi-card {
+      padding: 8px;
+      border-radius: 12px;
+      background: rgba(9,9,16,0.96);
+      border: 1px solid rgba(38,42,63,0.9);
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .result-kpi-card.highlight {
+      background:
+        radial-gradient(circle at top, rgba(255,216,111,0.22), transparent 60%),
+        linear-gradient(160deg, #181c30, #05060c);
+      border-color: rgba(245,210,122,0.7);
+    }
+
+    .result-kpi-label {
+      color: var(--text-sub);
+    }
+
+    .result-kpi-value {
+      font-size: 14px;
+      color: var(--gold);
+    }
+
+    .result-kpi-tag {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    /* 结果拆分列表 */
+    .result-list {
+      margin-top: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .result-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding: 8px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(160deg, #141726, #070811);
+      border: 1px solid rgba(38,42,63,0.95);
+      font-size: 11px;
+    }
+
+    .result-main {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .result-title-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .result-name {
+      font-size: 12px;
+    }
+
+    .result-meta {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    .result-amount {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .result-dp {
+      font-size: 12px;
+      color: var(--gold);
+    }
+
+    .result-roi {
+      font-size: 10px;
+      color: var(--green);
+    }
+
+    .result-roi-long {
+      color: var(--red);
+    }
+
+    /* 风险提示 */
+    .hint-list {
+      margin-top: 6px;
+      font-size: 10px;
+      color: var(--text-sub);
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    /* 底部关联入口 */
+    .quick-grid {
+      margin-top: 4px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .quick-item {
+      padding: 8px;
+      border-radius: 14px;
+      background: linear-gradient(160deg, #151827, #070811);
+      border: 1px solid rgba(38,42,63,0.9);
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.85);
+    }
+
+    .quick-label {
+      font-size: 11px;
+    }
+
+    .quick-desc {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    .quick-tag {
+      margin-top: 2px;
+      font-size: 10px;
+      color: var(--gold);
+    }
+
+    /* 全局：禁用 a 标签默认下划线与默认蓝色，保持和父级一致 */
+    a {
+      text-decoration: none !important;
+      color: inherit !important;
+    }
+
+    /* quick-item 改为 a 后，保持原有布局表现 */
+    a.quick-item {
+      display: flex;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="app">
+    <main class="page" id="page-badge-calculator">
+      <!-- 顶部栏 -->
+      <header class="page-header">
+        <button class="back-btn" onclick="history.back()">‹</button>
+        <div class="page-header-main">
+          <div class="page-title">徽章收益计算器</div>
+          <div class="page-subtitle">
+            当前假设：每枚徽章在 1:1 无涨跌时，基础收益 = 0.01 DP / 天（无负数，仅数量）
+          </div>
+        </div>
+      </header>
+
+      <!-- 一、计算目标选择 -->
+      <section class="card">
+        <div class="section-title-row">
+          <div class="section-title">计算目标</div>
+          <div class="section-sub">这里只是切换视角，公式统一计算</div>
+        </div>
+
+        <div class="pill-row" id="goal-pills">
+          <span class="pill is-active" data-goal="total">按周期总收益占位</span>
+          <span class="pill" data-goal="daily">按日均收益占位</span>
+          <span class="pill" data-goal="payback">回本周期估算占位</span>
+          <span class="pill" data-goal="target">目标日收益需要多少徽章占位</span>
+        </div>
+
+        <div class="field-row">
+          <div class="field-label">
+            <span id="goal-desc-main">当前视角：按周期总收益预估（示意）</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 二、徽章组合输入（6 国徽章，仅数量） -->
+      <section class="card-soft">
+        <div class="section-title-row">
+          <div class="section-title">徽章组合输入</div>
+          <div class="section-sub">徽章只有「数量」，没有等级；当前全部按 1:1、0.01 DP / 天 / 枚 计算</div>
+        </div>
+
+        <div class="badge-input-list">
+          <!-- 越南 -->
+          <article class="badge-input-item">
+            <div class="ph-img ph-img-circle"></div>
+            <div class="badge-input-main">
+              <div class="badge-input-header">
+                <span class="badge-name">越南徽章 占位</span>
+                <span class="badge-tag">基础国 · 高频市场 占位</span>
+              </div>
+              <div class="badge-metrics">
+                <span>当前倍率：1.00x（按 1:1 计算占位）</span>
+                <span>24 小时涨跌：0.00%（暂不参与公式）</span>
+              </div>
+              <div class="badge-input-actions">
+                <input
+                  class="field-small badge-count"
+                  type="number"
+                  min="0"
+                  data-badge="vn"
+                  placeholder="数量 ≥ 0 占位"
+                  oninput="if(this.value<0)this.value=0"
+                />
+              </div>
+            </div>
+          </article>
+
+          <!-- 中国 -->
+          <article class="badge-input-item">
+            <div class="ph-img ph-img-circle"></div>
+            <div class="badge-input-main">
+              <div class="badge-input-header">
+                <span class="badge-name">中国徽章 占位</span>
+                <span class="badge-tag">高活跃区 占位</span>
+              </div>
+              <div class="badge-metrics">
+                <span>当前倍率：1.00x（按 1:1 计算占位）</span>
+                <span>24 小时涨跌：0.00%（暂不参与公式）</span>
+              </div>
+              <div class="badge-input-actions">
+                <input
+                  class="field-small badge-count"
+                  type="number"
+                  min="0"
+                  data-badge="cn"
+                  placeholder="数量 ≥ 0 占位"
+                  oninput="if(this.value<0)this.value=0"
+                />
+              </div>
+            </div>
+          </article>
+
+          <!-- 美国 -->
+          <article class="badge-input-item">
+            <div class="ph-img ph-img-circle"></div>
+            <div class="badge-input-main">
+              <div class="badge-input-header">
+                <span class="badge-name">美国徽章 占位</span>
+                <span class="badge-tag">成熟市场 占位</span>
+              </div>
+              <div class="badge-metrics">
+                <span>当前倍率：1.00x（按 1:1 计算占位）</span>
+                <span>24 小时涨跌：0.00%（暂不参与公式）</span>
+              </div>
+              <div class="badge-input-actions">
+                <input
+                  class="field-small badge-count"
+                  type="number"
+                  min="0"
+                  data-badge="us"
+                  placeholder="数量 ≥ 0 占位"
+                  oninput="if(this.value<0)this.value=0"
+                />
+              </div>
+            </div>
+          </article>
+
+          <!-- 日本 -->
+          <article class="badge-input-item">
+            <div class="ph-img ph-img-circle"></div>
+            <div class="badge-input-main">
+              <div class="badge-input-header">
+                <span class="badge-name">日本徽章 占位</span>
+                <span class="badge-tag">高付费区 占位</span>
+              </div>
+              <div class="badge-metrics">
+                <span>当前倍率：1.00x（按 1:1 计算占位）</span>
+                <span>24 小时涨跌：0.00%（暂不参与公式）</span>
+              </div>
+              <div class="badge-input-actions">
+                <input
+                  class="field-small badge-count"
+                  type="number"
+                  min="0"
+                  data-badge="jp"
+                  placeholder="数量 ≥ 0 占位"
+                  oninput="if(this.value<0)this.value=0"
+                />
+              </div>
+            </div>
+          </article>
+
+          <!-- 韩国 -->
+          <article class="badge-input-item">
+            <div class="ph-img ph-img-circle"></div>
+            <div class="badge-input-main">
+              <div class="badge-input-header">
+                <span class="badge-name">韩国徽章 占位</span>
+                <span class="badge-tag">区域市场 占位</span>
+              </div>
+              <div class="badge-metrics">
+                <span>当前倍率：1.00x（按 1:1 计算占位）</span>
+                <span>24 小时涨跌：0.00%（暂不参与公式）</span>
+              </div>
+              <div class="badge-input-actions">
+                <input
+                  class="field-small badge-count"
+                  type="number"
+                  min="0"
+                  data-badge="kr"
+                  placeholder="数量 ≥ 0 占位"
+                  oninput="if(this.value<0)this.value=0"
+                />
+              </div>
+            </div>
+          </article>
+
+          <!-- 英国 -->
+          <article class="badge-input-item">
+            <div class="ph-img ph-img-circle"></div>
+            <div class="badge-input-main">
+              <div class="badge-input-header">
+                <span class="badge-name">英国徽章 占位</span>
+                <span class="badge-tag">成熟区 徽章 占位</span>
+              </div>
+              <div class="badge-metrics">
+                <span>当前倍率：1.00x（按 1:1 计算占位）</span>
+                <span>24 小时涨跌：0.00%（暂不参与公式）</span>
+              </div>
+              <div class="badge-input-actions">
+                <input
+                  class="field-small badge-count"
+                  type="number"
+                  min="0"
+                  data-badge="uk"
+                  placeholder="数量 ≥ 0 占位"
+                  oninput="if(this.value<0)this.value=0"
+                />
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 三、周期 & 参数设置 -->
+      <section class="card-soft">
+        <div class="section-title-row">
+          <div class="section-title">周期 & 参数设置</div>
+          <div class="section-sub">
+            当前公式：周期总收益 = 徽章总数量 × 0.01 DP / 天 × 周期天数
+          </div>
+        </div>
+
+        <div class="pill-row" id="period-pills">
+          <span class="pill is-active" data-days="7">7 天占位</span>
+          <span class="pill" data-days="30">30 天占位</span>
+          <span class="pill" data-days="90">90 天占位</span>
+          <span class="pill" data-days="custom">自定义天数占位</span>
+        </div>
+
+        <div class="field-row">
+          <div class="field-label">
+            <span>自定义周期天数占位</span>
+            <span>（若填写，以此为准）</span>
+          </div>
+          <input
+            class="field-input"
+            id="custom-days"
+            type="number"
+            min="1"
+            placeholder="例如：30 天占位"
+            oninput="if(this.value<0)this.value=''"
+          />
+        </div>
+
+        <div class="field-row-inline">
+          <input
+            class="field-small"
+            id="total-cost"
+            type="number"
+            min="0"
+            placeholder="徽章总成本占位（用于回本周期/ROI）"
+            oninput="if(this.value<0)this.value=''"
+          />
+          <input
+            class="field-small"
+            id="target-daily-income"
+            type="number"
+            min="0"
+            placeholder="目标日收益 DP（用于反推需要徽章数）"
+            oninput="if(this.value<0)this.value=''"
+          />
+        </div>
+
+        <button class="btn-primary" id="btn-calc">计算收益（示意）</button>
+      </section>
+
+      <!-- 四、计算结果总览 -->
+      <section class="card">
+        <div class="section-title-row">
+          <div class="section-title">计算结果总览</div>
+          <div class="section-sub">
+            公式示意：<br/>
+            · 日均收益 = 徽章总数量 × 0.01 DP<br/>
+            · 周期总收益 = 日均收益 × 周期天数<br/>
+            · 回本周期 = 总成本 / 日均收益（若日均收益 &gt; 0）<br/>
+            · 简单 ROI = 周期总收益 / 总成本
+          </div>
+        </div>
+
+        <div class="result-kpi-grid">
+          <div class="result-kpi-card highlight">
+            <div class="result-kpi-label">预估周期总收益</div>
+            <div class="result-kpi-value" id="res-total-income">0.0000 DP 占位</div>
+            <div class="result-kpi-tag" id="res-total-income-desc">按照当前徽章组合 + 周期天数估算</div>
+          </div>
+          <div class="result-kpi-card">
+            <div class="result-kpi-label">预估日均收益</div>
+            <div class="result-kpi-value" id="res-daily-income">0.0000 DP / 天 占位</div>
+          </div>
+          <div class="result-kpi-card">
+            <div class="result-kpi-label">预估回本周期</div>
+            <div class="result-kpi-value" id="res-payback-days">-- 天</div>
+            <div class="result-kpi-tag">按「总成本 / 日均收益」估算（无成本则不计算）</div>
+          </div>
+          <div class="result-kpi-card">
+            <div class="result-kpi-label">预估简单 ROI</div>
+            <div class="result-kpi-value" id="res-roi">-- %</div>
+            <div class="result-kpi-tag">（周期内收益 / 总成本），仅作示意</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 五、按徽章拆分的收益 & 回本（示意，只按数量拆分） -->
+      <section class="card-soft">
+        <div class="section-title-row">
+          <div class="section-title">按徽章拆分的收益（示意）</div>
+          <div class="section-sub">
+            单种国家徽章收益：<br/>
+            · 日均收益 = 数量 × 0.01 DP<br/>
+            · 周期收益 = 日均收益 × 周期天数
+          </div>
+        </div>
+
+        <div class="result-list">
+          <article class="result-item">
+            <div class="result-main">
+              <div class="result-title-row">
+                <span class="result-name">越南徽章 占位</span>
+                <span class="badge-tag" id="res-vn-count">数量：0 枚 占位</span>
+              </div>
+              <div class="result-meta" id="res-vn-meta">
+                周期收益：0.0000 DP 占位 · 单枚日均收益：0.01 DP 占位
+              </div>
+            </div>
+            <div class="result-amount">
+              <span class="result-dp" id="res-vn-income">周期：0.0000 DP 占位</span>
+              <span class="result-roi">示意占位</span>
+            </div>
+          </article>
+
+          <article class="result-item">
+            <div class="result-main">
+              <div class="result-title-row">
+                <span class="result-name">中国徽章 占位</span>
+                <span class="badge-tag" id="res-cn-count">数量：0 枚 占位</span>
+              </div>
+              <div class="result-meta" id="res-cn-meta">
+                周期收益：0.0000 DP 占位 · 单枚日均收益：0.01 DP 占位
+              </div>
+            </div>
+            <div class="result-amount">
+              <span class="result-dp" id="res-cn-income">周期：0.0000 DP 占位</span>
+              <span class="result-roi">示意占位</span>
+            </div>
+          </article>
+
+          <article class="result-item">
+            <div class="result-main">
+              <div class="result-title-row">
+                <span class="result-name">美国徽章 占位</span>
+                <span class="badge-tag" id="res-us-count">数量：0 枚 占位</span>
+              </div>
+              <div class="result-meta" id="res-us-meta">
+                周期收益：0.0000 DP 占位 · 单枚日均收益：0.01 DP 占位
+              </div>
+            </div>
+            <div class="result-amount">
+              <span class="result-dp" id="res-us-income">周期：0.0000 DP 占位</span>
+              <span class="result-roi">示意占位</span>
+            </div>
+          </article>
+
+          <article class="result-item">
+            <div class="result-main">
+              <div class="result-title-row">
+                <span class="result-name">日本徽章 占位</span>
+                <span class="badge-tag" id="res-jp-count">数量：0 枚 占位</span>
+              </div>
+              <div class="result-meta" id="res-jp-meta">
+                周期收益：0.0000 DP 占位 · 单枚日均收益：0.01 DP 占位
+              </div>
+            </div>
+            <div class="result-amount">
+              <span class="result-dp" id="res-jp-income">周期：0.0000 DP 占位</span>
+              <span class="result-roi">示意占位</span>
+            </div>
+          </article>
+
+          <article class="result-item">
+            <div class="result-main">
+              <div class="result-title-row">
+                <span class="result-name">韩国徽章 占位</span>
+                <span class="badge-tag" id="res-kr-count">数量：0 枚 占位</span>
+              </div>
+              <div class="result-meta" id="res-kr-meta">
+                周期收益：0.0000 DP 占位 · 单枚日均收益：0.01 DP 占位
+              </div>
+            </div>
+            <div class="result-amount">
+              <span class="result-dp" id="res-kr-income">周期：0.0000 DP 占位</span>
+              <span class="result-roi">示意占位</span>
+            </div>
+          </article>
+
+          <article class="result-item">
+            <div class="result-main">
+              <div class="result-title-row">
+                <span class="result-name">英国徽章 占位</span>
+                <span class="badge-tag" id="res-uk-count">数量：0 枚 占位</span>
+              </div>
+              <div class="result-meta" id="res-uk-meta">
+                周期收益：0.0000 DP 占位 · 单枚日均收益：0.01 DP 占位
+              </div>
+            </div>
+            <div class="result-amount">
+              <span class="result-dp" id="res-uk-income">周期：0.0000 DP 占位</span>
+              <span class="result-roi">示意占位</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 六、风险与说明 -->
+      <section class="card-soft">
+        <div class="section-title-row">
+          <div class="section-title">计算说明 & 风险提示</div>
+          <div class="section-sub">实际接入 API 后，你可以替换这里的解释文案</div>
+        </div>
+        <div class="hint-list">
+          <div>· 当前页面仅使用固定公式：0.01 DP / 天 / 枚、无涨跌，仅作为结构与示意。</div>
+          <div>· 后续你接入徽章涨跌 API、真实收益规则后，可直接覆盖计算逻辑。</div>
+          <div>· 不构成任何收益承诺，仅为工具类页面占位。</div>
+        </div>
+      </section>
+
+      <!-- 七、关联页面入口 -->
+      <section class="card-soft">
+        <div class="section-title-row">
+          <div class="section-title">关联面板入口</div>
+          <div class="section-sub">与徽章行情 / DP / 团队 / 钱包联动</div>
+        </div>
+        <div class="quick-grid">
+          <a class="quick-item" href="8.徽章收益可视化.html">
+            <div class="quick-label">徽章收益可视化</div>
+            <div class="quick-desc">查看各国徽章实际收益结构 & 行情涨跌</div>
+            <div class="quick-tag">进入徽章可视化 占位 →</div>
+          </a>
+          <a class="quick-item" href="9.DP收益总览.html">
+            <div class="quick-label">DP 收益总览</div>
+            <div class="quick-desc">对比计算结果与真实 DP 收益</div>
+            <div class="quick-tag">进入 DP 页 占位 →</div>
+          </a>
+          <a class="quick-item" href="11.团队收益总览.html">
+            <div class="quick-label">团队收益总览</div>
+            <div class="quick-desc">结合团队发展一起看整体收益表现</div>
+            <div class="quick-tag">进入团队页 占位 →</div>
+          </a>
+          <a class="quick-item" href="7.钱包%20%26%20收益总览二级页.html">
+            <div class="quick-label">钱包 & 收益总览</div>
+            <div class="quick-desc">在全局资产视角中查看计算结果的影响</div>
+            <div class="quick-tag">返回钱包 占位 →</div>
+          </a>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // ====== 基础设定 ======
+    const BASE_DAILY_PER_BADGE = 0.01; // 每枚徽章在 1:1、无涨跌时的基础收益：0.01 DP / 天
+
+    function parseNonNegative(input) {
+      const v = parseFloat(input);
+      if (isNaN(v) || v < 0) return 0;
+      return v;
+    }
+
+    // ====== Pill 点击状态切换 ======
+    function setupPillGroup(groupId, onChange) {
+      const group = document.getElementById(groupId);
+      if (!group) return;
+      const pills = group.querySelectorAll('.pill');
+      pills.forEach(p => {
+        p.addEventListener('click', () => {
+          pills.forEach(x => x.classList.remove('is-active'));
+          p.classList.add('is-active');
+          if (onChange) onChange(p);
+        });
+      });
+    }
+
+    // 计算目标说明切换
+    setupPillGroup('goal-pills', (pill) => {
+      const goal = pill.getAttribute('data-goal');
+      const desc = document.getElementById('goal-desc-main');
+      if (!desc) return;
+      if (goal === 'total') {
+        desc.textContent = '当前视角：按周期总收益预估（示意）';
+      } else if (goal === 'daily') {
+        desc.textContent = '当前视角：按日均收益观察（示意）';
+      } else if (goal === 'payback') {
+        desc.textContent = '当前视角：关注回本周期（需要填写总成本）';
+      } else if (goal === 'target') {
+        desc.textContent = '当前视角：给定目标日收益，反推大约需要多少枚徽章';
+      }
+    });
+
+    // 周期 pill 切换
+    setupPillGroup('period-pills', (pill) => {
+      const daysAttr = pill.getAttribute('data-days');
+      const customInput = document.getElementById('custom-days');
+      if (!customInput) return;
+      if (daysAttr === 'custom') {
+        customInput.focus();
+      } else {
+        // 清空自定义，让 pill 的值生效
+        if (customInput.value) {
+          customInput.value = '';
+        }
+      }
+    });
+
+    // ====== 主计算函数 ======
+    function calculate() {
+      // 1. 读取各国徽章数量（全部非负）
+      const badges = ['vn', 'cn', 'us', 'jp', 'kr', 'uk'];
+      const counts = {};
+      let totalCount = 0;
+      badges.forEach(code => {
+        const el = document.querySelector('.badge-count[data-badge="' + code + '"]');
+        const v = el ? parseNonNegative(el.value) : 0;
+        counts[code] = v;
+        totalCount += v;
+      });
+
+      // 2. 确定周期天数
+      const customDaysInput = document.getElementById('custom-days');
+      let days = parseNonNegative(customDaysInput.value);
+      if (!days) {
+        // 没填自定义 → 用激活的 pill
+        const activePeriod = document.querySelector('#period-pills .pill.is-active');
+        if (activePeriod) {
+          const d = activePeriod.getAttribute('data-days');
+          if (d && d !== 'custom') {
+            days = parseNonNegative(d);
+          }
+        }
+      }
+      if (!days) {
+        days = 30; // 防止为 0，给一个兜底
+      }
+
+      // 3. 核心公式
+      // 日均收益 = 徽章总数量 × 0.01 DP
+      const dailyIncome = totalCount * BASE_DAILY_PER_BADGE;
+      // 周期总收益 = 日均收益 × 周期天数
+      const totalIncome = dailyIncome * days;
+
+      // 4. 回本周期 & ROI（依赖总成本）
+      const totalCostInput = document.getElementById('total-cost');
+      const totalCost = parseNonNegative(totalCostInput.value);
+      let paybackDaysText = '-- 天';
+      let roiText = '-- %';
+
+      if (totalCost > 0 && dailyIncome > 0) {
+        const paybackDays = totalCost / dailyIncome; // 天
+        paybackDaysText = paybackDays.toFixed(1) + ' 天';
+        const roi = totalIncome / totalCost * 100;
+        roiText = roi.toFixed(2) + ' %';
+      }
+
+      if (totalCost > 0 && dailyIncome === 0) {
+        paybackDaysText = '∞（日均收益为 0）';
+        roiText = '0.00 %';
+      }
+
+      // 5. 目标日收益 → 反推需要徽章数
+      const targetDailyInput = document.getElementById('target-daily-income');
+      const targetDaily = parseNonNegative(targetDailyInput.value);
+      let targetHint = '';
+      if (targetDaily > 0) {
+        const needBadges = targetDaily / BASE_DAILY_PER_BADGE;
+        targetHint = '目标日收益 ' + targetDaily.toFixed(4) +
+          ' DP，大约需要徽章总数 ≈ ' + needBadges.toFixed(1) + ' 枚（按 0.01 DP / 天 / 枚估算）';
+      }
+
+      // 6. 写回结果（总览）
+      const totalIncomeEl = document.getElementById('res-total-income');
+      const totalIncomeDescEl = document.getElementById('res-total-income-desc');
+      const dailyIncomeEl = document.getElementById('res-daily-income');
+      const paybackEl = document.getElementById('res-payback-days');
+      const roiEl = document.getElementById('res-roi');
+
+      if (totalIncomeEl) totalIncomeEl.textContent = totalIncome.toFixed(4) + ' DP';
+      if (totalIncomeDescEl) {
+        let baseText = '周期天数：' + days + ' 天；徽章总数：' + totalCount + ' 枚；按 0.01 DP / 天 / 枚 估算';
+        if (targetHint) baseText += '；' + targetHint;
+        totalIncomeDescEl.textContent = baseText;
+      }
+      if (dailyIncomeEl) dailyIncomeEl.textContent = dailyIncome.toFixed(4) + ' DP / 天';
+      if (paybackEl) paybackEl.textContent = paybackDaysText;
+      if (roiEl) roiEl.textContent = roiText;
+
+      // 7. 按徽章拆分结果
+      function updateBadgeResult(code, name) {
+        const count = counts[code] || 0;
+        const daily = count * BASE_DAILY_PER_BADGE;
+        const periodIncome = daily * days;
+
+        const countEl = document.getElementById('res-' + code + '-count');
+        const metaEl = document.getElementById('res-' + code + '-meta');
+        const incomeEl = document.getElementById('res-' + code + '-income');
+
+        if (countEl) countEl.textContent = '数量：' + count + ' 枚';
+        if (metaEl) {
+          metaEl.textContent =
+            '周期收益：' + periodIncome.toFixed(4) +
+            ' DP · 单枚日均收益：' + BASE_DAILY_PER_BADGE.toFixed(2) + ' DP';
+        }
+        if (incomeEl) {
+          incomeEl.textContent = '周期：' + periodIncome.toFixed(4) + ' DP';
+        }
+      }
+
+      updateBadgeResult('vn', '越南');
+      updateBadgeResult('cn', '中国');
+      updateBadgeResult('us', '美国');
+      updateBadgeResult('jp', '日本');
+      updateBadgeResult('kr', '韩国');
+      updateBadgeResult('uk', '英国');
+    }
+
+    // 绑定计算按钮
+    document.getElementById('btn-calc')?.addEventListener('click', calculate);
+  </script>
+</body>
+</html>

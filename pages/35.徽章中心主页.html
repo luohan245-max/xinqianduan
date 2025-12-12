@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>徽章中心主页 · 短剧平台（占位）</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <style>
+    :root{
+      --bg:#050506;
+      --card:#111218;
+      --card-soft:#101019;
+      --line:#262a3f;
+      --gold:#f5d27a;
+      --pink:#ff7eb3;
+      --text-main:#ffffff;
+      --text-sub:#9ea1b6;
+      --radius-lg:18px;
+      --radius-md:14px;
+      --radius-sm:999px;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html,body{
+      width:100%;
+      height:100%;
+      background:var(--bg);
+      color:var(--text-main);
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",sans-serif;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    .app{
+      max-width:430px;
+      margin:0 auto;
+      padding-bottom:18px;
+      min-height:100vh;
+    }
+
+    /* 顶部栏 */
+    .page-header{
+      height:56px;
+      padding:0 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      background:linear-gradient(to bottom,rgba(0,0,0,.9),rgba(0,0,0,0));
+    }
+    .header-left{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .back-btn{
+      width:32px;
+      height:32px;
+      border-radius:var(--radius-sm);
+      border:1px solid rgba(245,210,122,.4);
+      background:rgba(0,0,0,.35);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--gold);
+      font-size:18px;
+      flex-shrink:0;
+    }
+    .header-title{
+      font-size:16px;
+      font-weight:600;
+    }
+    .header-right{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:11px;
+      color:var(--text-sub);
+    }
+    .rule-btn{
+      padding:4px 8px;
+      border-radius:var(--radius-sm);
+      border:1px solid rgba(245,210,122,.5);
+      background:#0c0d12;
+      color:var(--gold);
+    }
+
+    /* 顶部说明 */
+    .top-intro{
+      margin:10px 14px 4px;
+    }
+    .top-title{
+      font-size:18px;
+      font-weight:600;
+      margin-bottom:4px;
+    }
+    .top-sub{
+      font-size:12px;
+      color:var(--text-sub);
+    }
+
+    /* 通用卡片 */
+    .card{
+      margin:10px 14px;
+      padding:10px 14px;
+      border-radius:var(--radius-lg);
+      background:var(--card);
+      border:1px solid rgba(245,210,122,.12);
+    }
+    .card-title-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:6px;
+    }
+    .card-title{
+      font-size:14px;
+      font-weight:500;
+    }
+    .card-sub{
+      font-size:12px;
+      color:var(--text-sub);
+    }
+
+    /* 汇总区域 */
+    .summary-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:8px 12px;
+      margin-top:4px;
+      font-size:12px;
+    }
+    .summary-item{
+      padding:8px 10px;
+      border-radius:var(--radius-md);
+      background:var(--card-soft);
+      border:1px solid rgba(245,210,122,.18);
+    }
+    .summary-label{
+      font-size:11px;
+      color:var(--text-sub);
+      margin-bottom:2px;
+    }
+    .summary-value{
+      font-size:13px;
+      font-weight:500;
+    }
+    .summary-value.highlight{
+      color:var(--gold);
+    }
+
+    /* 徽章分布列表 */
+    .badge-list{
+      margin-top:6px;
+      border-radius:var(--radius-md);
+      background:#0c0d12;
+      border:1px solid rgba(38,42,63,.9);
+      padding:6px 8px;
+      font-size:11px;
+    }
+    .badge-row{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 4px;
+    }
+    .badge-row + .badge-row{
+      border-top:1px dashed rgba(38,42,63,.7);
+    }
+    .badge-icon{
+      width:30px;
+      height:30px;
+      border-radius:999px;
+      background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.18),rgba(0,0,0,.9));
+      border:1px solid rgba(245,210,122,.45);
+      flex-shrink:0;
+    }
+    .badge-main{
+      flex:1;
+      min-width:0;
+    }
+    .badge-name{
+      font-size:12px;
+      font-weight:500;
+    }
+    .badge-meta{
+      font-size:11px;
+      color:var(--text-sub);
+    }
+    .badge-right{
+      text-align:right;
+      flex-shrink:0;
+    }
+    .badge-count{
+      font-size:12px;
+      font-weight:600;
+      color:var(--gold);
+    }
+    .badge-change{
+      font-size:11px;
+      margin-top:2px;
+    }
+    .badge-change.up{
+      color:#4ade80;
+    }
+    .badge-change.down{
+      color:#fb7185;
+    }
+
+    /* 功能入口 */
+    .feature-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:8px;
+      margin-top:4px;
+      font-size:11px;
+    }
+    .feature-item{
+      padding:8px 6px;
+      border-radius:var(--radius-md);
+      background:var(--card-soft);
+      border:1px solid rgba(245,210,122,.2);
+      display:flex;
+      flex-direction:column;
+      align-items:flex-start;
+      gap:4px;
+    }
+    .feature-top{
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .feature-icon{
+      width:22px;
+      height:22px;
+      border-radius:999px;
+      background:#0c0d12;
+      border:1px solid rgba(245,210,122,.45);
+      flex-shrink:0;
+    }
+    .feature-name{
+      font-size:12px;
+    }
+    .feature-desc{
+      font-size:10px;
+      color:var(--text-sub);
+    }
+
+    /* 可购买徽章列表 */
+    .section-title{
+      margin:8px 14px 4px;
+      font-size:12px;
+      color:var(--text-sub);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    .shop-card{
+      margin:4px 14px 0;
+      padding:10px 12px;
+      border-radius:var(--radius-md);
+      background:var(--card);
+      border:1px solid rgba(38,42,63,.9);
+      font-size:11px;
+    }
+    .shop-top{
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+    }
+    .shop-left{
+      display:flex;
+      gap:8px;
+      min-width:0;
+    }
+    .shop-icon{
+      width:32px;
+      height:32px;
+      border-radius:999px;
+      background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.16),rgba(0,0,0,.9));
+      border:1px solid rgba(245,210,122,.45);
+      flex-shrink:0;
+    }
+    .shop-main{
+      flex:1;
+      min-width:0;
+    }
+    .shop-name{
+      font-size:13px;
+      font-weight:500;
+      margin-bottom:2px;
+    }
+    .shop-tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:4px;
+    }
+    .shop-tag{
+      padding:2px 6px;
+      border-radius:var(--radius-sm);
+      border:1px dashed rgba(245,210,122,.35);
+      font-size:10px;
+      color:var(--text-sub);
+    }
+    .shop-right{
+      text-align:right;
+      flex-shrink:0;
+      font-size:11px;
+    }
+    .shop-price{
+      color:var(--gold);
+      font-weight:600;
+      margin-bottom:2px;
+    }
+    .shop-min{
+      color:var(--text-sub);
+    }
+
+    .shop-bottom{
+      margin-top:6px;
+      padding-top:6px;
+      border-top:1px dashed rgba(38,42,63,.7);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+    }
+    .shop-desc{
+      font-size:11px;
+      color:var(--text-sub);
+    }
+    .shop-actions{
+      display:flex;
+      gap:6px;
+      flex-shrink:0;
+    }
+    .btn-outline{
+      padding:6px 10px;
+      border-radius:var(--radius-sm);
+      border:1px solid rgba(245,210,122,.55);
+      background:#0c0d12;
+      font-size:11px;
+      color:var(--gold);
+      white-space:nowrap;
+    }
+    .btn-primary{
+      padding:6px 12px;
+      border-radius:var(--radius-sm);
+      background:linear-gradient(135deg,var(--gold),var(--pink));
+      border:none;
+      font-size:11px;
+      color:#050506;
+      white-space:nowrap;
+    }
+
+    /* 空状态 */
+    .empty-block{
+      margin:10px 14px 0;
+      padding:12px 12px 14px;
+      border-radius:var(--radius-lg);
+      border:1px dashed rgba(148,163,184,.8);
+      background:rgba(15,23,42,.95);
+      font-size:11px;
+      color:var(--text-sub);
+    }
+    .empty-title{
+      font-size:14px;
+      font-weight:500;
+      margin-bottom:4px;
+      color:var(--text-main);
+    }
+    .empty-block span{
+      color:var(--gold);
+    }
+    .empty-actions{
+      margin-top:8px;
+      display:flex;
+      gap:8px;
+    }
+
+    /* 可点击手感（不影响移动端视觉） */
+    .back-btn,
+    .rule-btn,
+    .feature-item,
+    .btn-outline,
+    .btn-primary {
+      cursor: pointer;
+    }
+
+    /* 全局兜底：防止未来插入 a 出现蓝色/下划线 */
+    a {
+      text-decoration: none !important;
+      color: inherit !important;
+    }
+
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- 顶部栏 -->
+  <header class="page-header">
+    <div class="header-left">
+      <button class="back-btn" onclick="history.back()">‹</button>
+      <div class="header-title">徽章中心（占位）</div>
+    </div>
+    <div class="header-right">
+      <button class="rule-btn" onclick="location.href='53.徽章合伙人资格协议.html'">规则说明（占位）</button>
+    </div>
+  </header>
+
+  <!-- 顶部说明 -->
+  <section class="top-intro">
+    <div class="top-title">我的徽章资产一站式总览（占位）</div>
+    <div class="top-sub">
+      这里汇总你当前持有的各国徽章数量、预估价值，以及与徽章相关的功能入口。
+      所有数值均为示意占位，实际接入时由后端与行情接口提供（占位）。
+    </div>
+  </section>
+
+  <!-- 我的徽章总览 -->
+  <section class="card">
+    <div class="card-title-row">
+      <div class="card-title">我的徽章总览（占位）</div>
+      <div class="card-sub">整体数量与收益大盘视角（占位）</div>
+    </div>
+
+    <div class="summary-grid">
+      <div class="summary-item">
+        <div class="summary-label">持有徽章总数（占位）</div>
+        <div class="summary-value highlight">XXX 枚（占位）</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-label">按 1:1 估算总价值（占位）</div>
+        <div class="summary-value highlight">YYY.YY DP（占位）</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-label">今日徽章收益（基础 + 涨跌）（占位）</div>
+        <div class="summary-value">+AA.AA DP（占位）</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-label">近 7 日徽章收益合计（占位）</div>
+        <div class="summary-value">+BB.BB DP（占位）</div>
+      </div>
+    </div>
+
+    <!-- 各国徽章分布示意 -->
+    <div class="badge-list">
+      <div style="font-size:11px;color:var(--text-sub);margin-bottom:4px;">
+        按国家维度展示持有数量与当前涨跌，仅为 UI 占位，具体百分比由行情接口替换（占位）。
+      </div>
+
+      <div class="badge-row">
+        <div class="badge-icon"></div>
+        <div class="badge-main">
+          <div class="badge-name">日本徽章（占位）</div>
+          <div class="badge-meta">基础收益：每枚 0.01 DP / 日（占位）</div>
+        </div>
+        <div class="badge-right">
+          <div class="badge-count">持有：XX 枚（占位）</div>
+          <div class="badge-change up">24h 涨幅：+X.X%（占位）</div>
+        </div>
+      </div>
+
+      <div class="badge-row">
+        <div class="badge-icon"></div>
+        <div class="badge-main">
+          <div class="badge-name">越南徽章（占位）</div>
+          <div class="badge-meta">基础收益：每枚 0.01 DP / 日（占位）</div>
+        </div>
+        <div class="badge-right">
+          <div class="badge-count">持有：XX 枚（占位）</div>
+          <div class="badge-change down">24h 涨幅：-X.X%（占位）</div>
+        </div>
+      </div>
+
+      <div class="badge-row">
+        <div class="badge-icon"></div>
+        <div class="badge-main">
+          <div class="badge-name">美国徽章（占位）</div>
+          <div class="badge-meta">基础收益：每枚 0.01 DP / 日（占位）</div>
+        </div>
+        <div class="badge-right">
+          <div class="badge-count">持有：XX 枚（占位）</div>
+          <div class="badge-change up">24h 涨幅：+X.X%（占位）</div>
+        </div>
+      </div>
+
+      <!-- 其余国家可按同样结构继续补充，占位 -->
+    </div>
+  </section>
+
+  <!-- 功能入口：行情 / 计算器 / 可视化 -->
+  <section class="card">
+    <div class="card-title-row">
+      <div class="card-title">徽章相关工具入口（占位）</div>
+      <div class="card-sub">点击进入各类徽章工具页面（占位）</div>
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature-item" onclick="location.href='8.徽章收益可视化.html'">
+        <div class="feature-top">
+          <div class="feature-icon"></div>
+          <div class="feature-name">徽章行情（占位）</div>
+        </div>
+        <div class="feature-desc">
+          查看各国徽章当前 1:1 价格与涨跌幅，占位。
+        </div>
+      </div>
+
+      <div class="feature-item" onclick="location.href='10.徽章收益计算器.html'">
+        <div class="feature-top">
+          <div class="feature-icon"></div>
+          <div class="feature-name">收益计算器（占位）</div>
+        </div>
+        <div class="feature-desc">
+          按持有枚数估算日收益、回本周期等数据，占位。
+        </div>
+      </div>
+
+      <div class="feature-item" onclick="location.href='8.徽章收益可视化.html'">
+        <div class="feature-top">
+          <div class="feature-icon"></div>
+          <div class="feature-name">收益可视化（占位）</div>
+        </div>
+        <div class="feature-desc">
+          用图表方式查看徽章收益结构与趋势，占位。
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 可购买徽章列表 -->
+  <div class="section-title">
+    <span>可购买徽章列表（占位）</span>
+    <span>价格与额度均为示意（占位）</span>
+  </div>
+
+  <div class="shop-card">
+    <div class="shop-top">
+      <div class="shop-left">
+        <div class="shop-icon"></div>
+        <div class="shop-main">
+          <div class="shop-name">日本徽章 · 标准批次（占位）</div>
+          <div class="shop-tags">
+            <div class="shop-tag">国家：日本（占位）</div>
+            <div class="shop-tag">基础收益：0.01 DP / 枚 / 日（占位）</div>
+          </div>
+        </div>
+      </div>
+      <div class="shop-right">
+        <div class="shop-price">1 枚 ≈ X.XX DP（占位）</div>
+        <div class="shop-min">最小购买：10 枚（占位）</div>
+      </div>
+    </div>
+    <div class="shop-bottom">
+      <div class="shop-desc">
+        简要说明占位：适合新手入门批次，收益稳定，方便做收益测试与策略调整。
+      </div>
+      <div class="shop-actions">
+        <button class="btn-outline" onclick="location.href='37.活动详情页.html'">查看详情（占位）</button>
+        <button class="btn-primary" onclick="location.href='7.钱包%20%26%20收益总览二级页.html'">购买占位</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="shop-card">
+    <div class="shop-top">
+      <div class="shop-left">
+        <div class="shop-icon"></div>
+        <div class="shop-main">
+          <div class="shop-name">越南徽章 · 活跃批次（占位）</div>
+          <div class="shop-tags">
+            <div class="shop-tag">国家：越南（占位）</div>
+            <div class="shop-tag">基础收益：0.01 DP / 枚 / 日（占位）</div>
+          </div>
+        </div>
+      </div>
+      <div class="shop-right">
+        <div class="shop-price">1 枚 ≈ X.XX DP（占位）</div>
+        <div class="shop-min">最小购买：20 枚（占位）</div>
+      </div>
+    </div>
+    <div class="shop-bottom">
+      <div class="shop-desc">
+        简要说明占位：适合愿意承受一定波动、追求更高收益空间的用户使用。
+      </div>
+      <div class="shop-actions">
+        <button class="btn-outline" onclick="location.href='37.活动详情页.html'">查看详情（占位）</button>
+        <button class="btn-primary" onclick="location.href='7.钱包%20%26%20收益总览二级页.html'">购买占位</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 空状态（当用户没有任何徽章时可用） -->
+  <section class="empty-block">
+    <div class="empty-title">还没有任何徽章资产（占位）</div>
+    <div>
+      当前账号尚未持有任何国家的徽章。你可以先阅读<span>规则说明</span>，
+      再从上方的<span>可购买徽章列表</span>中选择合适的批次，后续这里会展示你的徽章数量与收益情况（占位）。
+    </div>
+    <div class="empty-actions">
+      <div class="btn-outline" onclick="location.href='53.徽章合伙人资格协议.html'">了解规则（占位）</div>
+      <div class="btn-primary" onclick="location.href='7.钱包%20%26%20收益总览二级页.html'">去购买徽章（占位）</div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

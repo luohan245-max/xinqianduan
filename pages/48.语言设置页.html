@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>语言设置页 · 模板</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+  <style>
+    :root {
+      --bg:#050506;
+      --card:#111218;
+      --card-soft:#101019;
+      --line:#262a3f;
+      --gold:#f5d27a;
+      --pink:#ff7eb3;
+      --text-main:#ffffff;
+      --text-sub:#9ea1b6;
+      --radius-lg:20px;
+      --radius-md:14px;
+      --radius-sm:999px;
+      --shadow-soft:0 18px 40px rgba(0,0,0,0.55);
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html,body{
+      width:100%;
+      height:100%;
+      background:var(--bg);
+      color:var(--text-main);
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",sans-serif;
+    }
+
+    .app{
+      max-width:430px;
+      margin:0 auto;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      padding-bottom:20px;
+    }
+
+    /* 顶部栏 */
+    .page-header{
+      height:56px;
+      padding:0 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      background:linear-gradient(to bottom,rgba(0,0,0,.92),rgba(0,0,0,0));
+      position:sticky;
+      top:0;
+      z-index:10;
+    }
+    .back-btn{
+      width:32px;
+      height:32px;
+      border-radius:var(--radius-sm);
+      border:1px solid rgba(245,210,122,.45);
+      background:rgba(0,0,0,.35);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+      color:var(--gold);
+    }
+    .header-title{
+      font-size:16px;
+      font-weight:600;
+    }
+
+    .header-right{
+      font-size:11px;
+      color:var(--text-sub);
+    }
+
+    /* 提示文案 */
+    .hint{
+      margin:6px 14px 10px;
+      font-size:11px;
+      color:var(--text-sub);
+      line-height:1.6;
+      opacity:.9;
+    }
+
+    /* 语言列表 */
+    .lang-section{
+      margin:0 14px;
+      border-radius:var(--radius-lg);
+      background:var(--card-soft);
+      border:1px solid rgba(38,42,63,.9);
+      overflow:hidden;
+      box-shadow:var(--shadow-soft);
+    }
+
+    .lang-item{
+      padding:12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      border-bottom:1px solid rgba(38,42,63,.9);
+      gap:10px;
+    }
+    .lang-item:last-of-type{
+      border-bottom:none;
+    }
+
+    .lang-left{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+
+    .lang-title{
+      font-size:14px;
+      font-weight:500;
+    }
+
+    .lang-desc{
+      font-size:11px;
+      color:var(--text-sub);
+    }
+
+    /* 单选按钮 */
+    .radio{
+      width:20px;
+      height:20px;
+      border-radius:999px;
+      border:2px solid rgba(148,163,184,.8);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-shrink:0;
+    }
+
+    .radio-inner{
+      width:10px;
+      height:10px;
+      border-radius:999px;
+      background:linear-gradient(135deg,var(--gold),var(--pink));
+      display:none;
+    }
+
+    .radio.checked .radio-inner{
+      display:block;
+    }
+
+    /* 底部按钮 */
+    .footer{
+      margin-top:20px;
+      padding:0 14px;
+    }
+
+    .btn-save{
+      width:100%;
+      padding:12px;
+      border-radius:var(--radius-sm);
+      background:linear-gradient(135deg,var(--gold),var(--pink));
+      color:#050506;
+      font-size:14px;
+      font-weight:600;
+      border:none;
+    }
+
+    /* 可点击手感（不影响移动端视觉） */
+    .back-btn,
+    .lang-item,
+    .btn-save {
+      cursor: pointer;
+    }
+
+    /* 全局兜底：防止未来插入 a 出现蓝色/下划线 */
+    a{
+      text-decoration:none !important;
+      color:inherit !important;
+    }
+
+  </style>
+
+</head>
+<body>
+<div class="app">
+
+  <!-- 顶部栏 -->
+  <header class="page-header">
+    <button class="back-btn" onclick="history.back()">‹</button>
+    <div class="header-title">语言设置（占位）</div>
+    <div class="header-right"></div>
+  </header>
+
+  <div class="hint">
+    选择界面显示语言（占位）。该设置仅影响界面文案，不会影响短剧内容语言与字幕。
+  </div>
+
+  <!-- 语言列表 -->
+  <div class="lang-section">
+
+    <!-- 中文 -->
+    <div class="lang-item" onclick="location.reload()">
+      <div class="lang-left">
+        <div class="lang-title">简体中文（占位）</div>
+        <div class="lang-desc">适用于中国大陆 / 海外华语用户（占位）</div>
+      </div>
+      <div class="radio checked">
+        <div class="radio-inner"></div>
+      </div>
+    </div>
+
+    <!-- 越南语 -->
+    <div class="lang-item" onclick="location.reload()">
+      <div class="lang-left">
+        <div class="lang-title">Tiếng Việt（占位）</div>
+        <div class="lang-desc">适用于越南本地用户（占位）</div>
+      </div>
+      <div class="radio">
+        <div class="radio-inner"></div>
+      </div>
+    </div>
+
+    <!-- 英语 -->
+    <div class="lang-item" onclick="location.reload()">
+      <div class="lang-left">
+        <div class="lang-title">English（占位）</div>
+        <div class="lang-desc">国际通用界面语言（占位）</div>
+      </div>
+      <div class="radio">
+        <div class="radio-inner"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 底部按钮（可选） -->
+  <div class="footer">
+    <button class="btn-save">保存设置（占位）</button>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>注册成功页 · 模板</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <style>
+    :root{
+      --bg:#050506;
+      --card:#111218;
+      --card-soft:#101019;
+      --line:#262a3f;
+      --gold:#f5d27a;
+      --pink:#ff7eb3;
+      --text-main:#ffffff;
+      --text-sub:#9ea1b6;
+      --radius-lg:22px;
+      --radius-md:16px;
+      --radius-sm:999px;
+      --shadow-soft:0 20px 45px rgba(0,0,0,0.65);
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html,body{
+      width:100%;
+      height:100%;
+      background:var(--bg);
+      color:var(--text-main);
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",sans-serif;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    .app{
+      max-width:430px;
+      margin:0 auto;
+      min-height:100vh;
+      padding:0 14px 20px;
+      display:flex;
+      flex-direction:column;
+      background:radial-gradient(circle at 0 0,rgba(255,255,255,.09),rgba(0,0,0,1));
+    }
+
+    /* 顶部栏 */
+    .page-header{
+      height:56px;
+      margin:0 -14px;
+      padding:0 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      background:linear-gradient(to bottom,rgba(0,0,0,.95),rgba(0,0,0,0));
+    }
+    .header-left{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .back-btn{
+      width:30px;
+      height:30px;
+      border-radius:var(--radius-sm);
+      border:1px solid rgba(245,210,122,.45);
+      background:rgba(0,0,0,.35);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+      color:var(--gold);
+      flex-shrink:0;
+    }
+    .header-title{
+      font-size:15px;
+      font-weight:500;
+    }
+    .header-right{
+      font-size:11px;
+      color:var(--text-sub);
+    }
+
+    /* 主卡片 */
+    .main-card{
+      margin-top:18px;
+      padding:20px 16px 16px;
+      border-radius:var(--radius-lg);
+      background:radial-gradient(circle at 0 0,rgba(245,210,122,.14),rgba(10,10,20,1));
+      border:1px solid rgba(245,210,122,.35);
+      box-shadow:var(--shadow-soft);
+      text-align:center;
+    }
+
+    .check-icon{
+      width:80px;
+      height:80px;
+      border-radius:999px;
+      margin:0 auto 10px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:36px;
+      color:#050506;
+      background:radial-gradient(circle at 30% 0%,#ffffff,#f5d27a 40%,#ff7eb3 100%);
+      box-shadow:0 0 0 2px rgba(15,23,42,1),
+                 0 0 40px rgba(245,210,122,.8);
+    }
+
+    .main-title{
+      font-size:20px;
+      font-weight:600;
+      margin-bottom:4px;
+      color:var(--gold);
+    }
+    .main-sub{
+      font-size:12px;
+      color:var(--text-sub);
+      line-height:1.8;
+      margin-bottom:10px;
+    }
+
+    .user-brief{
+      margin:8px auto 4px;
+      padding:8px 10px;
+      border-radius:14px;
+      background:rgba(5,5,8,.8);
+      border:1px solid rgba(38,42,63,.9);
+      font-size:11px;
+      text-align:left;
+      max-width:320px;
+    }
+    .user-row{
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      margin-bottom:2px;
+    }
+    .user-row:last-child{margin-bottom:0;}
+    .user-label{
+      color:var(--text-sub);
+      flex-shrink:0;
+    }
+    .user-value{
+      color:var(--text-main);
+      text-align:right;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .badge-row{
+      margin-top:8px;
+      display:flex;
+      justify-content:center;
+      gap:6px;
+      flex-wrap:wrap;
+    }
+    .pill{
+      padding:3px 9px;
+      border-radius:999px;
+      font-size:10px;
+      border:1px solid rgba(245,210,122,.6);
+      background:rgba(0,0,0,.5);
+      color:var(--text-sub);
+    }
+    .pill.highlight{
+      border:none;
+      background:linear-gradient(135deg,var(--gold),var(--pink));
+      color:#050506;
+      font-weight:500;
+    }
+
+    /* 下方新手任务区 */
+    .newbie-card{
+      margin-top:14px;
+      padding:12px 12px 10px;
+      border-radius:var(--radius-md);
+      background:var(--card-soft);
+      border:1px solid rgba(38,42,63,.9);
+      font-size:12px;
+    }
+    .newbie-title{
+      font-size:13px;
+      font-weight:500;
+      margin-bottom:4px;
+    }
+    .newbie-desc{
+      font-size:11px;
+      color:var(--text-sub);
+      margin-bottom:6px;
+      line-height:1.6;
+    }
+    .newbie-desc span{
+      color:var(--gold);
+    }
+
+    .task-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:6px 0;
+      border-top:1px dashed rgba(38,42,63,.8);
+      gap:8px;
+    }
+    .task-left{
+      text-align:left;
+    }
+    .task-name{
+      font-size:12px;
+    }
+    .task-tip{
+      font-size:10px;
+      color:var(--text-sub);
+    }
+    .task-btn{
+      padding:5px 8px;
+      border-radius:999px;
+      font-size:11px;
+      background:linear-gradient(135deg,var(--gold),var(--pink));
+      border:none;
+      color:#050506;
+      white-space:nowrap;
+    }
+
+    /* 主按钮区 */
+    .btn-main-row{
+      margin-top:16px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .btn-primary{
+      width:100%;
+      padding:11px 10px;
+      border-radius:var(--radius-sm);
+      background:linear-gradient(135deg,var(--gold),var(--pink));
+      border:none;
+      font-size:14px;
+      color:#050506;
+      font-weight:500;
+      text-align:center;
+      white-space:nowrap;
+    }
+    .btn-secondary{
+      width:100%;
+      padding:9px 10px;
+      border-radius:var(--radius-sm);
+      background:#050509;
+      border:1px solid rgba(148,163,184,.9);
+      font-size:13px;
+      color:var(--text-sub);
+      text-align:center;
+      white-space:nowrap;
+    }
+    .btn-text{
+      margin-top:6px;
+      font-size:11px;
+      color:var(--text-sub);
+      text-align:center;
+    }
+    .btn-text span{
+      color:var(--gold);
+    }
+
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- 顶部栏 -->
+  <header class="page-header">
+    <div class="header-left">
+      <button class="back-btn" onclick="location.href='19.登录页.html'">‹</button>
+      <div class="header-title">注册成功（占位）</div>
+    </div>
+    <div class="header-right">关闭 / 跳过占位</div>
+  </header>
+
+  <!-- 核心成功卡片 -->
+  <section class="main-card">
+    <div class="check-icon">🎉</div>
+    <div class="main-title">账号创建成功（占位）</div>
+    <div class="main-sub">
+      你的短剧账号已准备就绪。<br/>
+      现在可以开始刷剧、参与福利活动，并查看后续的收益与徽章数据（占位文案）。
+    </div>
+
+    <div class="user-brief">
+      <div class="user-row">
+        <div class="user-label">昵称（占位）</div>
+        <div class="user-value">用户昵称占位</div>
+      </div>
+      <div class="user-row">
+        <div class="user-label">UID（占位）</div>
+        <div class="user-value">123456789（占位）</div>
+      </div>
+      <div class="user-row">
+        <div class="user-label">邀请码（占位）</div>
+        <div class="user-value">ABCD1234（占位）</div>
+      </div>
+    </div>
+
+    <div class="badge-row">
+      <div class="pill highlight">新用户奖励未领取（占位）</div>
+      <div class="pill">完成新手任务可解锁更多权益（占位）</div>
+    </div>
+  </section>
+
+  <!-- 新手任务 / 引导区 -->
+  <section class="newbie-card">
+    <div class="newbie-title">建议下一步操作（占位）</div>
+    <div class="newbie-desc">
+      为了不浪费新用户资格，建议你先完成以下几步：<span>看一部短剧、完成签到、绑定手机</span>。
+      具体奖励以后端配置为准（占位）。
+    </div>
+
+    <div class="task-row">
+      <div class="task-left">
+        <div class="task-name">去首页随便看一部短剧（占位）</div>
+        <div class="task-tip">完成后可能解锁额外金币 / 徽章奖励（占位）</div>
+      </div>
+      <button class="task-btn" onclick="location.href='../index.html'">去首页看剧（占位）</button>
+    </div>
+
+    <div class="task-row">
+      <div class="task-left">
+        <div class="task-name">前往福利中心领新手礼包（占位）</div>
+        <div class="task-tip">签到 / 金币任务 / 抽奖转盘等入口集中在这里（占位）</div>
+      </div>
+      <button class="task-btn" onclick="location.href='3.福利中心.html'">去福利中心（占位）</button>
+    </div>
+
+    <div class="task-row">
+      <div class="task-left">
+        <div class="task-name">补全资料 / 绑定手机号（占位）</div>
+        <div class="task-tip">提升账号安全性，防止丢失收益与资产（占位）</div>
+      </div>
+      <button class="task-btn" onclick="location.href='5.个人中心.html'">去个人中心（占位）</button>
+    </div>
+  </section>
+
+  <!-- 主按钮区 -->
+  <div class="btn-main-row">
+    <button class="btn-primary" onclick="location.href='../index.html'">
+  立即进入首页开始刷剧（占位）
+</button>
+   <button class="btn-secondary" onclick="location.href='3.福利中心.html'">
+  前往福利中心领取新手奖励（占位）
+</button>
+    <div class="btn-text">
+      你随时可以在 <span>「我的」</span> 中查看钱包、徽章和团队数据（占位说明）。
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

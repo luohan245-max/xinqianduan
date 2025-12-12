@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>分类结果列表页 - 短剧 H5</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+
+  <style>
+    :root {
+      --bg: #050509;
+      --card: #0f1119;
+      --card-soft: #151824;
+      --border-soft: #22263a;
+      --text-main: #f7f7fb;
+      --text-sub: #9ea1b6;
+      --accent-pink: #ff6ac8;
+      --accent-gold: #f6d57a;
+      --accent-blue: #2575ff;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+      --shadow-soft: 0 14px 40px rgba(0, 0, 0, 0.55);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: radial-gradient(circle at top, #191e34 0, #050509 55%);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+    }
+
+    .page {
+      max-width: 430px;
+      margin: 0 auto;
+      padding-bottom: 64px;
+    }
+
+    /* 顶部玻璃导航条（分类场景） */
+    .top-nav-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      padding: 10px 10px 8px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: linear-gradient(
+        to bottom,
+        rgba(5,5,9,0.96),
+        rgba(5,5,9,0.82),
+        rgba(5,5,9,0.0)
+      );
+    }
+
+    .top-nav {
+      display: flex;
+      align-items: center;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: radial-gradient(circle at top, #242a40dd 0, #151826dd 65%);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.85);
+    }
+
+    .nav-back {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size: 16px;
+      color: var(--text-main);
+      background: rgba(0,0,0,0.24);
+      margin-right: 8px;
+    }
+
+    .nav-title-block {
+      flex: 1;
+      display:flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 0;
+    }
+
+    .nav-title-main {
+      font-size: 15px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .nav-title-sub {
+      font-size: 11px;
+      color: var(--text-sub);
+      margin-top: 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .nav-search-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin-left: 6px;
+      background: rgba(0,0,0,0.26);
+      border: 1px solid rgba(255,255,255,0.22);
+      font-size: 14px;
+      color: var(--accent-gold);
+    }
+
+    /* 场景说明 */
+    .scene-tip {
+      margin: 6px 16px 4px;
+      font-size: 11px;
+      color: rgba(158,161,182,0.9);
+      display:flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .scene-tag {
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      font-size: 10px;
+      color: var(--accent-gold);
+      background: rgba(0,0,0,0.24);
+    }
+
+    /* 筛选器区域 */
+    .filter-bar {
+      padding: 6px 12px 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      background: linear-gradient(
+        to bottom,
+        rgba(5,5,9,0.88),
+        rgba(5,5,9,0.72),
+        rgba(5,5,9,0.0)
+      );
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .filter-row {
+      display:flex;
+      overflow-x:auto;
+      -webkit-overflow-scrolling:touch;
+      scrollbar-width:none;
+      gap: 8px;
+      padding: 4px 2px;
+    }
+    .filter-row::-webkit-scrollbar { display:none; }
+
+    .filter-chip {
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      color: var(--text-sub);
+      border: 1px solid rgba(255,255,255,0.16);
+      white-space: nowrap;
+      background: rgba(0,0,0,0.28);
+    }
+    .filter-chip.active {
+      color: #111217;
+      border: none;
+      font-weight: 600;
+      background: linear-gradient(135deg, var(--accent-pink), var(--accent-gold));
+      box-shadow: 0 8px 20px rgba(0,0,0,0.7);
+    }
+
+    .filter-sub {
+      margin-top: 4px;
+      font-size: 10px;
+      color: var(--text-sub);
+      display:flex;
+      justify-content: space-between;
+      padding: 0 2px;
+    }
+
+    /* 分割线 */
+    .soft-divider {
+      height: 1px;
+      margin: 10px 16px 4px;
+      background: linear-gradient(
+        90deg,
+        rgba(255,255,255,0),
+        rgba(255,255,255,0.36),
+        rgba(255,255,255,0)
+      );
+      opacity: 0.28;
+    }
+
+    /* 剧集网格区域（3列） */
+    .list-section {
+      padding: 8px 14px 16px;
+    }
+
+    .drama-grid {
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .drama-card {
+      background: var(--card-soft);
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.05);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.65);
+    }
+
+    .drama-thumb {
+      width: 100%;
+      padding-top: 140%;
+      background: linear-gradient(135deg, #3d4568, #181b2b);
+      position: relative;
+    }
+
+    .badge-top-left {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      padding: 2px 5px;
+      border-radius: 999px;
+      font-size: 9px;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--accent-pink), var(--accent-gold));
+    }
+
+    .badge-top-right {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      padding: 2px 5px;
+      border-radius: 999px;
+      font-size: 9px;
+      color: #111217;
+      background: radial-gradient(circle at 30% 0,#fff8d9,#f0c65b,#c88b2c);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+    }
+
+    .drama-info {
+      padding: 4px 4px 7px;
+    }
+
+    .drama-title {
+      font-size: 11px;
+      line-height: 1.3;
+      max-height: 2.6em;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      margin-bottom: 2px;
+    }
+
+    .drama-meta {
+      display:flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    .drama-tags {
+      font-size: 9px;
+      color: var(--accent-pink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .drama-views {
+      font-size: 9px;
+      color: rgba(247,247,251,0.85);
+    }
+
+    .list-footer {
+      margin-top: 14px;
+      text-align:center;
+      font-size: 11px;
+      color: var(--text-sub);
+      opacity: 0.8;
+    }
+
+    /* 可点击手感（不影响移动端视觉） */
+    .nav-back,
+    .nav-search-btn,
+    .filter-chip,
+    .drama-card {
+      cursor: pointer;
+    }
+
+    /* 全局：禁用 a 默认蓝色/下划线（兜底） */
+    a {
+      text-decoration: none !important;
+      color: inherit !important;
+    }
+
+  </style>
+</head>
+
+<body>
+<div class="page">
+
+  <!-- 顶部导航：分类场景 -->
+  <div class="top-nav-wrap">
+    <div class="top-nav">
+      <div class="nav-back" onclick="history.back()">‹</div>
+
+      <div class="nav-title-block">
+        <div class="nav-title-main">都市短剧（分类结果，占位）</div>
+        <div class="nav-title-sub">共 128 部 · 支持筛选与下拉刷新（占位）</div>
+      </div>
+
+      <div class="nav-search-btn" onclick="location.href='38.搜索入口首页.html'">🔍</div>
+    </div>
+  </div>
+
+  <!-- 场景说明 -->
+  <div class="scene-tip">
+    <span>当前：按「都市」分类浏览全部短剧（占位）</span>
+    <span class="scene-tag">分类结果列表（占位）</span>
+  </div>
+
+  <!-- 筛选条 -->
+  <div class="filter-bar">
+    <div class="filter-row">
+      <div class="filter-chip active" onclick="location.href='73.筛选弹层.html'">综合排序（占位）</div>
+      <div class="filter-chip" onclick="location.href='73.筛选弹层.html'">最新上架（占位）</div>
+      <div class="filter-chip" onclick="location.href='73.筛选弹层.html'">24 小时热度（占位）</div>
+      <div class="filter-chip" onclick="location.href='73.筛选弹层.html'">完结优先（占位）</div>
+      <div class="filter-chip" onclick="location.href='73.筛选弹层.html'">连载更新中（占位）</div>
+      <div class="filter-chip" onclick="location.href='73.筛选弹层.html'">仅看免费（占位）</div>
+      <div class="filter-chip" onclick="location.href='73.筛选弹层.html'">仅看 VIP（占位）</div>
+    </div>
+    <div class="filter-sub">
+      <span>提示：筛选条件可叠加使用（占位）</span>
+      <span>已为你选中：都市分类（占位）</span>
+    </div>
+  </div>
+
+  <!-- 分割线 -->
+  <div class="soft-divider"></div>
+
+  <!-- 列表主体：3 列网格 -->
+  <section class="list-section">
+    <div class="drama-grid">
+
+      <div class="drama-card" onclick="location.href='6.短剧详情页.html'">
+        <div class="drama-thumb">
+          <div class="badge-top-left">完结</div>
+          <div class="badge-top-right">VIP</div>
+        </div>
+        <div class="drama-info">
+          <div class="drama-title">短剧标题占位 · 离婚后她暴富了</div>
+          <div class="drama-meta">
+            <span class="drama-tags">#都市 #甜宠</span>
+            <span class="drama-views">783.2K 播放</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="drama-card" onclick="location.href='6.短剧详情页.html'">
+        <div class="drama-thumb">
+          <div class="badge-top-left">连载中</div>
+        </div>
+        <div class="drama-info">
+          <div class="drama-title">短剧标题占位 · 我在老板家打工</div>
+          <div class="drama-meta">
+            <span class="drama-tags">#都市 #职场</span>
+            <span class="drama-views">562.4K 播放</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="drama-card" onclick="location.href='6.短剧详情页.html'">
+        <div class="drama-thumb">
+          <div class="badge-top-left">完结</div>
+        </div>
+        <div class="drama-info">
+          <div class="drama-title">短剧标题占位 · 她替反派挡刀</div>
+          <div class="drama-meta">
+            <span class="drama-tags">#复仇 #反转</span>
+            <span class="drama-views">431.8K 播放</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="drama-card" onclick="location.href='6.短剧详情页.html'">
+        <div class="drama-thumb">
+          <div class="badge-top-left">免费</div>
+        </div>
+        <div class="drama-info">
+          <div class="drama-title">短剧标题占位 · 跟前夫做邻居</div>
+          <div class="drama-meta">
+            <span class="drama-tags">#都市 #家庭</span>
+            <span class="drama-views">389.0K 播放</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="drama-card" onclick="location.href='6.短剧详情页.html'">
+        <div class="drama-thumb">
+          <div class="badge-top-left">VIP</div>
+        </div>
+        <div class="drama-info">
+          <div class="drama-title">短剧标题占位 · 总裁他只想摆烂</div>
+          <div class="drama-meta">
+            <span class="drama-tags">#甜宠 #总裁</span>
+            <span class="drama-views">355.6K 播放</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="drama-card" onclick="location.href='6.短剧详情页.html'">
+        <div class="drama-thumb">
+          <div class="badge-top-left">连载中</div>
+        </div>
+        <div class="drama-info">
+          <div class="drama-title">短剧标题占位 · 他假装不喜欢我</div>
+          <div class="drama-meta">
+            <span class="drama-tags">#校园 #暗恋</span>
+            <span class="drama-views">312.9K 播放</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 多放几张模拟长列表 -->
+      <div class="drama-card" onclick="location.href='6.短剧详情页.html'">
+        <div class="drama-thumb">
+          <div class="badge-top-left">完结</div>
+        </div>
+        <div class="drama-info">
+          <div class="drama-title">短剧标题占位 · 退婚后她爆红</div>
+          <div class="drama-meta">
+            <span class="drama-tags">#爽文 #都市</span>
+            <span class="drama-views">228.7K 播放</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="drama-card" onclick="location.href='6.短剧详情页.html'">
+        <div class="drama-thumb">
+          <div class="badge-top-left">连载中</div>
+        </div>
+        <div class="drama-info">
+          <div class="drama-title">短剧标题占位 · 前夫他后悔了</div>
+          <div class="drama-meta">
+            <span class="drama-tags">#狗血 #家庭</span>
+            <span class="drama-views">210.5K 播放</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="drama-card" onclick="location.href='6.短剧详情页.html'">
+        <div class="drama-thumb">
+          <div class="badge-top-left">免费</div>
+        </div>
+        <div class="drama-info">
+          <div class="drama-title">短剧标题占位 · 异国婚姻日记</div>
+          <div class="drama-meta">
+            <span class="drama-tags">#都市 #跨国</span>
+            <span class="drama-views">195.1K 播放</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="list-footer">
+      下拉加载更多 · 已展示 9 / 128 部（占位）
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

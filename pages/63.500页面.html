@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>服务器异常 - 500</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <style>
+    :root{
+      --bg:#050509;
+      --card:#0f1119;
+      --text-main:#f7f7fb;
+      --text-sub:#9ea1b6;
+      --accent-pink:#ff6ac8;
+      --accent-gold:#f6d57a;
+      --radius-lg:24px;
+      --shadow-soft:0 18px 46px rgba(0,0,0,0.75);
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{
+      background:radial-gradient(circle at top,#181d33 0,#050509 55%);
+      color:var(--text-main);
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",sans-serif;
+    }
+    .page{
+      max-width:430px;
+      margin:0 auto;
+      min-height:100vh;
+      padding:24px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .card{
+      width:100%;
+      background:radial-gradient(circle at top,#21263e,#0f1119);
+      border-radius:28px;
+      padding:26px 20px 22px;
+      border:1px solid rgba(255,255,255,0.12);
+      box-shadow:var(--shadow-soft);
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:-45%;
+      background:
+        radial-gradient(circle at 10% 0,rgba(255,106,200,0.3),transparent 60%),
+        radial-gradient(circle at 90% 10,rgba(246,213,122,0.24),transparent 60%);
+      opacity:.9;
+    }
+    .inner{position:relative;z-index:2;}
+    .code{
+      display:inline-flex;
+      align-items:flex-end;
+      gap:6px;
+      margin-bottom:10px;
+    }
+    .code-main{
+      font-size:40px;
+      font-weight:800;
+      background:linear-gradient(120deg,var(--accent-gold),var(--accent-pink));
+      -webkit-background-clip:text;
+      color:transparent;
+      letter-spacing:4px;
+    }
+    .code-tag{
+      font-size:11px;
+      color:var(--text-sub);
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.2);
+      background:rgba(0,0,0,0.45);
+    }
+    .title{
+      font-size:18px;
+      font-weight:600;
+      margin-bottom:6px;
+    }
+    .subtitle{
+      font-size:13px;
+      color:var(--text-sub);
+      line-height:1.7;
+      margin-bottom:14px;
+    }
+    .error-box{
+      text-align:left;
+      font-size:12px;
+      color:var(--text-sub);
+      background:rgba(0,0,0,0.5);
+      border-radius:14px;
+      padding:10px 12px;
+      margin-bottom:16px;
+      border:1px dashed rgba(255,255,255,0.2);
+      line-height:1.6;
+    }
+    .error-title{
+      color:var(--accent-gold);
+      margin-bottom:4px;
+      font-size:12px;
+    }
+    .btn-main,.btn-sub{
+      width:100%;
+      border-radius:999px;
+      padding:11px 0;
+      border:none;
+      font-size:14px;
+      font-weight:500;
+      margin-bottom:8px;
+    }
+    .btn-main{
+      background:linear-gradient(135deg,var(--accent-pink),var(--accent-gold));
+      color:#050509;
+    }
+    .btn-sub{
+      background:rgba(0,0,0,0.35);
+      color:var(--text-sub);
+      border:1px solid rgba(255,255,255,0.18);
+      font-size:13px;
+    }
+    .bottom{
+      margin-top:8px;
+      font-size:11px;
+      color:var(--text-sub);
+      opacity:.75;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="card">
+    <div class="inner">
+      <div class="code">
+        <div class="code-main">500</div>
+        <div class="code-tag">服务器内部错误（占位）</div>
+      </div>
+      <div class="title">服务器有点累，正在缓一缓（占位）</div>
+      <div class="subtitle">
+        后台服务出现异常，我们的工程师已经收到告警，正在紧急处理。（占位）
+      </div>
+      <div class="error-box">
+        <div class="error-title">技术信息（占位）：</div>
+        • 请求 ID：xxxxxxxxxxxx（占位）<br>
+        • 接口：/api/xxxx（占位）<br>
+        • 时间：2025-01-01 12:34:56（占位）
+      </div>
+      <button class="btn-main">刷新页面重试（占位）</button>
+      <button class="btn-sub">返回首页 / 继续看其它内容（占位）</button>
+      <div class="bottom">如多次出现同样错误，建议截图并在「客服中心」反馈。（占位）</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

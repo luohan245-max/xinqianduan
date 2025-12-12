@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>89.筛选弹层（顶部抽屉式）</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+
+<style>
+:root {
+  --bg: #050509;
+  --card: #0f1119;
+  --card-soft: #151824;
+  --border-soft: #22263a;
+  --text-main: #f7f7fb;
+  --text-sub: #9ea1b6;
+  --accent-pink: #ff6ac8;
+  --accent-gold: #f6d57a;
+  --shadow-soft: 0 18px 46px rgba(0,0,0,0.85);
+  --radius-lg: 22px;
+  --radius-md: 16px;
+  --radius-sm: 999px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at top,#191e34 0,#050509 55%);
+  color:var(--text-main);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",sans-serif;
+}
+
+/* 为了本地单页预览，外面加一层容器 */
+.page{
+  max-width:430px;
+  margin:0 auto;
+  min-height:100vh;
+  background:transparent;
+  position:relative;
+}
+
+/* 半透明遮罩 */
+.filter-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.58);
+  backdrop-filter:blur(10px);
+  display:flex;                /* 默认展示，用于本地看效果；接入业务后可用 display:none 控制 */
+  justify-content:center;
+  align-items:flex-start;
+  z-index:990;
+}
+
+/* 顶部抽屉面板 */
+.filter-panel{
+  width:100%;
+  max-width:430px;
+  margin-top:0;
+  background:linear-gradient(180deg,#151826,#090b13 60%,#050509 100%);
+  border-radius:0 0 24px 24px;
+  box-shadow:var(--shadow-soft);
+  border-bottom:1px solid rgba(255,255,255,0.12);
+  overflow:hidden;
+}
+
+a.close-btn,
+.close-btn,
+.close-btn:link,
+.close-btn:visited,
+.close-btn:hover,
+.close-btn:active {
+  text-decoration: none !important;
+}
+
+/* 顶部栏 */
+.filter-header{
+  padding:12px 14px 8px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.filter-left{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.close-btn{
+  width:26px;
+  height:26px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,0.28);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:14px;
+  color:var(--text-sub);
+}
+.filter-title{
+  font-size:15px;
+  font-weight:600;
+}
+.filter-reset{
+  font-size:12px;
+  color:var(--accent-pink);
+}
+
+/* 顶部小提示条 */
+.filter-tip{
+  font-size:11px;
+  color:var(--text-sub);
+  padding:0 14px 8px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.tip-left{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.tip-dot{
+  width:6px;
+  height:6px;
+  border-radius:999px;
+  background:linear-gradient(135deg,var(--accent-pink),var(--accent-gold));
+  box-shadow:0 0 8px rgba(255,255,255,0.45);
+}
+
+/* 内容区滚动 */
+.filter-body{
+  max-height:70vh;
+  padding:6px 14px 12px;
+  overflow-y:auto;
+}
+
+/* 分组标题 */
+.group{
+  margin-top:10px;
+  padding-bottom:8px;
+  border-bottom:1px dashed rgba(255,255,255,0.06);
+}
+.group:last-of-type{
+  border-bottom:none;
+}
+.group-label-row{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  margin-bottom:6px;
+}
+.group-title{
+  font-size:13px;
+  font-weight:600;
+}
+.group-title.pink{ color:var(--accent-pink); }
+.group-title.gold{ color:var(--accent-gold); }
+.group-sub{
+  font-size:11px;
+  color:var(--text-sub);
+}
+
+/* 筛选标签 */
+.chip-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.chip{
+  padding:6px 11px;
+  border-radius:var(--radius-sm);
+  font-size:12px;
+  color:var(--text-sub);
+  border:1px solid rgba(255,255,255,0.18);
+  background:rgba(0,0,0,0.25);
+}
+.chip.active{
+  color:#1b0a06;
+  font-weight:600;
+  border:none;
+  background:linear-gradient(135deg,var(--accent-pink),var(--accent-gold));
+  box-shadow:0 0 0 1px rgba(255,255,255,0.12);
+}
+
+/* 评分 + 集数区块 */
+.range-row{
+  display:flex;
+  gap:8px;
+  margin-top:4px;
+}
+.range-chip{
+  flex:1;
+  padding:6px 10px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.16);
+  background:rgba(0,0,0,0.25);
+  font-size:11px;
+  color:var(--text-sub);
+}
+.range-chip span{
+  display:block;
+  font-size:12px;
+  color:var(--text-main);
+  margin-bottom:2px;
+}
+
+/* 底部固定按钮条 */
+.filter-footer{
+  padding:9px 14px 12px;
+  border-top:1px solid rgba(255,255,255,0.08);
+  background:radial-gradient(circle at top,#181b2c 0,#050509 65%);
+  display:flex;
+  gap:10px;
+}
+.footer-btn{
+  flex:1;
+  border-radius:999px;
+  padding:10px 0;
+  border:none;
+  font-size:14px;
+  font-weight:600;
+}
+.btn-outline{
+  background:rgba(0,0,0,0.24);
+  border:1px solid rgba(255,255,255,0.26);
+  color:var(--text-main);
+  font-size:13px;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--accent-pink),var(--accent-gold));
+  color:#2c060c;
+}
+
+/* 标签区域下的小说明 */
+.helper-line{
+  margin-top:6px;
+  font-size:11px;
+  color:var(--text-sub);
+  opacity:.8;
+}
+
+/* close-btn 从 a 改为 button 后，清掉 button 默认样式，保持视觉不变 */
+button.close-btn {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.28);
+  padding: 0;
+  cursor: pointer;
+}
+
+/* 全局兜底：防止未来插入 a 出现蓝色/下划线 */
+a {
+  text-decoration: none !important;
+  color: inherit !important;
+  }
+
+  .chip {cursor: pointer;}
+
+</style>
+</head>
+
+<body>
+<div class="page">
+
+  <!-- 顶部抽屉筛选弹层（默认展示态，接业务后可改为通过 JS 控制） -->
+  <div class="filter-overlay">
+    <div class="filter-panel">
+
+      <!-- 顶部栏 -->
+      <div class="filter-header">
+        <div class="filter-left">
+          <button class="close-btn" onclick="history.back()">×</button>
+          <div class="filter-title">筛选与排序（占位）</div>
+        </div>
+        <div class="filter-reset" onclick="history.back()"">重置（占位）</div>
+      </div>
+
+      <!-- 顶部提示 -->
+      <div class="filter-tip">
+        <div class="tip-left">
+          <div class="tip-dot"></div>
+          <span>当前筛选将作用于本分类下所有短剧（占位）</span>
+        </div>
+        <span style="font-size:11px;color:var(--accent-gold);">共 286 部（占位）</span>
+      </div>
+
+      <!-- 内容主体 -->
+      <div class="filter-body">
+
+        <!-- 1. 排序规则 -->
+        <div class="group">
+          <div class="group-label-row">
+            <div class="group-title pink">排序规则（占位）</div>
+            <div class="group-sub">可多次切换，实时生效（占位）</div>
+          </div>
+          <div class="chip-row">
+            <div class="chip active" onclick="history.back()">综合排序（占位）</div>
+            <div class="chip" onclick="history.back()">最新上线（占位）</div>
+            <div class="chip" onclick="history.back()">24 小时热度（占位）</div>
+            <div class="chip" onclick="history.back()">7 日播放量（占位）</div>
+            <div class="chip" onclick="history.back()">完结优先（占位）</div>
+          </div>
+        </div>
+
+        <!-- 2. 题材类型 -->
+        <div class="group">
+          <div class="group-label-row">
+            <div class="group-title gold">题材类型（占位）</div>
+            <div class="group-sub">可多选（占位）</div>
+          </div>
+          <div class="chip-row">
+            <div class="chip active" onclick="history.back()">都市（占位）</div>
+            <div class="chip" onclick="history.back()">古装（占位）</div>
+            <div class="chip" onclick="history.back()">玄幻（占位）</div>
+            <div class="chip" onclick="history.back()">甜宠（占位）</div>
+            <div class="chip" onclick="history.back()">复仇（占位）</div>
+            <div class="chip" onclick="history.back()">家庭（占位）</div>
+            <div class="chip" onclick="history.back()">校园（占位）</div>
+            <div class="chip" onclick="history.back()">悬疑（占位）</div>
+            <div class="chip" onclick="history.back()">职场（占位）</div>
+            <div class="chip" onclick="history.back()">虐恋（占位）</div>
+          </div>
+        </div>
+
+        <!-- 3. 地区 -->
+        <div class="group">
+          <div class="group-label-row">
+            <div class="group-title">地区（占位）</div>
+            <div class="group-sub">优先展示选择地区内容（占位）</div>
+          </div>
+          <div class="chip-row">
+            <div class="chip active" onclick="history.back()">中国大陆（占位）</div>
+            <div class="chip" onclick="history.back()">中国香港 / 台湾（占位）</div>
+            <div class="chip" onclick="history.back()">越南（占位）</div>
+            <div class="chip" onclick="history.back()">泰国（占位）</div>
+            <div class="chip" onclick="history.back()">韩国（占位）</div>
+            <div class="chip" onclick="history.back()">日本（占位）</div>
+            <div class="chip" onclick="history.back()">其他地区（占位）</div>
+          </div>
+        </div>
+
+        <!-- 4. 时长 / 集数 -->
+        <div class="group">
+          <div class="group-label-row">
+            <div class="group-title">剧集体量（占位）</div>
+            <div class="group-sub">按单集时长 & 总集数筛选（占位）</div>
+          </div>
+          <div class="chip-row">
+            <div class="chip active" onclick="history.back()">超短 · 3 分钟内（占位）</div>
+            <div class="chip" onclick="history.back()">短剧 · 3–8 分钟（占位）</div>
+            <div class="chip" onclick="history.back()">长剧 · 8 分钟以上（占位）</div>
+          </div>
+
+          <div class="range-row">
+            <div class="range-chip">
+              <span>集数区间（占位）</span>
+              ≤ 30 集 / 31–60 集 / 60 集以上（占位）
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. 完结状态 -->
+        <div class="group">
+          <div class="group-label-row">
+            <div class="group-title">完结状态（占位）</div>
+            <div class="group-sub">追更党 / 完结党（占位）</div>
+          </div>
+          <div class="chip-row">
+            <div class="chip active" onclick="history.back()">全部（占位）</div>
+            <div class="chip" onclick="history.back()">已完结（占位）</div>
+            <div class="chip" onclick="history.back()">连载中（占位）</div>
+          </div>
+        </div>
+
+        <!-- 6. 付费属性 -->
+        <div class="group">
+          <div class="group-label-row">
+            <div class="group-title">付费属性（占位）</div>
+            <div class="group-sub">免费 / VIP / 解锁（占位）</div>
+          </div>
+          <div class="chip-row">
+            <div class="chip active" onclick="history.back()">全部（占位）</div>
+            <div class="chip" onclick="history.back()">免费观看（占位）</div>
+            <div class="chip" onclick="history.back()">VIP 专享（占位）</div>
+            <div class="chip" onclick="history.back()">付费解锁（占位）</div>
+          </div>
+          <div class="helper-line">
+            说明：不同地区的付费模式可能略有差异，最终以实际支付页为准。（占位）
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 底部按钮区域 -->
+      <div class="filter-footer">
+        <button class="footer-btn btn-outline" onclick="history.back()">清空筛选（占位）</button>
+        <button class="footer-btn btn-primary" onclick="history.back()">应用筛选（占位）</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

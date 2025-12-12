@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>首次使用引导 / 蒙层提示 · 模板</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <style>
+    :root{
+      --bg:#050506;
+      --card:#111218;
+      --card-soft:#101019;
+      --line:#262a3f;
+      --gold:#f5d27a;
+      --pink:#ff7eb3;
+      --text-main:#ffffff;
+      --text-sub:#9ea1b6;
+      --radius-lg:18px;
+      --radius-md:14px;
+      --radius-sm:999px;
+      --shadow-soft:0 18px 40px rgba(0,0,0,0.55);
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html,body{
+      width:100%;
+      height:100%;
+      background:var(--bg);
+      color:var(--text-main);
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",sans-serif;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    body{
+      overflow:hidden; /* 示例里锁死滚动，实际接入可按需调整 */
+    }
+
+    .app{
+      max-width:430px;
+      margin:0 auto;
+      height:100vh;
+      display:flex;
+      flex-direction:column;
+      position:relative;
+      background:radial-gradient(circle at 0 0,rgba(255,255,255,.08),rgba(0,0,0,1));
+    }
+
+    /* ====== 底层示意页面：简单首页结构（仅用来展示蒙层位置） ====== */
+
+    .page-header{
+      height:56px;
+      padding:0 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .header-left{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .logo-ph{
+      width:26px;
+      height:26px;
+      border-radius:999px;
+      background:radial-gradient(circle at 30% 10%,rgba(255,255,255,.18),rgba(0,0,0,1));
+      border:1px solid rgba(245,210,122,.5);
+    }
+    .header-title{
+      font-size:16px;
+      font-weight:600;
+    }
+    .header-right{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .header-icon{
+      width:26px;
+      height:26px;
+      border-radius:999px;
+      background:#0c0d12;
+      border:1px solid rgba(148,163,184,.8);
+      font-size:13px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--text-sub);
+    }
+
+    .fake-content{
+      flex:1;
+      padding:8px 14px 10px;
+      overflow:auto;
+    }
+    .fake-card{
+      margin-top:8px;
+      padding:10px 10px;
+      border-radius:16px;
+      background:var(--card);
+      border:1px solid rgba(38,42,63,.9);
+    }
+    .fake-title{
+      height:14px;
+      width:40%;
+      border-radius:999px;
+      background:#20223a;
+      margin-bottom:6px;
+    }
+    .fake-line{
+      height:9px;
+      border-radius:999px;
+      background:#15172a;
+      margin-bottom:4px;
+    }
+    .fake-line.short{
+      width:60%;
+    }
+    .fake-line.medium{
+      width:75%;
+    }
+    .fake-line.long{
+      width:90%;
+    }
+
+    .bottom-nav{
+      height:60px;
+      padding:6px 16px 10px;
+      border-top:1px solid rgba(24,29,53,.9);
+      background:#050509;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+    }
+    .nav-item{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:2px;
+      font-size:11px;
+      color:var(--text-sub);
+    }
+    .nav-icon{
+      width:22px;
+      height:22px;
+      border-radius:999px;
+      border:1px solid rgba(38,42,63,.9);
+      background:#0c0d12;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:13px;
+    }
+    .nav-item.active .nav-icon{
+      border-color:rgba(245,210,122,.8);
+      background:linear-gradient(135deg,var(--gold),var(--pink));
+      color:#050506;
+    }
+    .nav-item.active{
+      color:var(--gold);
+    }
+
+    /* ====== 新手引导蒙层：通用结构 ====== */
+
+    .guide-overlay{
+      position:absolute;
+      inset:0;
+      background:rgba(0,0,0,0.82);
+      z-index:50;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      pointer-events:auto;
+    }
+
+    /* 高亮区域占位（示例：顶部搜索 / 福利中心入口 / 底部导航） */
+    .guide-highlight-wrap{
+      position:relative;
+      padding:6px 10px 0;
+      pointer-events:none; /* 专门展示高亮区域，实际点击交给原本元素或按钮 */
+    }
+
+    .guide-highlight{
+      border-radius:999px;
+      border:1.5px solid rgba(245,210,122,0.9);
+      box-shadow:0 0 0 2px rgba(245,210,122,0.3),
+                 0 0 30px rgba(245,210,122,0.35);
+    }
+
+    .guide-highlight.rect{
+      border-radius:16px;
+    }
+
+    /* 高亮示例：顶部搜索位置占位 */
+    .guide-highlight.search{
+      position:absolute;
+      left:62px;
+      right:70px;
+      top:10px;
+      height:32px;
+    }
+
+    /* 高亮示例：中间某卡片块占位（例如福利中心入口） */
+    .guide-highlight.card{
+      position:absolute;
+      left:20px;
+      right:20px;
+      top:120px;
+      height:70px;
+    }
+
+    /* 高亮示例：底部导航某个 tab 占位（例如“我的”） */
+    .guide-highlight.bottom-my{
+      position:absolute;
+      left:calc(100% * 3 / 5 + 8px);
+      right:8px;
+      bottom:12px;
+      height:36px;
+      border-radius:999px;
+    }
+
+    /* 底部说明气泡 */
+    .guide-panel{
+      margin:0 14px 18px;
+      padding:12px 14px 14px;
+      border-radius:20px;
+      background:radial-gradient(circle at 0 0,rgba(255,255,255,.10),rgba(10,10,20,1));
+      border:1px solid rgba(245,210,122,0.4);
+      box-shadow:var(--shadow-soft);
+      font-size:13px;
+    }
+    .guide-step-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:6px;
+    }
+    .guide-step-label{
+      font-size:12px;
+      color:var(--text-sub);
+    }
+    .guide-step-label span{
+      color:var(--gold);
+    }
+    .guide-title{
+      font-size:15px;
+      font-weight:600;
+      margin-bottom:4px;
+    }
+    .guide-desc{
+      font-size:12px;
+      color:var(--text-sub);
+      line-height:1.7;
+    }
+    .guide-desc span{
+      color:var(--gold);
+    }
+
+    .guide-actions{
+      margin-top:10px;
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      font-size:12px;
+    }
+    .btn-skip{
+      padding:8px 10px;
+      border-radius:var(--radius-sm);
+      border:1px solid rgba(148,163,184,.9);
+      background:#050509;
+      color:var(--text-sub);
+      flex:1;
+      text-align:center;
+      white-space:nowrap;
+    }
+    .btn-next{
+      padding:8px 10px;
+      border-radius:var(--radius-sm);
+      border:none;
+      background:linear-gradient(135deg,var(--gold),var(--pink));
+      color:#050506;
+      flex:1;
+      text-align:center;
+      white-space:nowrap;
+      font-weight:500;
+    }
+
+    .guide-dots{
+      margin-top:6px;
+      display:flex;
+      justify-content:center;
+      gap:6px;
+    }
+    .guide-dot{
+      width:6px;
+      height:6px;
+      border-radius:999px;
+      background:#27293e;
+    }
+    .guide-dot.active{
+      width:16px;
+      background:linear-gradient(135deg,var(--gold),var(--pink));
+    }
+
+    /* 说明：多个引导步骤默认都写出来，你后续用 JS 控制 display */
+    .guide-overlay.step2,
+    .guide-overlay.step3{
+      display:none; /* 只是示例，实际接入时改成基于 class 切换 */
+    }
+
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ====== 底层示意页面：简单首页结构，用来放蒙层 ====== -->
+
+  <header class="page-header">
+    <div class="header-left">
+      <div class="logo-ph"></div>
+      <div class="header-title">首页示意（占位）</div>
+    </div>
+    <div class="header-right">
+      <div class="header-icon">🔔</div>
+      <div class="header-icon">VIP</div>
+    </div>
+  </header>
+
+  <main class="fake-content">
+    <section class="fake-card">
+      <div class="fake-title"></div>
+      <div class="fake-line long"></div>
+      <div class="fake-line medium"></div>
+      <div class="fake-line short"></div>
+    </section>
+    <section class="fake-card">
+      <div class="fake-title"></div>
+      <div class="fake-line long"></div>
+      <div class="fake-line medium"></div>
+      <div class="fake-line medium"></div>
+    </section>
+    <section class="fake-card">
+      <div class="fake-title"></div>
+      <div class="fake-line long"></div>
+      <div class="fake-line short"></div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav">
+    <div class="nav-item active">
+      <div class="nav-icon">🏠</div>
+      <div>首页（占位）</div>
+    </div>
+    <div class="nav-item">
+      <div class="nav-icon">⭐</div>
+      <div>推荐（占位）</div>
+    </div>
+    <div class="nav-item">
+      <div class="nav-icon">🎁</div>
+      <div>福利（占位）</div>
+    </div>
+    <div class="nav-item">
+      <div class="nav-icon">🕒</div>
+      <div>历史（占位）</div>
+    </div>
+    <div class="nav-item">
+      <div class="nav-icon">👤</div>
+      <div>我的（占位）</div>
+    </div>
+  </nav>
+
+  <!-- ====== 新手引导 · Step 1（示例：顶部搜索） ====== -->
+  <div class="guide-overlay step1">
+    <div class="guide-highlight-wrap">
+      <!-- 高亮顶部搜索区域（示意） -->
+      <div class="guide-highlight search"></div>
+    </div>
+
+    <div class="guide-panel">
+      <div class="guide-step-row">
+        <div class="guide-step-label">步骤 <span>1 / 3</span>（占位）</div>
+      </div>
+      <div class="guide-title">这里是搜索入口（占位）</div>
+      <div class="guide-desc">
+        你可以在这里输入<span>剧名、主角、标签</span>快速找到想看的短剧，
+        也可以点击麦克风使用语音搜索（占位说明）。
+      </div>
+      <div class="guide-actions">
+        <div class="btn-skip">跳过引导（占位）</div>
+        <div class="btn-next">下一步（占位）</div>
+      </div>
+      <div class="guide-dots">
+        <div class="guide-dot active"></div>
+        <div class="guide-dot"></div>
+        <div class="guide-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== 新手引导 · Step 2（示例：中部福利 / 活动入口） ====== -->
+  <div class="guide-overlay step2">
+    <div class="guide-highlight-wrap">
+      <!-- 高亮中间某区域（示意，例如福利中心入口卡片） -->
+      <div class="guide-highlight card rect"></div>
+    </div>
+
+    <div class="guide-panel">
+      <div class="guide-step-row">
+        <div class="guide-step-label">步骤 <span>2 / 3</span>（占位）</div>
+      </div>
+      <div class="guide-title">这里是福利 / 活动入口（占位）</div>
+      <div class="guide-desc">
+        平时的<span>签到、金币任务、限时活动</span>都会集中在这里。
+        建议你每天来这里看一眼，有新活动会在这里优先展示（占位说明）。
+      </div>
+      <div class="guide-actions">
+        <div class="btn-skip">跳过引导（占位）</div>
+        <div class="btn-next">下一步（占位）</div>
+      </div>
+      <div class="guide-dots">
+        <div class="guide-dot"></div>
+        <div class="guide-dot active"></div>
+        <div class="guide-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== 新手引导 · Step 3（示例：底部“我的 / 个人中心”） ====== -->
+  <div class="guide-overlay step3">
+    <div class="guide-highlight-wrap">
+      <!-- 高亮底部“我的”tab 区域（示意） -->
+      <div class="guide-highlight bottom-my"></div>
+    </div>
+
+    <div class="guide-panel">
+      <div class="guide-step-row">
+        <div class="guide-step-label">步骤 <span>3 / 3</span>（占位）</div>
+      </div>
+      <div class="guide-title">这里是个人中心（占位）</div>
+      <div class="guide-desc">
+        你的<span>钱包 & 收益、徽章、团队、VIP 状态</span>都会集中在「我的」中。
+        后续想查看收益或管理账号，都可以从这里进入（占位说明）。
+      </div>
+      <div class="guide-actions">
+        <div class="btn-skip">不再提示（占位）</div>
+        <div class="btn-next">我知道了（占位）</div>
+      </div>
+      <div class="guide-dots">
+        <div class="guide-dot"></div>
+        <div class="guide-dot"></div>
+        <div class="guide-dot active"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

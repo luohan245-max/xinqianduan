@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>消息详情 · 模板（占位）</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <style>
+    :root{
+      --bg:#050506;
+      --card:#111218;
+      --card-soft:#101019;
+      --line:#262a3f;
+      --gold:#f5d27a;
+      --pink:#ff7eb3;
+      --text-main:#ffffff;
+      --text-sub:#9ea1b6;
+      --radius-lg:18px;
+      --radius-md:14px;
+      --radius-sm:999px;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html,body{
+      width:100%;
+      height:100%;
+      background:var(--bg);
+      color:var(--text-main);
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",sans-serif;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    .app{
+      max-width:430px;
+      margin:0 auto;
+      padding-bottom:18px;
+      min-height:100vh;
+    }
+
+    /* 顶部栏 */
+    .page-header{
+      height:56px;
+      padding:0 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      background:linear-gradient(to bottom,rgba(0,0,0,.9),rgba(0,0,0,0));
+    }
+    .header-left{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .back-btn{
+      width:32px;
+      height:32px;
+      border-radius:var(--radius-sm);
+      border:1px solid rgba(245,210,122,.4);
+      background:rgba(0,0,0,.35);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--gold);
+      font-size:18px;
+      flex-shrink:0;
+    }
+    .header-title{
+      font-size:16px;
+      font-weight:600;
+    }
+    .header-right{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:11px;
+      color:var(--text-sub);
+    }
+    .more-btn{
+      width:30px;
+      height:30px;
+      border-radius:var(--radius-sm);
+      border:1px solid rgba(148,163,184,.8);
+      background:#0c0d12;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:16px;
+      color:var(--text-sub);
+    }
+
+    /* 主卡片 */
+    .card{
+      margin:10px 14px;
+      padding:12px 14px 14px;
+      border-radius:var(--radius-lg);
+      background:var(--card);
+      border:1px solid rgba(245,210,122,.12);
+    }
+
+    .msg-title{
+      font-size:17px;
+      font-weight:600;
+      margin-bottom:6px;
+    }
+
+    .msg-meta-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+      font-size:11px;
+      color:var(--text-sub);
+      margin-bottom:6px;
+    }
+
+    .msg-meta-left{
+      display:flex;
+      flex-wrap:wrap;
+      gap:4px 6px;
+      align-items:center;
+    }
+
+    .msg-time{
+      opacity:.9;
+    }
+
+    .msg-tag{
+      padding:2px 8px;
+      border-radius:var(--radius-sm);
+      border:1px solid rgba(148,163,184,.9);
+      background:#0c0d12;
+      font-size:10px;
+      color:#cbd5f5;
+    }
+    .msg-tag.type-system{
+      border-color:rgba(245,210,122,.8);
+      color:var(--gold);
+    }
+    .msg-tag.type-income{
+      border-color:rgba(52,211,153,.8);
+      color:#4ade80;
+    }
+    .msg-tag.type-security{
+      border-color:rgba(248,113,113,.85);
+      color:#fb7185;
+    }
+
+    .msg-status{
+      font-size:10px;
+      color:var(--text-sub);
+    }
+
+    .divider{
+      height:1px;
+      margin:8px 0 10px;
+      background:linear-gradient(to right,rgba(245,210,122,.2),rgba(38,42,63,.8),rgba(255,126,179,.2));
+    }
+
+    .msg-content{
+      font-size:13px;
+      line-height:1.7;
+      color:var(--text-main);
+    }
+    .msg-content p + p{
+      margin-top:6px;
+    }
+    .msg-content .sub{
+      font-size:12px;
+      color:var(--text-sub);
+    }
+
+    .msg-section-title{
+      margin-top:10px;
+      margin-bottom:4px;
+      font-size:13px;
+      font-weight:500;
+    }
+
+    .msg-list{
+      font-size:12px;
+      color:var(--text-sub);
+      padding-left:1em;
+    }
+    .msg-list li{
+      margin:2px 0;
+    }
+
+    /* 关联操作 */
+    .action-block{
+      margin-top:12px;
+      padding-top:10px;
+      border-top:1px dashed rgba(38,42,63,.9);
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .action-title{
+      font-size:12px;
+      color:var(--text-sub);
+    }
+    .action-row{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .btn-primary{
+      flex:1;
+      min-width:0;
+      padding:8px 10px;
+      border-radius:var(--radius-sm);
+      background:linear-gradient(135deg,var(--gold),var(--pink));
+      border:none;
+      font-size:12px;
+      color:#050506;
+      text-align:center;
+      white-space:nowrap;
+    }
+    .btn-outline{
+      flex:1;
+      min-width:0;
+      padding:8px 10px;
+      border-radius:var(--radius-sm);
+      background:#0c0d12;
+      border:1px solid rgba(245,210,122,.5);
+      font-size:12px;
+      color:var(--gold);
+      text-align:center;
+      white-space:nowrap;
+    }
+
+    /* 底部提示 */
+    .tip-block{
+      margin:6px 14px 0;
+      padding:10px 12px;
+      border-radius:var(--radius-lg);
+      border:1px dashed rgba(148,163,184,.8);
+      background:rgba(15,23,42,.96);
+      font-size:11px;
+      color:var(--text-sub);
+    }
+    .tip-block span{
+      color:var(--gold);
+    }
+
+    /* 可点击手感（不影响移动端视觉） */
+    .back-btn,
+    .more-btn,
+    .btn-primary,
+    .btn-outline {
+      cursor: pointer;
+    }
+
+    /* 全局兜底：防止未来插入 a 出现蓝色/下划线 */
+    a {
+      text-decoration: none !important;
+      color: inherit !important;
+    }
+
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- 顶部栏 -->
+  <header class="page-header">
+    <div class="header-left">
+      <button class="back-btn" onclick="history.back()">‹</button>
+      <div class="header-title">消息详情（占位）</div>
+    </div>
+    <div class="header-right">
+      <div class="more-btn" onclick="location.reload()">⋯</div>
+    </div>
+  </header>
+
+  <!-- 消息主卡片 -->
+  <section class="card">
+    <!-- 标题 -->
+    <div class="msg-title">示例消息标题占位 · 今日 DP 收益已到账</div>
+
+    <!-- 元信息：时间 + 类型 + 状态 -->
+    <div class="msg-meta-row">
+      <div class="msg-meta-left">
+        <div class="msg-time">时间：2025-01-15  14:21（占位）</div>
+        <div class="msg-tag type-income">收益通知（占位）</div>
+        <div class="msg-tag type-system">系统消息（占位）</div>
+      </div>
+      <div class="msg-status">状态：已读（占位）</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- 正文内容 -->
+    <div class="msg-content">
+      <p>
+        尊敬的用户，您好。<br/>
+        你在<span>短剧平台 · 徽章 / 看剧 / 任务</span>产生的
+        <span>今日 DP 收益</span>已经完成结算并发放至你的钱包中（本段仅为示意占位）。
+      </p>
+
+      <p class="sub">
+        以下数值为 UI 示例占位，实际接入时将由后端结算系统与资产接口计算并替换：
+      </p>
+
+      <div class="msg-section-title">本次结算概览（占位）</div>
+      <ul class="msg-list">
+        <li>今日总收益：+XX.XX DP（占位）</li>
+        <li>其中 · 看剧奖励：+AA.AA DP（占位）</li>
+        <li>其中 · 任务奖励：+BB.BB DP（占位）</li>
+        <li>其中 · 徽章基础收益：+CC.CC DP（占位）</li>
+        <li>其中 · 徽章涨跌收益：+DD.DD DP（占位）</li>
+      </ul>
+
+      <div class="msg-section-title">你可以在以下位置查看详情（占位）</div>
+      <ul class="msg-list">
+        <li>【钱包 & 收益总览】中查看整体资产变动概览（占位）。</li>
+        <li>【资产流水明细】中查看本次结算对应的每一笔记录（占位）。</li>
+        <li>【徽章中心】中查看徽章收益结构与当前涨跌情况（占位）。</li>
+      </ul>
+    </div>
+
+    <!-- 关联操作按钮 -->
+    <div class="action-block">
+      <div class="action-title">关联操作入口占位：</div>
+      <div class="action-row">
+        <button class="btn-primary" onclick="location.href='33.资产流水明细模板.html'">查看本次收益明细（占位）</button>
+        <button class="btn-outline" onclick="location.href='7.钱包 & 收益总览二级页.html'">前往钱包 & 收益总览（占位）</button>
+      </div>
+      <div class="action-row">
+        <button class="btn-outline" onclick="location.href='33.资产流水明细模板.html'">去资产流水明细（占位）</button>
+        <button class="btn-outline" onclick="location.href='35.徽章中心主页.html'">打开徽章中心（占位）</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 底部提示 -->
+  <section class="tip-block">
+    提示：本页面为<span>消息详情 / 通知详情</span>的 UI 模板，占位内容用于展示
+    「时间、消息类型、正文、多段说明、列表信息以及关联操作按钮」等结构。
+    实际接入时可根据不同的消息类型（收益通知、活动公告、系统维护、账号安全提示等），
+    动态调整标题、标签与正文内容（占位）。
+  </section>
+
+</div>
+</body>
+</html>

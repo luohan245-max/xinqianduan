@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>注册账号 · 短剧平台（占位）</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
+<style>
+:root{
+  --bg:#050506;
+  --card:#111218;
+  --line:#262a3f;
+  --gold:#f5d27a;
+  --pink:#ff7eb3;
+  --text-main:#ffffff;
+  --text-sub:#9ea1b6;
+  --radius:16px;
+}
+
+/* 全局 */
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{
+  width:100%;height:100%;
+  background:var(--bg);
+  color:var(--text-main);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",sans-serif;
+}
+.app{
+  max-width:430px;
+  margin:0 auto;
+  padding-bottom:110px; /* 预留底部按钮 */
+}
+
+/* 顶部栏 */
+.header-bar{
+  height:56px;
+  padding:0 14px;
+  display:flex;
+  align-items:center;
+  background:linear-gradient(to bottom,rgba(0,0,0,.85),rgba(0,0,0,0));
+}
+.icon-btn{
+  width:32px;height:32px;
+  border-radius:999px;
+  background:rgba(0,0,0,.35);
+  border:1px solid rgba(245,210,122,.4);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--gold);
+  font-size:16px;
+}
+.header-title{
+  margin-left:8px;
+  font-size:16px;
+  font-weight:600;
+}
+
+/* 标题区域 */
+.welcome{
+  margin:12px 14px 4px;
+}
+.welcome-title{
+  font-size:20px;
+  font-weight:600;
+  margin-bottom:4px;
+}
+.welcome-sub{
+  font-size:13px;
+  color:var(--text-sub);
+}
+
+/* 卡片 */
+.card{
+  margin:10px 14px;
+  padding:14px;
+  background:var(--card);
+  border-radius:var(--radius);
+  border:1px solid rgba(245,210,122,.12);
+}
+.card-title{
+  font-size:13px;
+  color:var(--text-sub);
+  margin-bottom:8px;
+}
+
+/* 行通用 */
+.row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:10px;
+}
+.row-label{
+  font-size:13px;
+  color:var(--text-sub);
+  flex-shrink:0;
+}
+
+/* 国家选择 */
+.country-box{
+  flex:1;
+  padding:8px 10px;
+  border-radius:999px;
+  background:#0c0d12;
+  border:1px solid rgba(245,210,122,.3);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:13px;
+}
+
+/* 输入框 */
+.input-box{
+  flex:1;
+  padding:8px 10px;
+  border-radius:999px;
+  background:#0c0d12;
+  border:1px solid rgba(245,210,122,.3);
+  color:var(--text-main);
+  font-size:13px;
+}
+.input-box::placeholder{ color:var(--text-sub); }
+
+/* 验证码行 */
+.code-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:4px;
+}
+.code-input{
+  flex:1;
+  padding:8px 10px;
+  border-radius:999px;
+  background:#0c0d12;
+  border:1px solid rgba(245,210,122,.3);
+  color:var(--text-main);
+  font-size:13px;
+}
+.code-btn{
+  padding:8px 10px;
+  border-radius:999px;
+  background:linear-gradient(135deg,var(--gold),var(--pink));
+  border:none;
+  color:#050506;
+  font-size:12px;
+  font-weight:600;
+  white-space:nowrap;
+}
+
+/* 邀请码 */
+.input-box-wide{
+  width:100%;
+  padding:8px 10px;
+  border-radius:999px;
+  background:#0c0d12;
+  border:1px solid rgba(245,210,122,.3);
+  font-size:13px;
+  color:var(--text-main);
+  margin-top:6px;
+}
+
+/* 协议勾选 */
+.agree-row{
+  margin:10px 14px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.check-box{
+  width:18px;height:18px;
+  border-radius:4px;
+  background:#0c0d12;
+  border:1px solid rgba(245,210,122,.4);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--gold);
+  font-size:14px;
+}
+.agree-text{
+  font-size:12px;
+  color:var(--text-sub);
+}
+.agree-text span{
+  color:var(--gold);
+}
+
+/* 底部按钮 */
+.footer-fixed{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  max-width:430px;
+  margin:0 auto;
+  padding:10px 14px 16px;
+  background:rgba(5,5,6,.98);
+  border-top:1px solid rgba(245,210,122,.3);
+}
+.reg-btn{
+  width:100%;
+  padding:12px 14px;
+  border-radius:999px;
+  background:linear-gradient(135deg,var(--gold),var(--pink));
+  color:#050506;
+  text-align:center;
+  font-size:15px;
+  font-weight:600;
+}
+.bottom-text{
+  margin-top:8px;
+  text-align:center;
+  font-size:12px;
+  color:var(--text-sub);
+}
+.bottom-text span{ color:var(--gold); }
+
+.country-box,
+.code-btn,
+.agree-text span,
+.reg-btn,
+.bottom-text span {cursor: pointer;}
+
+</style>
+</head>
+
+<body>
+<div class="app">
+
+  <!-- 顶部栏 -->
+  <div class="header-bar">
+    <!-- 返回：回 19.登录页.html -->
+    <div class="icon-btn" onclick="history.back()">‹</div>
+    <div class="header-title">注册账号（占位）</div>
+  </div>
+
+  <!-- 标题区域 -->
+  <div class="welcome">
+    <div class="welcome-title">创建新账号（占位）</div>
+    <div class="welcome-sub">绑定手机号，保存你的追剧记录（占位）</div>
+  </div>
+
+  <!-- 注册表单 -->
+  <div class="card">
+    <div class="card-title">手机号注册（占位）</div>
+
+    <div class="row">
+      <div class="row-label">国家 / 地区</div>
+      <div class="country-box" onclick="history.back()">
+        <span>越南（+84）占位</span>
+        <span>⌄</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="row-label">手机号</div>
+      <input class="input-box" type="tel" placeholder="请输入手机号（占位）">
+    </div>
+
+    <div class="row" style="flex-direction:column;align-items:flex-start;">
+      <div class="row-label">验证码</div>
+      <div class="code-row">
+        <input class="code-input" type="tel" placeholder="请输入验证码（占位）">
+        <button class="code-btn" onclick="location.href='21.通用验证码验证页.html'">获取验证码（占位）</button>
+      </div>
+    </div>
+
+    <div class="row" style="flex-direction:column;align-items:flex-start;margin-top:8px;">
+      <div class="row-label">邀请码（选填）</div>
+      <input class="input-box-wide" type="text" placeholder="请输入邀请码（占位，可留空）">
+    </div>
+  </div>
+
+  <!-- 协议勾选 -->
+  <div class="agree-row">
+    <div class="check-box">✓</div>
+    <div class="agree-text">
+      我已阅读并同意
+<span onclick="location.href='39.用户协议 / 隐私政策 / 风险声明.html'">《用户协议》</span>
+和
+<span onclick="location.href='39.用户协议 / 隐私政策 / 风险声明.html'">《隐私政策》</span>（占位）
+    </div>
+  </div>
+
+</div>
+
+<!-- 底部按钮 -->
+<div class="footer-fixed">
+  <!-- 完成注册：跳 44.注册成功页.html -->
+  <div class="reg-btn" onclick="location.href='44.注册成功页.html'">完成注册并登录（占位）</div>
+  <div class="bottom-text">
+    已经有账号？<span onclick="location.href='19.登录页.html'">去登录（占位）</span>
+  </div>
+</div>
+
+</body>
+</html>

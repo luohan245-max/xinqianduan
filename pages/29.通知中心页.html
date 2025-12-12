@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>通知中心 · 短剧平台（占位）</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <style>
+    :root{
+      --bg:#050506;
+      --card:#111218;
+      --card-soft:#101019;
+      --line:#262a3f;
+      --gold:#f5d27a;
+      --pink:#ff7eb3;
+      --text-main:#ffffff;
+      --text-sub:#9ea1b6;
+      --radius:16px;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html,body{
+      width:100%;height:100%;
+      background:var(--bg);
+      color:var(--text-main);
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",sans-serif;
+    }
+    .app{
+      max-width:430px;
+      margin:0 auto;
+      padding-bottom:18px;
+    }
+
+    /* 顶部栏 */
+    .header-bar{
+      height:56px;
+      padding:0 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      background:linear-gradient(to bottom,rgba(0,0,0,.9),rgba(0,0,0,0));
+    }
+    .header-left{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .icon-btn{
+      width:32px;height:32px;
+      border-radius:999px;
+      background:rgba(0,0,0,.35);
+      border:1px solid rgba(245,210,122,.4);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--gold);
+      font-size:16px;
+      flex-shrink:0;
+    }
+    .header-title{
+      font-size:16px;
+      font-weight:600;
+    }
+    .header-right{
+      font-size:11px;
+      color:var(--text-sub);
+    }
+    .header-right span{
+      color:var(--gold);
+    }
+
+    /* 顶部说明 */
+    .top-intro{
+      margin:10px 14px 4px;
+    }
+    .top-title{
+      font-size:18px;
+      font-weight:600;
+      margin-bottom:4px;
+    }
+    .top-sub{
+      font-size:12px;
+      color:var(--text-sub);
+    }
+
+    /* 顶部 Tab：全部 / 系统 / 收益 / 团队 / 活动 */
+    .tab-row{
+      margin:8px 14px 0;
+      display:flex;
+      gap:8px;
+      overflow-x:auto;
+      padding-bottom:4px;
+    }
+    .tab{
+      flex:0 0 auto;
+      padding:7px 12px;
+      border-radius:999px;
+      border:1px solid rgba(245,210,122,.25);
+      background:#0c0d12;
+      font-size:12px;
+      color:var(--text-sub);
+      white-space:nowrap;
+    }
+    .tab.active{
+      background:linear-gradient(135deg,var(--gold),var(--pink));
+      color:#050506;
+      border:none;
+    }
+
+    /* 卡片通用 */
+    .card{
+      margin:10px 14px;
+      padding:10px 14px;
+      border-radius:var(--radius);
+      background:var(--card);
+      border:1px solid rgba(245,210,122,.12);
+    }
+    .card-title-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:6px;
+    }
+    .card-title{
+      font-size:14px;
+      font-weight:500;
+    }
+    .card-sub{
+      font-size:12px;
+      color:var(--text-sub);
+    }
+
+    /* 顶部操作（全部已读等） */
+    .op-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-top:4px;
+      font-size:11px;
+      color:var(--text-sub);
+    }
+    .link-btn{
+      color:var(--gold);
+    }
+
+    /* 消息列表 */
+    .section-title{
+      margin:4px 14px 0;
+      font-size:12px;
+      color:var(--text-sub);
+    }
+
+    .msg-item{
+      display:flex;
+      gap:10px;
+      padding:10px 0;
+    }
+    .msg-icon{
+      width:32px;
+      height:32px;
+      border-radius:12px;
+      background:#0c0d12;
+      border:1px solid rgba(245,210,122,.4);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:16px;
+      flex-shrink:0;
+    }
+    .msg-main{
+      flex:1;
+      min-width:0;
+    }
+    .msg-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:4px;
+      margin-bottom:2px;
+    }
+    .msg-title{
+      font-size:13px;
+      font-weight:500;
+    }
+    .msg-time{
+      font-size:11px;
+      color:var(--text-sub);
+      flex-shrink:0;
+    }
+    .msg-tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:4px;
+      margin:2px 0 3px;
+    }
+    .msg-tag{
+      padding:1px 6px;
+      border-radius:999px;
+      border:1px dashed rgba(245,210,122,.35);
+      font-size:10px;
+      color:var(--text-sub);
+    }
+    .msg-tag.type{
+      border-style:solid;
+      color:var(--gold);
+    }
+    .msg-content{
+      font-size:12px;
+      color:var(--text-sub);
+      line-height:1.5;
+    }
+    .msg-footer{
+      margin-top:4px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:11px;
+      color:var(--text-sub);
+    }
+    .msg-footer span.link{
+      color:var(--gold);
+    }
+    .unread-dot{
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      background:linear-gradient(135deg,var(--gold),var(--pink));
+      flex-shrink:0;
+    }
+
+    .line{
+      height:1px;
+      background:var(--line);
+      opacity:.45;
+      margin:8px 0;
+    }
+
+    /* 空状态 */
+    .empty-card{
+      margin:10px 14px;
+      padding:12px 14px;
+      border-radius:var(--radius);
+      border:1px dashed rgba(148,163,184,.7);
+      background:rgba(15,23,42,.9);
+      font-size:12px;
+      color:var(--text-sub);
+    }
+    .empty-card span{
+      color:var(--gold);
+    }
+
+    /* 可点击手感（不影响移动端视觉） */
+    .icon-btn,
+    .tab,
+    .link,
+    .link-btn {
+      cursor: pointer;
+    }
+
+    /* 全局兜底：防止未来插入 a 出现蓝色/下划线 */
+    a {
+      text-decoration: none !important;
+      color: inherit !important;
+    }
+
+    .empty-card span {cursor: pointer;}
+
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- 顶部栏 -->
+  <div class="header-bar">
+    <div class="header-left">
+      <div class="icon-btn" onclick="history.back()">‹</div>
+      <div class="header-title">通知中心（占位）</div>
+    </div>
+    <div class="header-right">
+      今日未读：<span>3 条（占位）</span>
+    </div>
+  </div>
+
+  <!-- 顶部说明 -->
+  <div class="top-intro">
+    <div class="top-title">系统 & 收益 & 团队通知合集（占位）</div>
+    <div class="top-sub">
+      这里集中展示与你账号相关的系统公告、收益变动、团队动态和活动提醒。全部内容为示意占位，后续可接入真实消息流（占位）。
+    </div>
+  </div>
+
+  <!-- 顶部 Tab -->
+  <div class="tab-row">
+    <div class="tab active" onclick="history.back()">全部（占位）</div>
+    <div class="tab" onclick="history.back()">系统公告（占位）</div>
+    <div class="tab" onclick="history.back()">收益通知（占位）</div>
+    <div class="tab" onclick="history.back()">团队动态（占位）</div>
+    <div class="tab" onclick="history.back()">活动 / 福利（占位）</div>
+  </div>
+
+  <!-- 顶部操作卡片 -->
+  <div class="card">
+    <div class="card-title-row">
+      <div class="card-title">通知设置概览（占位）</div>
+      <div class="card-sub">部分开关在「设置 → 播放与通知」中管理（占位）</div>
+    </div>
+    <div class="op-row">
+      <div>当前仅展示最近 <span>30 天</span> 的消息（占位）。</div>
+      <div><span class="link" onclick="history.back()">全部标为已读（占位）</span></div>
+    </div>
+  </div>
+
+  <!-- 今日 section -->
+  <div class="section-title">今天（占位）</div>
+
+  <div class="card">
+    <!-- 消息 1：收益通知 -->
+    <div class="msg-item">
+      <div class="msg-icon">💰</div>
+      <div class="msg-main">
+        <div class="msg-header">
+          <div class="msg-title">今日收益已结算（占位）</div>
+          <div class="msg-time">10:21（占位）</div>
+        </div>
+        <div class="msg-tags">
+          <div class="msg-tag type">收益通知（占位）</div>
+          <div class="msg-tag">钱包 / DP（占位）</div>
+        </div>
+        <div class="msg-content">
+          今日看剧 / 徽章 / 团队收益已结算，合计增加 <span style="color:var(--gold);">XX.XX DP</span>，
+          详细数据可前往「钱包 & 收益总览」查看（占位）。
+        </div>
+        <div class="msg-footer">
+          <div>结算周期：T+1（占位）</div>
+          <div><span class="link" onclick="location.href='7.钱包 & 收益总览二级页.html'">查看收益详情（占位）</span></div>
+        </div>
+      </div>
+      <div class="unread-dot"></div>
+    </div>
+
+    <div class="line"></div>
+
+    <!-- 消息 2：系统公告 -->
+    <div class="msg-item">
+      <div class="msg-icon">📢</div>
+      <div class="msg-main">
+        <div class="msg-header">
+          <div class="msg-title">系统维护公告（占位）</div>
+          <div class="msg-time">09:05（占位）</div>
+        </div>
+        <div class="msg-tags">
+          <div class="msg-tag type">系统公告（占位）</div>
+          <div class="msg-tag">维护通知（占位）</div>
+        </div>
+        <div class="msg-content">
+          为提升整体体验，平台将在 <span style="color:var(--gold);">今晚 02:00–03:00</span> 进行短时维护，
+          期间部分功能可能暂时不可用（占位）。
+        </div>
+        <div class="msg-footer">
+          <div>影响范围：播放 / 充值 / 提现（占位）</div>
+          <div><span class="link" onclick="location.href='36.消息详情页.html'">查看详情（占位）</span></div>
+        </div>
+      </div>
+      <div class="unread-dot"></div>
+    </div>
+
+    <div class="line"></div>
+
+    <!-- 消息 3：活动 / 福利 -->
+    <div class="msg-item">
+      <div class="msg-icon">🎁</div>
+      <div class="msg-main">
+        <div class="msg-header">
+          <div class="msg-title">限时活动 · 连续签到奖励加倍（占位）</div>
+          <div class="msg-time">08:12（占位）</div>
+        </div>
+        <div class="msg-tags">
+          <div class="msg-tag type">活动 / 福利（占位）</div>
+          <div class="msg-tag">福利中心（占位）</div>
+        </div>
+        <div class="msg-content">
+          本周内连续签到达到指定天数，可额外获得 <span style="color:var(--gold);">金币 / 徽章碎片</span>，
+          详情请前往「福利中心」查看规则（占位）。
+        </div>
+        <div class="msg-footer">
+          <div>活动时间：XXXX-XX-XX ~ XXXX-XX-XX（占位）</div>
+          <div><span class="link" onclick="location.href='3.福利中心.html'">去福利中心（占位）</span></div>
+        </div>
+      </div>
+      <div class="unread-dot"></div>
+    </div>
+  </div>
+
+  <!-- 更早 section -->
+  <div class="section-title">更早（占位）</div>
+
+  <div class="card">
+    <!-- 消息 4：团队动态 -->
+    <div class="msg-item">
+      <div class="msg-icon">👥</div>
+      <div class="msg-main">
+        <div class="msg-header">
+          <div class="msg-title">团队新增成员（占位）</div>
+          <div class="msg-time">昨天 21:33（占位）</div>
+        </div>
+        <div class="msg-tags">
+          <div class="msg-tag type">团队动态（占位）</div>
+          <div class="msg-tag">直推用户（占位）</div>
+        </div>
+        <div class="msg-content">
+          你的团队中新增 1 名直推用户，后续产生的合规收益将计入你的团队收益中，
+          具体规则可前往「团队中心」查看（占位）。
+        </div>
+        <div class="msg-footer">
+          <div>团队层级：第 1 层（占位）</div>
+          <div><span class="link" onclick="location.href='22.团队中心页.html'">查看团队详情（占位）</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="line"></div>
+
+    <!-- 消息 5：账号安全 -->
+    <div class="msg-item">
+      <div class="msg-icon">🔐</div>
+      <div class="msg-main">
+        <div class="msg-header">
+          <div class="msg-title">登录提醒（占位）</div>
+          <div class="msg-time">昨天 09:18（占位）</div>
+        </div>
+        <div class="msg-tags">
+          <div class="msg-tag type">账号安全（占位）</div>
+          <div class="msg-tag">登录设备提醒（占位）</div>
+        </div>
+        <div class="msg-content">
+          你的账号在新的设备上登录，如非本人操作，请尽快修改密码并检查登录设备列表（占位）。
+        </div>
+        <div class="msg-footer">
+          <div>登录地区：区域信息占位</div>
+          <div><span class="link" onclick="location.href='47.设置主页面.html'">查看设备管理（占位）</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 空状态（当没有任何消息时可以显示） -->
+  <div class="empty-card">
+    当前没有更多通知记录。新的系统公告、收益结算、团队动态和活动提醒会在这里集中显示，
+    你可以在 <span onclick="location.href='47.设置主页面.html'">「设置 → 播放与通知」</span> 中调整消息接收偏好（占位）。
+  </div>
+
+</div>
+</body>
+</html>

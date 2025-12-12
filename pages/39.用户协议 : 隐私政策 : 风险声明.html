@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>协议 / 隐私 / 风险声明 · 模板</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<style>
+  :root{
+    --bg:#050506;
+    --card:#111218;
+    --line:#262a3f;
+    --gold:#f5d27a;
+    --pink:#ff7eb3;
+    --text-main:#ffffff;
+    --text-sub:#9ea1b6;
+    --radius-lg:18px;
+    --radius-md:14px;
+    --radius-sm:999px;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{
+    width:100%;
+    height:100%;
+    background:var(--bg);
+    color:var(--text-main);
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .app{
+    max-width:430px;
+    margin:0 auto;
+    min-height:100vh;
+    padding-bottom:40px;
+  }
+
+  /* 顶部栏 */
+  .page-header{
+    height:56px;
+    padding:0 14px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:linear-gradient(to bottom,rgba(0,0,0,.9),rgba(0,0,0,0));
+    position:sticky;
+    top:0;
+    z-index:10;
+  }
+  .back-btn{
+    width:32px;
+    height:32px;
+    border-radius:var(--radius-sm);
+    border:1px solid rgba(245,210,122,.45);
+    background:rgba(0,0,0,.35);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    color:var(--gold);
+  }
+  .header-title{
+    font-size:16px;
+    font-weight:600;
+  }
+
+  /* 内容长文 */
+  .content-card{
+    margin:10px 14px;
+    padding:16px 14px 20px;
+    border-radius:var(--radius-lg);
+    background:var(--card);
+    border:1px solid rgba(245,210,122,.12);
+    font-size:13px;
+    line-height:1.75;
+  }
+
+  .chapter-title{
+    font-size:15px;
+    font-weight:600;
+    margin-top:12px;
+    margin-bottom:6px;
+    color:var(--gold);
+  }
+  .paragraph{ 
+    margin-bottom:10px;
+    color:var(--text-main);
+  }
+  .sub{
+    color:var(--text-sub);
+  }
+
+  /* 列表样式 */
+  .list{
+    padding-left:1.2em;
+    margin-bottom:8px;
+  }
+  .list li{
+    margin:4px 0;
+  }
+
+  /* 勾选确认区（部分协议需要） */
+  .confirm-box{
+    margin:20px 14px 0;
+    padding:12px 14px;
+    border-radius:var(--radius-lg);
+    background:#0c0d12;
+    border:1px solid rgba(245,210,122,.25);
+    font-size:13px;
+    color:var(--text-sub);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .checkbox{
+    width:18px;
+    height:18px;
+    border-radius:4px;
+    border:1px solid rgba(245,210,122,.5);
+    flex-shrink:0;
+  }
+
+  .btn-confirm{
+    margin:12px 14px 0;
+    width:calc(100% - 28px);
+    padding:10px 12px;
+    border-radius:var(--radius-sm);
+    background:linear-gradient(135deg,var(--gold),var(--pink));
+    border:none;
+    font-size:14px;
+    color:#050506;
+    font-weight:600;
+    text-align:center;
+  }
+
+  /* 全局：禁用 a 默认蓝色与下划线，保持协议文本视觉统一 */
+  a {
+    text-decoration: none !important;
+    color: inherit !important;
+  }
+
+</style>
+</head>
+
+<body>
+<div class="app">
+
+  <!-- 顶部栏 -->
+  <header class="page-header">
+    <button class="back-btn" onclick="history.back()">‹</button>
+    <div class="header-title">页面标题占位（用户协议 / 隐私政策 / 风险声明）</div>
+  </header>
+
+  <!-- 主体内容 -->
+  <section class="content-card">
+
+    <div class="chapter-title">第一章 · 总则（占位）</div>
+    <p class="paragraph">
+      本文档用于展示长文类协议页面的 UI 结构，包括段落、章节、列表与提示等格式。  
+      所有内容均为占位说明，发布前请替换为实际协议文本（占位）。
+    </p>
+
+    <div class="chapter-title">第二章 · 用户权利与义务（占位）</div>
+    <p class="paragraph sub">
+      以下条款为展示长文结构所用，实际内容需由你的法律/运营团队提供（占位）。
+    </p>
+
+    <ul class="list">
+      <li>1）用户应遵守平台使用规范，不得从事违法违规行为（占位）。</li>
+      <li>2）用户在享受服务的同时，有义务保护自己的账号与数据安全（占位）。</li>
+      <li>3）平台有权对违规行为采取管理措施，包括限制、冻结或终止服务（占位）。</li>
+    </ul>
+
+    <div class="chapter-title">第三章 · 信息收集与使用（占位）</div>
+    <p class="paragraph">此段可用于隐私政策中的数据采集声明（占位）。</p>
+
+    <ul class="list">
+      <li>收集范围包括账号信息、设备信息、使用行为等（占位）。</li>
+      <li>收集目的用于提升服务质量、个性化推荐、安全风控（占位）。</li>
+    </ul>
+
+    <div class="chapter-title">第四章 · 风险提示（占位）</div>
+    <p class="paragraph">
+      此段可用于风险声明，例如：
+      使用数字资产相关功能存在价格波动风险、网络风险、第三方服务风险等（占位）。
+    </p>
+
+    <div class="chapter-title">第五章 · 免责声明（占位）</div>
+    <p class="paragraph">
+      此段可用于说明平台责任边界。例如：
+      因用户自身行为、网络问题、不可抗力导致的损失，平台不承担责任（占位）。
+    </p>
+
+    <div class="chapter-title">第六章 · 协议修改与生效（占位）</div>
+    <p class="paragraph">
+      平台可根据业务变化修改本协议，修改内容将在公布后生效（占位）。
+    </p>
+
+  </section>
+
+  <!-- 确认区（如需要） -->
+  <div class="confirm-box">
+    <div class="checkbox"></div>
+    我已阅读并同意本协议全部内容（占位）
+  </div>
+
+  <button class="btn-confirm" onclick="history.back()">确认并继续（占位）</button>
+
+</div>
+</body>
+</html>

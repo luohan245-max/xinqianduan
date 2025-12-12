@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>短信验证码 · 通用验证页（占位）</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
+<style>
+:root{
+  --bg:#050506;
+  --card:#111218;
+  --line:#262a3f;
+  --gold:#f5d27a;
+  --pink:#ff7eb3;
+  --text-main:#ffffff;
+  --text-sub:#9ea1b6;
+  --radius:16px;
+}
+
+/* 全局 */
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{
+  width:100%;height:100%;
+  background:var(--bg);
+  color:var(--text-main);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",sans-serif;
+}
+.app{
+  max-width:430px;
+  margin:0 auto;
+  padding-bottom:110px; /* 预留底部按钮空间 */
+}
+
+/* 顶部栏 */
+.header-bar{
+  height:56px;
+  padding:0 14px;
+  display:flex;
+  align-items:center;
+  background:linear-gradient(to bottom,rgba(0,0,0,.85),rgba(0,0,0,0));
+}
+.icon-btn{
+  width:32px;height:32px;
+  border-radius:999px;
+  background:rgba(0,0,0,.35);
+  border:1px solid rgba(245,210,122,.4);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--gold);
+  font-size:16px;
+}
+.header-title{
+  margin-left:8px;
+  font-size:16px;
+  font-weight:600;
+}
+
+/* 提示区域 */
+.top-desc{
+  margin:14px 14px 6px;
+}
+.top-main{
+  font-size:16px;
+  font-weight:500;
+  margin-bottom:4px;
+}
+.top-sub{
+  font-size:12px;
+  color:var(--text-sub);
+  line-height:1.6;
+}
+.top-sub span{
+  color:var(--gold);
+}
+
+/* 卡片 */
+.card{
+  margin:10px 14px;
+  padding:16px 14px;
+  background:var(--card);
+  border-radius:var(--radius);
+  border:1px solid rgba(245,210,122,.12);
+}
+
+/* 验证码输入格子 */
+.code-box-wrap{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  margin:10px 0 4px;
+}
+.code-cell{
+  flex:1;
+  max-width:48px;
+  height:48px;
+  border-radius:12px;
+  background:#0c0d12;
+  border:1px solid rgba(245,210,122,.4);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:20px;
+  color:var(--text-main);
+}
+.code-tip{
+  font-size:12px;
+  color:var(--text-sub);
+}
+
+/* 倒计时 + 重发 */
+.resend-row{
+  margin-top:10px;
+  display:flex;
+  justify-content:space-between;
+  font-size:12px;
+}
+.resend-active{
+  color:var(--gold);
+}
+
+/* 底部辅助操作 */
+.helper-bottom{
+  margin:12px 14px 0;
+  font-size:12px;
+  color:var(--text-sub);
+  display:flex;
+  justify-content:space-between;
+}
+.helper-bottom span{
+  color:var(--gold);
+}
+
+/* 底部按钮 */
+.footer-fixed{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  max-width:430px;
+  margin:0 auto;
+  padding:10px 14px 16px;
+  background:rgba(5,5,6,.98);
+  border-top:1px solid rgba(245,210,122,.3);
+}
+.confirm-btn{
+  width:100%;
+  padding:12px 14px;
+  border-radius:999px;
+  background:linear-gradient(135deg,var(--gold),var(--pink));
+  color:#050506;
+  text-align:center;
+  font-size:15px;
+  font-weight:600;
+}
+.footer-tip{
+  margin-top:8px;
+  font-size:11px;
+  color:var(--text-sub);
+  text-align:center;
+}
+
+.icon-btn,
+.resend-active,
+.resend-row div,
+.helper-bottom span,
+.confirm-btn {
+  cursor: pointer;
+}
+
+</style>
+</head>
+
+<body>
+<div class="app">
+
+  <!-- 顶部栏 -->
+  <div class="header-bar">
+    <div class="icon-btn">‹</div>
+    <div class="icon-btn" onclick="history.back()" aria-label="返回">‹</div>
+  </div>
+
+  <!-- 提示区域 -->
+  <div class="top-desc">
+    <div class="top-main">请输入短信验证码（占位）</div>
+    <div class="top-sub">
+      验证码已发送至：<span>+84 ···· ····（占位）</span><br>
+      用于本次登录 / 注册 / 修改手机号操作（占位）。
+    </div>
+  </div>
+
+  <!-- 验证码卡片 -->
+  <div class="card">
+    <div class="code-box-wrap">
+      <div class="code-cell">·</div>
+      <div class="code-cell">·</div>
+      <div class="code-cell">·</div>
+      <div class="code-cell">·</div>
+      <div class="code-cell">·</div>
+      <div class="code-cell">·</div>
+    </div>
+    <div class="code-tip">
+      请在 60 秒内输入收到的 6 位短信验证码（占位）。
+    </div>
+
+    <div class="resend-row">
+      <div class="resend-active" onclick="history.back()">重新发送（59s）占位</div>
+      <div onclick="location.href='26.客服页-帮助中心页.html'">收不到验证码？（占位）</div>
+    </div>
+  </div>
+
+  <!-- 底部辅助操作 -->
+  <div class="helper-bottom">
+    <span onclick="history.back()">更换手机号（占位）</span>
+    <span onclick="history.back()">切换登录方式（占位）</span>
+  </div>
+
+</div>
+
+<!-- 底部按钮 -->
+<div class="footer-fixed">
+  <div class="confirm-btn" onclick="history.back()">确认（占位）</div>
+  <div class="footer-tip">
+    验证失败次数过多可能会暂时限制本手机号登录（占位）。
+  </div>
+</div>
+
+</body>
+</html>

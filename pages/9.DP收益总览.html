@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>DP 收益总览</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <style>
+    :root {
+      --bg: #050506;
+      --bg-card: #111427;
+      --bg-card-soft: #151725;
+      --border-subtle: #262a3f;
+      --gold: #f5d27a;
+      --pink: #ff7eb3;
+      --text-main: #f7f7fb;
+      --text-sub: #9ea1b6;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 999px;
+      --shadow-soft: 0 18px 40px rgba(0,0,0,0.55);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      min-height: 100vh;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      margin: 0 auto;
+      padding-bottom: 16px;
+      position: relative;
+    }
+
+    @media (min-width: 768px) {
+      .app {
+        max-width: 520px;
+        margin: 16px auto;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: var(--shadow-soft);
+      }
+    }
+
+    .page {
+      padding: 12px 16px 24px;
+    }
+
+    /* 顶部栏 */
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 0 10px;
+    }
+
+    .back-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      border: 1px solid rgba(245,210,122,0.4);
+      background:
+        radial-gradient(circle at top, rgba(255,126,179,0.25), transparent 65%),
+        linear-gradient(145deg, rgba(9,10,18,0.96), rgba(12,13,22,0.96));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: var(--gold);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.7);
+      flex-shrink: 0;
+    }
+
+    .page-header-main {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .page-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .page-subtitle {
+      font-size: 12px;
+      color: var(--text-sub);
+    }
+
+    .section-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .section-sub {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    /* 通用卡片 */
+    .card {
+      border-radius: var(--radius-lg);
+      padding: 12px;
+      background:
+        radial-gradient(circle at top left, rgba(255,126,179,0.22), transparent 60%),
+        radial-gradient(circle at bottom right, rgba(245,210,122,0.18), transparent 60%),
+        linear-gradient(160deg, #191d30, #05060c);
+      border: 1px solid rgba(245,210,122,0.35);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.9);
+      margin-bottom: 14px;
+    }
+
+    .card-soft {
+      border-radius: var(--radius-lg);
+      padding: 12px;
+      background: linear-gradient(160deg, #141726, #070811);
+      border: 1px solid rgba(38,42,63,0.95);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.85);
+      margin-bottom: 12px;
+    }
+
+    /* 顶部：DP 总览 */
+    .dp-top-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+
+    .dp-main {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .label-sub {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .dp-value-lg {
+      font-size: 22px;
+      font-weight: 600;
+      background: linear-gradient(135deg, var(--gold), var(--pink));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .dp-sub-row {
+      font-size: 11px;
+      color: var(--text-sub);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .dp-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .dp-pill {
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(245,210,122,0.65);
+      background: rgba(5,5,10,0.95);
+      font-size: 10px;
+      color: var(--gold);
+      white-space: nowrap;
+    }
+
+    .time-filter-row {
+      margin-top: 6px;
+      display: flex;
+      gap: 6px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+    }
+
+    .time-filter-row::-webkit-scrollbar {
+      height: 0;
+    }
+
+    .time-pill {
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(245,210,122,0.4);
+      background: rgba(8,8,14,0.96);
+      font-size: 10px;
+      color: var(--text-sub);
+      white-space: nowrap;
+    }
+
+    .time-pill.is-active {
+      background: linear-gradient(135deg, var(--gold), var(--pink));
+      color: #050506;
+      border: none;
+      box-shadow: 0 0 12px rgba(255,126,179,0.75);
+    }
+
+    /* KPI 区：DP 视角 */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .kpi-item {
+      padding: 6px;
+      border-radius: 10px;
+      background: rgba(9,9,16,0.96);
+      border: 1px solid rgba(38,42,63,0.9);
+      font-size: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .kpi-label {
+      color: var(--text-sub);
+    }
+
+    .kpi-value {
+      font-size: 12px;
+      color: var(--gold);
+    }
+
+    .kpi-item.highlight {
+      background:
+        radial-gradient(circle at top, rgba(255,216,111,0.22), transparent 60%),
+        linear-gradient(160deg, #181c30, #05060c);
+      border-color: rgba(245,210,122,0.7);
+    }
+
+    /* 收益结构：静态 / 动态 / 创作池 / 团队 / 活动 / 其他 */
+    .chart-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .ph-chart-circle {
+      flex-shrink: 0;
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 30% 20%, rgba(255,216,111,0.3), transparent 60%),
+        conic-gradient(
+          rgba(245,210,122,0.95) 0deg 80deg,
+          rgba(255,126,179,0.95) 80deg 140deg,
+          rgba(79,70,229,0.9) 140deg 190deg,
+          rgba(45,212,191,0.9) 190deg 240deg,
+          rgba(244,114,182,0.9) 240deg 290deg,
+          rgba(148,163,184,0.9) 290deg 360deg
+        );
+      box-shadow: 0 0 22px rgba(255,216,111,0.9);
+      position: relative;
+    }
+
+    .ph-chart-circle::after {
+      content: "";
+      position: absolute;
+      inset: 26%;
+      border-radius: 50%;
+      background: rgba(5,5,10,0.95);
+      box-shadow: 0 0 16px rgba(0,0,0,0.8);
+    }
+
+    .chart-legend {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 11px;
+    }
+
+    .legend-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .legend-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-sub);
+    }
+
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .legend-value {
+      color: var(--gold);
+      font-size: 11px;
+    }
+
+    .legend-tag {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    /* 释放节奏占位 */
+    .chart-tabs {
+      display: flex;
+      justify-content: flex-start;
+      gap: 6px;
+      margin-bottom: 8px;
+      font-size: 10px;
+    }
+
+    .chart-tab-pill {
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(245,210,122,0.4);
+      background: rgba(8,8,14,0.96);
+      color: var(--text-sub);
+      white-space: nowrap;
+    }
+
+    .chart-tab-pill.is-active {
+      background: linear-gradient(135deg, var(--gold), var(--pink));
+      color: #050506;
+      border: none;
+      box-shadow: 0 0 12px rgba(255,126,179,0.75);
+    }
+
+    .ph-chart-line {
+      width: 100%;
+      height: 120px;
+      border-radius: 14px;
+      background:
+        linear-gradient(180deg, rgba(255,126,179,0.16), transparent),
+        linear-gradient(135deg, #1a1d30, #05060c);
+      border: 1px solid rgba(38,42,63,0.9);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.9);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .unlock-list {
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .unlock-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .unlock-label {
+      white-space: nowrap;
+    }
+
+    .unlock-meta {
+      text-align: right;
+    }
+
+    /* 净增模型 */
+    .net-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .net-card {
+      padding: 6px;
+      border-radius: 12px;
+      background: rgba(9,9,16,0.96);
+      border: 1px solid rgba(38,42,63,0.9);
+      font-size: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .net-card.highlight {
+      background:
+        radial-gradient(circle at top, rgba(255,216,111,0.22), transparent 60%),
+        linear-gradient(160deg, #181c30, #05060c);
+      border-color: rgba(245,210,122,0.7);
+    }
+
+    .net-label {
+      color: var(--text-sub);
+    }
+
+    .net-value {
+      font-size: 12px;
+      color: var(--gold);
+    }
+
+    .net-tag {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    /* 明细筛选 + 列表 */
+    .filter-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .filter-left {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      overflow-x: auto;
+    }
+
+    .filter-left::-webkit-scrollbar {
+      height: 0;
+    }
+
+    .filter-pill {
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(245,210,122,0.4);
+      background: rgba(8,8,14,0.96);
+      font-size: 10px;
+      white-space: nowrap;
+    }
+
+    .filter-pill.is-active {
+      background: linear-gradient(135deg, var(--gold), var(--pink));
+      color: #050506;
+      border: none;
+    }
+
+    .filter-right {
+      font-size: 10px;
+      color: var(--gold);
+      white-space: nowrap;
+      margin-left: 6px;
+    }
+
+    .record-list {
+      margin-top: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .record-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 8px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(160deg, #141726, #070811);
+      border: 1px solid rgba(38,42,63,0.95);
+      font-size: 11px;
+    }
+
+    .record-main {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .record-title {
+      font-size: 12px;
+    }
+
+    .record-meta {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    .record-amount {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .amount-positive {
+      color: var(--gold);
+      font-size: 12px;
+    }
+
+    .amount-negative {
+      color: #f97373;
+      font-size: 12px;
+    }
+
+    .amount-type {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    /* 底部入口 */
+    .quick-grid {
+      margin-top: 4px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .quick-item {
+      padding: 8px;
+      border-radius: 14px;
+      background: linear-gradient(160deg, #151827, #070811);
+      border: 1px solid rgba(38,42,63,0.9);
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.85);
+    }
+
+    .quick-label {
+      font-size: 11px;
+    }
+
+    .quick-desc {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    .quick-tag {
+      margin-top: 2px;
+      font-size: 10px;
+      color: var(--gold);
+    }
+
+    /* 全局：禁用 a 标签默认下划线与默认蓝色，保持和父级一致 */
+    a {
+      text-decoration: none !important;
+      color: inherit !important;
+    }
+
+    /* quick-item 改为 a 后，保持原有布局表现 */
+    a.quick-item { display: flex; }
+
+  </style>
+</head>
+<body>
+  <div class="app">
+    <main class="page" id="page-dp-overview">
+      <!-- 顶部栏 -->
+      <header class="page-header">
+        <button class="back-btn" onclick="history.back()">‹</button>
+        <div class="page-header-main">
+          <div class="page-title">DP 收益总览</div>
+          <div class="page-subtitle">专门针对 DP 的持仓 / 释放 / 收益 / 明细 可视化占位</div>
+        </div>
+      </header>
+
+      <!-- 一、DP 当前概览 -->
+      <section class="card">
+        <div class="section-title-row">
+          <div class="section-title">当前 DP 概览</div>
+          <div class="section-sub">持有 DP / 可用 / 锁定 / 待释放 占位</div>
+        </div>
+
+        <div class="dp-top-row">
+          <div class="dp-main">
+            <div class="label-sub">当前持有 DP 占位</div>
+            <div class="dp-value-lg">0.0000 占位</div>
+            <div class="dp-sub-row">
+              <span>可用 DP 占位</span>
+              <span>锁定 / 冻结 DP 占位</span>
+              <span>待释放 DP 占位</span>
+            </div>
+          </div>
+          <div class="dp-right">
+            <span class="dp-pill">DP 价格 占位</span>
+            <span class="dp-pill">折算价值 占位</span>
+          </div>
+        </div>
+
+        <div class="time-filter-row">
+          <button class="time-pill is-active">今日</button>
+          <button class="time-pill">昨日</button>
+          <button class="time-pill">近 7 日</button>
+          <button class="time-pill">近 30 日</button>
+          <button class="time-pill">自定义时间</button>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi-item">
+            <div class="kpi-label">今日 DP 收益</div>
+            <div class="kpi-value">0.0000 占位</div>
+          </div>
+          <div class="kpi-item">
+            <div class="kpi-label">昨日 DP 收益</div>
+            <div class="kpi-value">0.0000 占位</div>
+          </div>
+          <div class="kpi-item">
+            <div class="kpi-label">近 7 日累计</div>
+            <div class="kpi-value">0.0000 占位</div>
+          </div>
+          <div class="kpi-item">
+            <div class="kpi-label">近 30 日累计</div>
+            <div class="kpi-value">0.0000 占位</div>
+          </div>
+          <div class="kpi-item highlight">
+            <div class="kpi-label">历史总 DP 收益</div>
+            <div class="kpi-value">0.0000 占位</div>
+          </div>
+          <div class="kpi-item">
+            <div class="kpi-label">历史总提现 DP</div>
+            <div class="kpi-value">0.0000 占位</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 二、DP 收益结构 -->
+      <section class="card-soft">
+        <div class="section-title-row">
+          <div class="section-title">DP 收益结构占位</div>
+          <div class="section-sub">按来源拆分：静态 / 动态 / 创作池 / 团队 / 活动 / 其他</div>
+        </div>
+        <div class="chart-row">
+          <div class="ph-chart-circle"></div>
+          <div class="chart-legend">
+            <div class="legend-item">
+              <div class="legend-left">
+                <span class="legend-dot" style="background:#f5d27a;"></span>
+                <span>静态收益</span>
+              </div>
+              <span class="legend-value">0.0000 占位</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-left">
+                <span class="legend-dot" style="background:#ff7eb3;"></span>
+                <span>动态收益</span>
+              </div>
+              <span class="legend-value">0.0000 占位</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-left">
+                <span class="legend-dot" style="background:#4f46e5;"></span>
+                <span>创作池释放</span>
+              </div>
+              <span class="legend-value">0.0000 占位</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-left">
+                <span class="legend-dot" style="background:#14b8a6;"></span>
+                <span>团队收益</span>
+              </div>
+              <span class="legend-value">0.0000 占位</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-left">
+                <span class="legend-dot" style="background:#f472b6;"></span>
+                <span>活动奖励</span>
+              </div>
+              <span class="legend-value">0.0000 占位</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-left">
+                <span class="legend-dot" style="background:#9ca3af;"></span>
+                <span>其他</span>
+              </div>
+              <span class="legend-value">0.0000 占位</span>
+            </div>
+            <div class="legend-tag">* 图表为 DP 维度的结构占位；实际数据由接口返回计算。</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 三、DP 释放节奏 & 解锁曲线 -->
+      <section class="card-soft">
+        <div class="section-title-row">
+          <div class="section-title">DP 释放节奏占位</div>
+          <div class="section-sub">未来一段时间可释放 / 解锁 DP 曲线占位</div>
+        </div>
+        <div class="chart-tabs">
+          <span class="chart-tab-pill is-active">未来 30 天</span>
+          <span class="chart-tab-pill">未来 90 天</span>
+          <span class="chart-tab-pill">未来 180 天</span>
+        </div>
+        <div class="ph-chart-line"></div>
+        <div class="unlock-list">
+          <div class="unlock-item">
+            <span class="unlock-label">锁仓计划 A 占位</span>
+            <span class="unlock-meta">剩余 X 天 · 待释放 Y DP 占位</span>
+          </div>
+          <div class="unlock-item">
+            <span class="unlock-label">创作池释放计划 占位</span>
+            <span class="unlock-meta">预计每日 Z DP 占位</span>
+          </div>
+          <div class="unlock-item">
+            <span class="unlock-label">活动奖励待发放 占位</span>
+            <span class="unlock-meta">T+N 日到账 占位</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 四、DP 净增模型（获得 / 消耗 / 净增） -->
+      <section class="card-soft">
+        <div class="section-title-row">
+          <div class="section-title">DP 净增情况占位</div>
+          <div class="section-sub">最近一段时间内的获得 / 消耗 / 净增加 占位</div>
+        </div>
+        <div class="net-row">
+          <div class="net-card">
+            <div class="net-label">累计获得 DP</div>
+            <div class="net-value">0.0000 占位</div>
+            <div class="net-tag">收益 + 释放 + 活动 占位</div>
+          </div>
+          <div class="net-card">
+            <div class="net-label">累计消耗 / 提现</div>
+            <div class="net-value">0.0000 占位</div>
+            <div class="net-tag">提现 + 手续费 + 内部消费 占位</div>
+          </div>
+          <div class="net-card highlight">
+            <div class="net-label">净增加 DP</div>
+            <div class="net-value">0.0000 占位</div>
+            <div class="net-tag">获得 - 消耗 占位</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 五、DP 收益趋势 & 类型对比 -->
+      <section class="card-soft">
+        <div class="section-title-row">
+          <div class="section-title">DP 收益趋势占位</div>
+          <div class="section-sub">仅展示 DP 维度的收益变化和类型对比</div>
+        </div>
+        <div class="chart-tabs">
+          <span class="chart-tab-pill is-active">收益总趋势</span>
+          <span class="chart-tab-pill">静态 vs 动态</span>
+          <span class="chart-tab-pill">团队贡献占比</span>
+        </div>
+        <div class="ph-chart-line"></div>
+      </section>
+
+      <!-- 六、DP 明细记录 -->
+      <section class="card-soft">
+        <div class="section-title-row">
+          <div class="section-title">DP 明细记录占位</div>
+          <div class="section-sub">所有与 DP 相关的收益 / 释放 / 提现流水</div>
+        </div>
+        <div class="filter-row">
+          <div class="filter-left">
+            <span class="filter-pill is-active">全部</span>
+            <span class="filter-pill">收益</span>
+            <span class="filter-pill">提现</span>
+            <span class="filter-pill">静态</span>
+            <span class="filter-pill">动态</span>
+            <span class="filter-pill">创作池</span>
+            <span class="filter-pill">团队</span>
+            <span class="filter-pill">活动</span>
+          </div>
+          <div class="filter-right">高级筛选占位 →</div>
+        </div>
+
+        <div class="record-list">
+          <article class="record-item">
+            <div class="record-main">
+              <div class="record-title">静态收益 · 文案占位</div>
+              <div class="record-meta">时间占位 · 来源占位（持仓 / 锁仓规则等）</div>
+            </div>
+            <div class="record-amount">
+              <span class="amount-positive">+0.0000 DP</span>
+              <span class="amount-type">静态收益 占位</span>
+            </div>
+          </article>
+
+          <article class="record-item">
+            <div class="record-main">
+              <div class="record-title">动态收益 · 文案占位</div>
+              <div class="record-meta">时间占位 · 团队 / 推广来源占位</div>
+            </div>
+            <div class="record-amount">
+              <span class="amount-positive">+0.0000 DP</span>
+              <span class="amount-type">动态收益 占位</span>
+            </div>
+          </article>
+
+          <article class="record-item">
+            <div class="record-main">
+              <div class="record-title">创作池释放 · 文案占位</div>
+              <div class="record-meta">时间占位 · 剧集 / 创作池规则占位</div>
+            </div>
+            <div class="record-amount">
+              <span class="amount-positive">+0.0000 DP</span>
+              <span class="amount-type">创作池释放 占位</span>
+            </div>
+          </article>
+
+          <article class="record-item">
+            <div class="record-main">
+              <div class="record-title">提现记录 · 文案占位</div>
+              <div class="record-meta">时间占位 · 提现渠道占位</div>
+            </div>
+            <div class="record-amount">
+              <span class="amount-negative">-0.0000 DP</span>
+              <span class="amount-type">提现 占位</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 七、关联页面入口 -->
+      <section class="card-soft">
+        <div class="section-title-row">
+          <div class="section-title">关联面板入口占位</div>
+          <div class="section-sub">与钱包 / 徽章 / 团队 / 计算器联动</div>
+        </div>
+        <div class="quick-grid">
+          <a class="quick-item" href="7.钱包%20%26%20收益总览二级页.html">
+            <div class="quick-label">返回钱包总览</div>
+            <div class="quick-desc">回到整体资产仪表盘视角</div>
+            <div class="quick-tag">钱包 & 收益总览 占位 →</div>
+          </a>
+         <a class="quick-item" href="8.徽章收益可视化.html">
+            <div class="quick-label">徽章收益可视化</div>
+            <div class="quick-desc">查看不同徽章带来的 DP 收益贡献</div>
+            <div class="quick-tag">徽章收益页 占位 →</div>
+          </a>
+          <a class="quick-item" href="11.团队收益总览.html">
+            <div class="quick-label">团队收益总览</div>
+            <div class="quick-desc">按直推 / 间推维度查看团队贡献</div>
+            <div class="quick-tag">团队收益页 占位 →</div>
+          </a>
+          <a class="quick-item" href="10.徽章收益计算器.html">
+            <div class="quick-label">徽章收益计算器</div>
+            <div class="quick-desc">模拟不同徽章阵容下的 DP 收益预估</div>
+            <div class="quick-tag">计算器页 占位 →</div>
+          </a>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

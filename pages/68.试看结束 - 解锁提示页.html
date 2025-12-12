@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>试看结束 - 解锁提示</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+
+  <style>
+    :root {
+      --bg: #050509;
+      --card: #0f1119;
+      --card-soft: #151824;
+      --text-main: #f7f7fb;
+      --text-sub: #9ea1b6;
+      --accent-pink: #ff6ac8;
+      --accent-gold: #f6d57a;
+      --accent-blue: #2575ff;
+      --shadow-soft: 0 18px 46px rgba(0,0,0,0.8);
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --radius-sm: 12px;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      background: radial-gradient(circle at top, #191e34 0, #050509 55%);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+    }
+
+    /* 整个页面当成全屏遮罩使用，可以直接嵌在播放器上方 */
+    .page {
+      max-width: 430px;
+      margin: 0 auto;
+      min-height: 100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 24px 16px;
+    }
+
+    .overlay-bg {
+      position:fixed;
+      inset:0;
+      background: radial-gradient(circle at top,rgba(0,0,0,0.7),rgba(0,0,0,0.95));
+      backdrop-filter: blur(10px);
+      z-index:-1;
+    }
+
+    .card {
+      width:100%;
+      background: radial-gradient(circle at top,#222840,#0f1119);
+      border-radius: var(--radius-lg);
+      padding: 22px 18px 18px;
+      border:1px solid rgba(255,255,255,0.14);
+      box-shadow: var(--shadow-soft);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .card::before {
+      content:"";
+      position:absolute;
+      inset:-45%;
+      background:
+        radial-gradient(circle at 10% 0,rgba(255,106,200,0.32),transparent 70%),
+        radial-gradient(circle at 85% 10%,rgba(246,213,122,0.22),transparent 70%);
+      opacity:0.95;
+    }
+
+    .inner {
+      position:relative;
+      z-index:2;
+    }
+
+    /* 顶部小标签条 */
+    .pill-row {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:10px;
+    }
+    .pill-left {
+      display:flex;
+      gap:6px;
+      align-items:center;
+    }
+    .pill {
+      padding:3px 8px;
+      border-radius:999px;
+      font-size:11px;
+      background:rgba(0,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.16);
+      color:var(--text-sub);
+    }
+    .pill.vip {
+      background:linear-gradient(135deg,var(--accent-gold),#f4a94f);
+      border:none;
+      color:#3b2105;
+      font-weight:600;
+    }
+
+    .pill-right {
+      font-size:11px;
+      color:var(--text-sub);
+    }
+
+    /* 标题 + 剧集信息 */
+    .title {
+      font-size:18px;
+      font-weight:600;
+      margin-bottom:4px;
+    }
+    .subtitle {
+      font-size:13px;
+      color:var(--text-sub);
+      line-height:1.7;
+      margin-bottom:14px;
+    }
+
+    .episode-info {
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:14px;
+    }
+    .ep-thumb {
+      width:64px;
+      height:90px;
+      border-radius:16px;
+      background:linear-gradient(135deg,#3a4265,#151824);
+      border:1px solid rgba(255,255,255,0.14);
+      box-shadow:0 10px 26px rgba(0,0,0,0.8);
+    }
+    .ep-text {
+      flex:1;
+      font-size:12px;
+      color:var(--text-sub);
+      line-height:1.6;
+    }
+    .ep-text-title {
+      font-size:13px;
+      color:var(--text-main);
+      margin-bottom:2px;
+    }
+    .ep-tag {
+      display:inline-block;
+      padding:2px 8px;
+      border-radius:999px;
+      font-size:11px;
+      color:var(--accent-pink);
+      background:rgba(0,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.18);
+      margin-top:2px;
+    }
+
+    /* 倒计时 / 试看信息 */
+    .trial-box {
+      margin-bottom:16px;
+      padding:10px 10px 9px;
+      border-radius: var(--radius-md);
+      background: rgba(0,0,0,0.45);
+      border: 1px solid rgba(255,255,255,0.16);
+      font-size:12px;
+      color:var(--text-sub);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+    }
+    .trial-left {
+      text-align:left;
+    }
+    .trial-highlight {
+      color:var(--accent-gold);
+      font-weight:600;
+    }
+    .trial-right {
+      padding:4px 10px;
+      border-radius:999px;
+      background:rgba(0,0,0,0.55);
+      border:1px solid rgba(255,255,255,0.2);
+      font-size:11px;
+    }
+
+    /* 解锁方式列表 */
+    .unlock-title {
+      font-size:13px;
+      margin-bottom:8px;
+    }
+
+    .unlock-list {
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      margin-bottom:12px;
+    }
+
+    .unlock-item {
+      border-radius: var(--radius-md);
+      padding:10px 10px;
+      background:rgba(0,0,0,0.45);
+      border:1px solid rgba(255,255,255,0.14);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      font-size:12px;
+    }
+
+    .unlock-left {
+      text-align:left;
+    }
+    .unlock-main {
+      font-size:13px;
+      font-weight:600;
+    }
+    .unlock-tag {
+      display:inline-block;
+      margin-top:2px;
+      padding:1px 7px;
+      border-radius:999px;
+      font-size:11px;
+      background:rgba(0,0,0,0.4);
+      border:1px solid rgba(255,255,255,0.2);
+      color:var(--accent-pink);
+    }
+
+    .unlock-right {
+      text-align:right;
+      min-width:90px;
+    }
+    .unlock-price {
+      font-size:13px;
+      color:var(--accent-gold);
+      font-weight:600;
+    }
+    .unlock-sub {
+      font-size:11px;
+      color:var(--text-sub);
+    }
+
+    /* 主操作按钮 + 次操作按钮 */
+    .btn-main, .btn-secondary {
+      width:100%;
+      border-radius:999px;
+      padding:11px 0;
+      border:none;
+      font-size:14px;
+      font-weight:600;
+      margin-top:8px;
+    }
+    .btn-main {
+      background:linear-gradient(135deg,var(--accent-pink),var(--accent-gold));
+      color:#050509;
+    }
+    .btn-secondary {
+      background:rgba(0,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.18);
+      color:var(--text-sub);
+      font-size:13px;
+    }
+
+    .tip-text {
+      margin-top:8px;
+      font-size:11px;
+      color:var(--text-sub);
+      opacity:.75;
+    }
+
+    .link-row {
+      margin-top:10px;
+      font-size:11px;
+      color:var(--text-sub);
+      display:flex;
+      justify-content:center;
+      gap:12px;
+    }
+    .link-row span {
+      text-decoration:underline;
+      text-underline-offset:2px;
+    }
+  </style>
+</head>
+
+<body>
+<div class="overlay-bg"></div>
+
+<div class="page">
+  <div class="card">
+    <div class="inner">
+
+      <!-- 顶部小标签 -->
+      <div class="pill-row">
+        <div class="pill-left">
+          <div class="pill vip">VIP 专属优先（占位）</div>
+          <div class="pill">试看已结束（占位）</div>
+        </div>
+        <div class="pill-right">
+          剧集 · 第 3 集（占位）
+        </div>
+      </div>
+
+      <!-- 标题 -->
+      <div class="title">继续看需要解锁本集内容（占位）</div>
+      <div class="subtitle">
+        你已完成本集试看时长，解锁后可继续观看后续剧情，不再打断。（占位）
+      </div>
+
+      <!-- 剧集信息 -->
+      <div class="episode-info">
+        <div class="ep-thumb"></div>
+        <div class="ep-text">
+          <div class="ep-text-title">短剧标题占位 · 狗血复仇系（占位）</div>
+          已观看：试看 60 秒 / 本集约 8 分钟（占位）<br/>
+          当前进度：第 3 集 · 已解锁 2 集（占位）<br/>
+          <span class="ep-tag">都市 · 甜虐 · 反转（占位）</span>
+        </div>
+      </div>
+
+      <!-- 试看信息 + 倒计时占位 -->
+      <div class="trial-box">
+        <div class="trial-left">
+          <span class="trial-highlight">试看已用完（占位）</span><br/>
+          解锁后可完整观看本集，并同步保存观影进度。（占位）
+        </div>
+        <div class="trial-right">
+          跳过提示：00:08（占位）
+        </div>
+      </div>
+
+      <!-- 解锁方式 -->
+      <div class="unlock-title">选择一种方式解锁本集（占位）：</div>
+
+      <div class="unlock-list">
+        <!-- 方式 1：开通 VIP -->
+        <div class="unlock-item">
+          <div class="unlock-left">
+            <div class="unlock-main">开通 VIP 畅看全站（占位）</div>
+            <div class="unlock-tag">推荐 · 解锁本剧及更多短剧（占位）</div>
+          </div>
+          <div class="unlock-right">
+            <div class="unlock-price">首月 XX DP（占位）</div>
+            <div class="unlock-sub">随时取消 · 自动续费可关闭（占位）</div>
+          </div>
+        </div>
+
+        <!-- 方式 2：单集解锁（DP） -->
+        <div class="unlock-item">
+          <div class="unlock-left">
+            <div class="unlock-main">使用 DP 解锁本集（占位）</div>
+            <div class="unlock-tag">单集解锁 · 支持边看边解锁（占位）</div>
+          </div>
+          <div class="unlock-right">
+            <div class="unlock-price">0.02 DP / 集（占位）</div>
+            <div class="unlock-sub">当前余额：0.56 DP（占位）</div>
+          </div>
+        </div>
+
+        <!-- 方式 3：整剧解锁（钻石/徽章等） -->
+        <div class="unlock-item">
+          <div class="unlock-left">
+            <div class="unlock-main">使用钻石解锁本剧全集（占位）</div>
+            <div class="unlock-tag">一次性解锁 · 支持回看（占位）</div>
+          </div>
+          <div class="unlock-right">
+            <div class="unlock-price">8 钻石（占位）</div>
+            <div class="unlock-sub">剩余：20 钻石（占位）</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 主按钮 + 次按钮 -->
+      <button class="btn-main">立即解锁并继续播放（占位）</button>
+      <button class="btn-secondary">暂不解锁，返回上一页（占位）</button>
+
+      <div class="tip-text">
+        解锁成功后将自动继续播放当前集数，并在「我的收藏 / 历史」中保留记录。（占位）
+      </div>
+
+      <div class="link-row">
+        <span>查看 VIP 权益说明（占位）</span>
+        <span>解锁 / 支付相关协议（占位）</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>

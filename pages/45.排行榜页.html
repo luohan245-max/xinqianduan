@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>排行榜页 · 模板</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <style>
+    :root{
+      --bg:#050506;
+      --card:#111218;
+      --card-soft:#101019;
+      --line:#262a3f;
+      --gold:#f5d27a;
+      --pink:#ff7eb3;
+      --text-main:#ffffff;
+      --text-sub:#9ea1b6;
+      --radius-lg:20px;
+      --radius-md:14px;
+      --radius-sm:999px;
+      --shadow-soft:0 18px 40px rgba(0,0,0,0.6);
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html,body{
+      width:100%;
+      height:100%;
+      background:var(--bg);
+      color:var(--text-main);
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",sans-serif;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    .app{
+      max-width:430px;
+      margin:0 auto;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      padding-bottom:18px;
+    }
+
+    /* 顶部栏 */
+    .page-header{
+      height:56px;
+      padding:0 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      background:linear-gradient(to bottom,rgba(0,0,0,.95),rgba(0,0,0,0));
+      position:sticky;
+      top:0;
+      z-index:10;
+    }
+    .header-left{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .back-btn{
+      width:32px;
+      height:32px;
+      border-radius:var(--radius-sm);
+      border:1px solid rgba(245,210,122,.45);
+      background:rgba(0,0,0,.35);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+      color:var(--gold);
+      flex-shrink:0;
+    }
+    .header-title{
+      font-size:16px;
+      font-weight:600;
+    }
+    .header-right{
+      font-size:11px;
+      color:var(--text-sub);
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .range-pill{
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,.8);
+      font-size:11px;
+      background:#050508;
+    }
+
+    /* Tab 区 */
+    .tab-bar{
+      padding:6px 14px 0;
+      display:flex;
+      gap:8px;
+      overflow-x:auto;
+      scrollbar-width:none;
+    }
+    .tab-bar::-webkit-scrollbar{display:none;}
+    .tab{
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      background:#111218;
+      border:1px solid rgba(38,42,63,.9);
+      color:var(--text-sub);
+      white-space:nowrap;
+      flex-shrink:0;
+    }
+    .tab.active{
+      background:linear-gradient(135deg,var(--gold),var(--pink));
+      border:none;
+      color:#050506;
+      font-weight:500;
+    }
+
+    /* Top 3 卡片 */
+    .top3-wrap{
+      margin:10px 14px 6px;
+      display:flex;
+      gap:8px;
+    }
+    .top-card{
+      flex:1;
+      min-width:0;
+      padding:8px 7px;
+      border-radius:var(--radius-md);
+      background:radial-gradient(circle at 0 0,rgba(245,210,122,.12),rgba(10,10,20,1));
+      border:1px solid rgba(245,210,122,.45);
+      box-shadow:var(--shadow-soft);
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+    .top-card.second{
+      background:radial-gradient(circle at 0 0,rgba(148,163,184,.16),rgba(10,10,20,1));
+      border-color:rgba(148,163,184,.8);
+    }
+    .top-card.third{
+      background:radial-gradient(circle at 0 0,rgba(255,126,179,.16),rgba(10,10,20,1));
+      border-color:rgba(255,126,179,.8);
+    }
+
+    .top-rank-badge{
+      width:22px;
+      height:22px;
+      border-radius:999px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:12px;
+      font-weight:600;
+      color:#050506;
+      background:linear-gradient(135deg,var(--gold),var(--pink));
+      margin-bottom:2px;
+    }
+    .top-rank-badge.silver{
+      background:linear-gradient(135deg,#e5e7eb,#9ca3af);
+    }
+    .top-rank-badge.bronze{
+      background:linear-gradient(135deg,#f97316,#facc15);
+    }
+
+    .top-cover{
+      width:100%;
+      aspect-ratio:3/4;
+      border-radius:12px;
+      background:radial-gradient(circle at 30% 10%,rgba(255,255,255,.14),rgba(0,0,0,1));
+      border:1px solid rgba(38,42,63,.9);
+      margin-bottom:4px;
+    }
+    .top-title{
+      font-size:12px;
+      font-weight:500;
+      line-height:1.3;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+    .top-meta{
+      font-size:10px;
+      color:var(--text-sub);
+      display:flex;
+      justify-content:space-between;
+      gap:4px;
+      margin-top:2px;
+    }
+    .top-heat{
+      color:var(--gold);
+      font-weight:500;
+    }
+
+    /* 榜单列表（4+） */
+    .list-section-title{
+      margin:4px 14px 0;
+      font-size:11px;
+      color:var(--text-sub);
+    }
+
+    .rank-list{
+      margin:4px 0 0;
+      padding:0 14px 10px;
+    }
+
+    .rank-item{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:8px 0;
+      border-bottom:1px solid rgba(24,29,53,.9);
+    }
+
+    .rank-no{
+      width:20px;
+      text-align:center;
+      font-size:14px;
+      font-weight:600;
+      color:var(--text-sub);
+      flex-shrink:0;
+    }
+    .rank-no.hot{
+      color:var(--gold);
+    }
+
+    .rank-cover{
+      width:64px;
+      height:86px;
+      border-radius:10px;
+      background:radial-gradient(circle at 30% 10%,rgba(255,255,255,.12),rgba(0,0,0,1));
+      border:1px solid rgba(38,42,63,.9);
+      flex-shrink:0;
+    }
+
+    .rank-main{
+      flex:1;
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+    }
+    .rank-title{
+      font-size:13px;
+      font-weight:500;
+      line-height:1.3;
+      display:-webkit-box;
+      -webkit-line-clamp:1;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+    .rank-tags{
+      font-size:11px;
+      color:var(--text-sub);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .rank-meta-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:6px;
+    }
+    .rank-status{
+      font-size:10px;
+      padding:2px 6px;
+      border-radius:999px;
+      border:1px solid rgba(245,210,122,.6);
+      color:var(--gold);
+      background:rgba(0,0,0,.4);
+      width:max-content;
+    }
+    .rank-heat{
+      font-size:11px;
+      color:var(--gold);
+      white-space:nowrap;
+    }
+
+    .more-row{
+      padding:4px 14px 0;
+      font-size:12px;
+      color:var(--text-sub);
+      display:flex;
+      justify-content:center;
+    }
+
+    .more-btn{
+      margin-top:4px;
+      padding:8px 12px;
+      border-radius:var(--radius-sm);
+      background:#050509;
+      border:1px solid rgba(148,163,184,.9);
+      font-size:12px;
+      color:var(--text-sub);
+      text-align:center;
+      width:calc(100% - 28px);
+      margin-left:14px;
+      margin-right:14px;
+    }
+
+    /* 可点击手感（不影响移动端视觉） */
+    .back-btn,
+    .header-right,
+    .tab,
+    .top-card,
+    .rank-item,
+    .more-btn {
+      cursor: pointer;
+    }
+
+    /* 全局兜底：防止未来插入 a 出现蓝色/下划线 */
+    a{
+      text-decoration:none !important;
+      color:inherit !important;
+    }
+
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- 顶部栏 -->
+  <header class="page-header">
+    <div class="header-left">
+      <button class="back-btn" onclick="history.back()">‹</button>
+      <div class="header-title">排行榜（占位）</div>
+    </div>
+    <div class="header-right" onclick="location.reload()">
+      <span>时间范围（占位）</span>
+      <div class="range-pill">近 7 天</div>
+    </div>
+  </header>
+
+  <!-- Tab 区：不同榜单类型 -->
+  <div class="tab-bar">
+    <div class="tab active" onclick="location.reload()">全站热播</div>
+    <div class="tab" onclick="location.reload()">新上热度</div>
+    <div class="tab" onclick="location.reload()">完结口碑</div>
+    <div class="tab" onclick="location.reload()">VIP 热看</div>
+  </div>
+
+  <!-- Top3 高亮卡片 -->
+  <section class="top3-wrap">
+
+    <!-- No.1 -->
+    <div class="top-card" onclick="location.href='6.短剧详情页.html'">
+      <div class="top-rank-badge">1</div>
+      <div class="top-cover"></div>
+      <div class="top-title">Top1 剧集标题占位，最多两行展示完整名称</div>
+      <div class="top-meta">
+        <span>都市 · 甜宠 · 重生</span>
+        <span class="top-heat">热度指数 9.8（占位）</span>
+      </div>
+    </div>
+
+    <!-- No.2 -->
+    <div class="top-card second" onclick="location.href='6.短剧详情页.html'">
+      <div class="top-rank-badge silver">2</div>
+      <div class="top-cover"></div>
+      <div class="top-title">Top2 剧集标题占位</div>
+      <div class="top-meta">
+        <span>古装 · 复仇</span>
+        <span class="top-heat">热度 9.4（占位）</span>
+      </div>
+    </div>
+
+    <!-- No.3 -->
+    <div class="top-card third" onclick="location.href='6.短剧详情页.html'">
+      <div class="top-rank-badge bronze">3</div>
+      <div class="top-cover"></div>
+      <div class="top-title">Top3 剧集标题占位</div>
+      <div class="top-meta">
+        <span>都市 · 多男主</span>
+        <span class="top-heat">热度 9.1（占位）</span>
+      </div>
+    </div>
+
+  </section>
+
+  <div class="list-section-title">
+    从第 4 名开始，为标准列表条目，占位结构如下：
+  </div>
+
+  <!-- 排行榜列表 4+ -->
+  <section class="rank-list">
+
+    <!-- 4 -->
+    <div class="rank-item" onclick="location.href='6.短剧详情页.html'">
+      <div class="rank-no hot">4</div>
+      <div class="rank-cover"></div>
+      <div class="rank-main">
+        <div class="rank-title">第 4 名 · 剧集标题占位</div>
+        <div class="rank-tags">标签占位 · 爽剧 · 多反转</div>
+        <div class="rank-meta-row">
+          <div class="rank-status">连载中（占位）</div>
+          <div class="rank-heat">热度 8.9（占位）</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="rank-item" onclick="location.href='6.短剧详情页.html'">
+      <div class="rank-no hot">5</div>
+      <div class="rank-cover"></div>
+      <div class="rank-main">
+        <div class="rank-title">第 5 名 · 剧集标题占位</div>
+        <div class="rank-tags">都市 · 反转 · 悬疑</div>
+        <div class="rank-meta-row">
+          <div class="rank-status">完结（占位）</div>
+          <div class="rank-heat">热度 8.7（占位）</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="rank-item" onclick="location.href='6.短剧详情页.html'">
+      <div class="rank-no">6</div>
+      <div class="rank-cover"></div>
+      <div class="rank-main">
+        <div class="rank-title">第 6 名 · 剧集标题占位</div>
+        <div class="rank-tags">标签占位 · 古装 · 甜宠</div>
+        <div class="rank-meta-row">
+          <div class="rank-status">VIP 专区</div>
+          <div class="rank-heat">热度 8.6（占位）</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="rank-item" onclick="location.href='6.短剧详情页.html'">
+      <div class="rank-no">7</div>
+      <div class="rank-cover"></div>
+      <div class="rank-main">
+        <div class="rank-title">第 7 名 · 剧集标题占位</div>
+        <div class="rank-tags">现代 · 家族 · 商战</div>
+        <div class="rank-meta-row">
+          <div class="rank-status">连载中</div>
+          <div class="rank-heat">热度 8.5（占位）</div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- 更多按钮 -->
+  <div class="more-row">
+    <div>列表仅为结构示意，真实数据由接口返回（占位说明）。</div>
+  </div>
+  <button class="more-btn" onclick="location.href='30.首页更多页.html'">加载更多 / 查看完整榜单（占位）</button>
+
+</div>
+</body>
+</html>

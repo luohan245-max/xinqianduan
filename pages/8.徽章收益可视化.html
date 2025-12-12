@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>徽章收益可视化</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <style>
+    :root {
+      --bg: #050506;
+      --bg-card: #111427;
+      --bg-card-soft: #151725;
+      --border-subtle: #262a3f;
+      --gold: #f5d27a;
+      --pink: #ff7eb3;
+      --green: #22c55e;
+      --red: #f97373;
+      --text-main: #f7f7fb;
+      --text-sub: #9ea1b6;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 999px;
+      --shadow-soft: 0 18px 40px rgba(0,0,0,0.55);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      min-height: 100vh;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      margin: 0 auto;
+      padding-bottom: 16px;
+      position: relative;
+    }
+
+    @media (min-width: 768px) {
+      .app {
+        max-width: 520px;
+        margin: 16px auto;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: var(--shadow-soft);
+      }
+    }
+
+    .page {
+      padding: 12px 16px 24px;
+    }
+
+    /* 顶部栏 */
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 0 10px;
+    }
+
+    .back-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      border: 1px solid rgba(245,210,122,0.4);
+      background:
+        radial-gradient(circle at top, rgba(255,126,179,0.25), transparent 65%),
+        linear-gradient(145deg, rgba(9,10,18,0.96), rgba(12,13,22,0.96));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: var(--gold);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.7);
+      flex-shrink: 0;
+    }
+
+    .page-header-main {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .page-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .page-subtitle {
+      font-size: 12px;
+      color: var(--text-sub);
+    }
+
+    .section-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .section-sub {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    /* 通用卡片 */
+    .card {
+      border-radius: var(--radius-lg);
+      padding: 12px;
+      background:
+        radial-gradient(circle at top left, rgba(255,126,179,0.22), transparent 60%),
+        radial-gradient(circle at bottom right, rgba(245,210,122,0.18), transparent 60%),
+        linear-gradient(160deg, #191d30, #05060c);
+      border: 1px solid rgba(245,210,122,0.35);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.9);
+      margin-bottom: 14px;
+    }
+
+    .card-soft {
+      border-radius: var(--radius-lg);
+      padding: 12px;
+      background: linear-gradient(160deg, #141726, #070811);
+      border: 1px solid rgba(38,42,63,0.95);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.85);
+      margin-bottom: 12px;
+    }
+
+    /* 占位文字条 */
+    .ph-text {
+      height: 10px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #2e3144, #181b2a);
+      margin-bottom: 4px;
+    }
+
+    .w-60 { width: 60%; }
+    .w-70 { width: 70%; }
+    .w-80 { width: 80%; }
+    .w-90 { width: 90%; }
+
+    /* 总收益概览 */
+    .badge-top-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .badge-kpi {
+      padding: 8px;
+      border-radius: 12px;
+      background: rgba(9,9,16,0.96);
+      border: 1px solid rgba(38,42,63,0.9);
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .badge-kpi.highlight {
+      background:
+        radial-gradient(circle at top, rgba(255,216,111,0.22), transparent 60%),
+        linear-gradient(160deg, #181c30, #05060c);
+      border-color: rgba(245,210,122,0.7);
+    }
+
+    .badge-kpi-label {
+      color: var(--text-sub);
+    }
+
+    .badge-kpi-value {
+      font-size: 14px;
+      color: var(--gold);
+    }
+
+    .badge-kpi-tag {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    /* 图片占位 */
+    .ph-img {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      border: 1px dashed rgba(245,210,122,0.4);
+      background:
+        radial-gradient(circle at top, rgba(255,126,179,0.18), transparent 60%),
+        linear-gradient(145deg, #141726, #070811);
+      flex-shrink: 0;
+    }
+
+    .ph-img-circle {
+      border-radius: 999px;
+    }
+
+    /* 国家徽章行情列表 */
+    .badge-market-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .badge-market-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px;
+      border-radius: 14px;
+      background: linear-gradient(160deg, #151827, #070811);
+      border: 1px solid rgba(38,42,63,0.95);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.85);
+      font-size: 11px;
+    }
+
+    .badge-market-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .badge-market-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge-name {
+      font-size: 12px;
+    }
+
+    .badge-tag {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    .badge-base {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    .badge-rate {
+      font-size: 13px;
+      color: var(--gold);
+    }
+
+    .badge-change-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 2px;
+    }
+
+    .badge-change-label {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    .badge-change {
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .change-up {
+      color: var(--green);
+    }
+
+    .change-down {
+      color: var(--red);
+    }
+
+    .change-flat {
+      color: var(--text-sub);
+    }
+
+    .badge-mini-tag {
+      padding: 1px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(245,210,122,0.4);
+      font-size: 10px;
+      color: var(--gold);
+      white-space: nowrap;
+    }
+
+    /* 收益结构图占位 */
+    .chart-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .ph-chart-circle {
+      flex-shrink: 0;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 30% 20%, rgba(255,216,111,0.3), transparent 60%),
+        conic-gradient(
+          rgba(245,210,122,0.95) 0deg 120deg,
+          rgba(255,126,179,0.95) 120deg 210deg,
+          rgba(79,70,229,0.9) 210deg 270deg,
+          rgba(148,163,184,0.9) 270deg 360deg
+        );
+      box-shadow: 0 0 20px rgba(255,216,111,0.9);
+      position: relative;
+    }
+
+    .ph-chart-circle::after {
+      content: "";
+      position: absolute;
+      inset: 26%;
+      border-radius: 50%;
+      background: rgba(5,5,10,0.95);
+      box-shadow: 0 0 16px rgba(0,0,0,0.8);
+    }
+
+    .chart-legend {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 11px;
+    }
+
+    .legend-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .legend-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-sub);
+    }
+
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .legend-value {
+      color: var(--gold);
+      font-size: 11px;
+    }
+
+    .legend-tag {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    /* 持有徽章阵容网格 */
+    .badge-hold-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .badge-hold-card {
+      padding: 8px;
+      border-radius: 14px;
+      background: linear-gradient(150deg, #151827, #070811);
+      border: 1px solid rgba(38,42,63,0.9);
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.85);
+    }
+
+    .badge-hold-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge-hold-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .badge-hold-name {
+      font-size: 12px;
+    }
+
+    .badge-hold-level {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    .badge-hold-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4px;
+      font-size: 10px;
+    }
+
+    .badge-hold-amount {
+      color: var(--gold);
+    }
+
+    .badge-hold-income {
+      color: var(--text-sub);
+    }
+
+    /* 底部入口 */
+    .quick-grid {
+      margin-top: 4px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .quick-item {
+      padding: 8px;
+      border-radius: 14px;
+      background: linear-gradient(160deg, #151827, #070811);
+      border: 1px solid rgba(38,42,63,0.9);
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.85);
+    }
+
+    .quick-label {
+      font-size: 11px;
+    }
+
+    .quick-desc {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    .quick-tag {
+      margin-top: 2px;
+      font-size: 10px;
+      color: var(--gold);
+    }
+
+    /* 全局：禁用 a 标签默认下划线与默认蓝色（兜底，不影响现有 div 点击） */
+    a {
+      text-decoration: none !important;
+      color: inherit !important;
+    }
+
+    /* 关联面板：quick-item 改为 a 后，保持原有布局表现 */
+    a.quick-item {
+      display: flex;
+    }
+
+    .quick-item { cursor: pointer; }
+
+  </style>
+</head>
+<body>
+  <div class="app">
+    <main class="page" id="page-badge-visual">
+      <!-- 顶部栏 -->
+      <header class="page-header">
+        <button class="back-btn" onclick="history.back()">‹</button>
+        <div class="page-header-main">
+          <div class="page-title">徽章收益可视化</div>
+          <div class="page-subtitle">各国徽章收益 + 行情涨跌占位（初始 1 : 1，涨绿跌红）</div>
+        </div>
+      </header>
+
+      <!-- 一、徽章整体收益概览 -->
+      <section class="card">
+        <div class="section-title-row">
+          <div class="section-title">徽章整体收益概览</div>
+          <div class="section-sub">只针对徽章带来的 DP 收益，不含其他来源</div>
+        </div>
+
+        <div class="badge-top-grid">
+          <div class="badge-kpi highlight">
+            <div class="badge-kpi-label">徽章总价值折算</div>
+            <div class="badge-kpi-value">0.0000 占位</div>
+            <div class="badge-kpi-tag">按当前徽章倍率折算为 DP / U 占位</div>
+          </div>
+          <div class="badge-kpi">
+            <div class="badge-kpi-label">今日徽章收益</div>
+            <div class="badge-kpi-value">0.0000 占位</div>
+            <div class="badge-kpi-tag">仅统计徽章体系产生的 DP 收益</div>
+          </div>
+          <div class="badge-kpi">
+            <div class="badge-kpi-label">近 7 日累计</div>
+            <div class="badge-kpi-value">0.0000 占位</div>
+          </div>
+          <div class="badge-kpi">
+            <div class="badge-kpi-label">近 30 日累计</div>
+            <div class="badge-kpi-value">0.0000 占位</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 二、各国徽章行情（初始 1:1，涨跌为百分比） -->
+      <section class="card-soft">
+        <div class="section-title-row">
+          <div class="section-title">各国徽章行情</div>
+          <div class="section-sub">初始基准 1 : 1，当前倍率 & 涨跌百分比（涨为绿，跌为红）</div>
+        </div>
+
+        <div class="badge-market-list">
+          <!-- 示例：越南徽章，占位 -->
+          <article class="badge-market-item">
+            <div class="ph-img ph-img-circle"></div>
+            <div class="badge-market-main">
+              <div class="badge-market-title-row">
+                <span class="badge-name">越南徽章 占位</span>
+                <span class="badge-rate">1.00x 占位</span>
+              </div>
+              <div class="badge-base">初始基准：1.00x（1 : 1）占位</div>
+              <div class="badge-change-row">
+                <span class="badge-change-label">24 小时涨跌 占位</span>
+                <span class="badge-change change-up">+0.00% 占位</span>
+              </div>
+            </div>
+            <span class="badge-mini-tag">基础国徽章 占位</span>
+          </article>
+
+          <!-- 示例：中国徽章，占位 -->
+          <article class="badge-market-item">
+            <div class="ph-img ph-img-circle"></div>
+            <div class="badge-market-main">
+              <div class="badge-market-title-row">
+                <span class="badge-name">中国徽章 占位</span>
+                <span class="badge-rate">1.00x 占位</span>
+              </div>
+              <div class="badge-base">初始基准：1.00x（1 : 1）占位</div>
+              <div class="badge-change-row">
+                <span class="badge-change-label">24 小时涨跌 占位</span>
+                <span class="badge-change change-down">-0.00% 占位</span>
+              </div>
+            </div>
+            <span class="badge-mini-tag">高活跃区 占位</span>
+          </article>
+
+          <!-- 示例：美国徽章，占位 -->
+          <article class="badge-market-item">
+            <div class="ph-img ph-img-circle"></div>
+            <div class="badge-market-main">
+              <div class="badge-market-title-row">
+                <span class="badge-name">美国徽章 占位</span>
+                <span class="badge-rate">1.00x 占位</span>
+              </div>
+              <div class="badge-base">初始基准：1.00x（1 : 1）占位</div>
+              <div class="badge-change-row">
+                <span class="badge-change-label">24 小时涨跌 占位</span>
+                <span class="badge-change change-up">+0.00% 占位</span>
+              </div>
+            </div>
+            <span class="badge-mini-tag">成熟市场 占位</span>
+          </article>
+
+          <!-- 示例：日本徽章，占位 -->
+          <article class="badge-market-item">
+            <div class="ph-img ph-img-circle"></div>
+            <div class="badge-market-main">
+              <div class="badge-market-title-row">
+                <span class="badge-name">日本徽章 占位</span>
+                <span class="badge-rate">1.00x 占位</span>
+              </div>
+              <div class="badge-base">初始基准：1.00x（1 : 1）占位</div>
+              <div class="badge-change-row">
+                <span class="badge-change-label">24 小时涨跌 占位</span>
+                <span class="badge-change change-down">-0.00% 占位</span>
+              </div>
+            </div>
+            <span class="badge-mini-tag">波动区 占位</span>
+          </article>
+
+              <!-- 示例：韩国徽章，占位 -->
+    <article class="badge-market-item">
+      <div class="ph-img ph-img-circle"></div>
+      <div class="badge-market-main">
+        <div class="badge-market-title-row">
+          <span class="badge-name">韩国徽章 占位</span>
+          <span class="badge-rate">1.00x 占位</span>
+        </div>
+        <div class="badge-base">初始基准：1.00x（1 : 1）占位</div>
+        <div class="badge-change-row">
+          <span class="badge-change-label">24 小时涨跌 占位</span>
+          <!-- 涨为绿 -->
+          <span class="badge-change change-up">+0.00% 占位</span>
+        </div>
+      </div>
+      <span class="badge-mini-tag">区域市场 占位</span>
+    </article>
+
+    <!-- 示例：英国徽章，占位 -->
+    <article class="badge-market-item">
+      <div class="ph-img ph-img-circle"></div>
+      <div class="badge-market-main">
+        <div class="badge-market-title-row">
+          <span class="badge-name">英国徽章 占位</span>
+          <span class="badge-rate">1.00x 占位</span>
+        </div>
+        <div class="badge-base">初始基准：1.00x（1 : 1）占位</div>
+        <div class="badge-change-row">
+          <span class="badge-change-label">24 小时涨跌 占位</span>
+          <!-- 跌为红，如果不跌就改成 change-up / change-flat -->
+          <span class="badge-change change-down">-0.00% 占位</span>
+        </div>
+      </div>
+      <span class="badge-mini-tag">成熟区 徽章占位</span>
+    </article>
+    
+          <!-- 你后面可以继续追加 英国 / 韩国 等徽章行 -->
+        </div>
+      </section>
+
+      <!-- 三、徽章收益结构（按国家 / 等级占比） -->
+      <section class="card-soft">
+        <div class="section-title-row">
+          <div class="section-title">徽章收益结构占位</div>
+          <div class="section-sub">按国家 / 等级，拆分徽章 DP 收益占比</div>
+        </div>
+        <div class="chart-row">
+          <div class="ph-chart-circle"></div>
+          <div class="chart-legend">
+            <div class="legend-item">
+              <div class="legend-left">
+                <span class="legend-dot" style="background:#f5d27a;"></span>
+                <span>国家 A 徽章 占位</span>
+              </div>
+              <span class="legend-value">0.00% 占位</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-left">
+                <span class="legend-dot" style="background:#ff7eb3;"></span>
+                <span>国家 B 徽章 占位</span>
+              </div>
+              <span class="legend-value">0.00% 占位</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-left">
+                <span class="legend-dot" style="background:#4f46e5;"></span>
+                <span>国家 C 徽章 占位</span>
+              </div>
+              <span class="legend-value">0.00% 占位</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-left">
+                <span class="legend-dot" style="background:#9ca3af;"></span>
+                <span>其他国家 / 等级 占位</span>
+              </div>
+              <span class="legend-value">0.00% 占位</span>
+            </div>
+            <div class="legend-tag">* 实际数据可以按国家 / 等级维度汇总后渲染到图表。</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 四、持有徽章阵容（当前真实持仓） -->
+      <section class="card-soft">
+        <div class="section-title-row">
+          <div class="section-title">我的徽章阵容占位</div>
+          <div class="section-sub">展示当前真实持有的各类徽章与收益贡献</div>
+        </div>
+
+        <div class="badge-hold-grid">
+          <article class="badge-hold-card">
+            <div class="badge-hold-header">
+              <div class="ph-img ph-img-circle"></div>
+              <div class="badge-hold-meta">
+                <span class="badge-hold-name">越南徽章 占位</span>
+                <span class="badge-hold-level">等级 / 阶梯占位</span>
+              </div>
+            </div>
+            <div class="badge-hold-footer">
+              <span class="badge-hold-amount">数量：0 枚 占位</span>
+              <span class="badge-hold-income">今日收益：0.0000 DP 占位</span>
+            </div>
+          </article>
+
+          <article class="badge-hold-card">
+            <div class="badge-hold-header">
+              <div class="ph-img ph-img-circle"></div>
+              <div class="badge-hold-meta">
+                <span class="badge-hold-name">中国徽章 占位</span>
+                <span class="badge-hold-level">等级 / 阶梯占位</span>
+              </div>
+            </div>
+            <div class="badge-hold-footer">
+              <span class="badge-hold-amount">数量：0 枚 占位</span>
+              <span class="badge-hold-income">今日收益：0.0000 DP 占位</span>
+            </div>
+          </article>
+
+          <!-- 其他国家徽章可继续复制占位卡片 -->
+        </div>
+      </section>
+
+      <!-- 五、关联入口：DP / 计算器 / 团队 -->
+      <section class="card-soft">
+        <div class="section-title-row">
+          <div class="section-title">关联面板入口占位</div>
+          <div class="section-sub">徽章收益与 DP / 团队 / 计算器的联动</div>
+        </div>
+        <div class="quick-grid">
+          <a class="quick-item" href="9.DP收益总览.html">
+            <div class="quick-label">DP 收益总览</div>
+            <div class="quick-desc">查看徽章收益对 DP 整体的真实贡献</div>
+            <div class="quick-tag">进入 DP 页 占位 →</div>
+          </a>
+          <a class="quick-item" href="10.徽章收益计算器.html">
+            <div class="quick-label">徽章收益计算器</div>
+            <div class="quick-desc">模拟不同徽章组合下的未来收益</div>
+            <div class="quick-tag">进入计算器 占位 →</div>
+          </a>
+          <a class="quick-item" href="7.钱包%20%26%20收益总览二级页.html">
+            <div class="quick-label">钱包 & 收益总览</div>
+            <div class="quick-desc">在整体资产视角中看徽章价值</div>
+            <div class="quick-tag">返回钱包 占位 →</div>
+          </a>
+            <a class="quick-item" href="11.团队收益总览.html">
+            <div class="quick-label">团队收益总览</div>
+            <div class="quick-desc">对比团队收益与徽章收益的占比</div>
+            <div class="quick-tag">进入团队页 占位 →</div>
+          </a>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

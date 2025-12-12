@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>状态提示 / 错误页 / 空状态模板</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <style>
+    :root{
+      --bg:#050506;
+      --card:#111218;
+      --card-soft:#101019;
+      --line:#262a3f;
+      --gold:#f5d27a;
+      --pink:#ff7eb3;
+      --text-main:#ffffff;
+      --text-sub:#9ea1b6;
+      --radius-lg:18px;
+      --radius-md:14px;
+      --radius-sm:999px;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html,body{
+      width:100%;
+      height:100%;
+      background:var(--bg);
+      color:var(--text-main);
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",sans-serif;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    .app{
+      max-width:430px;
+      margin:0 auto;
+      min-height:100vh;
+      padding-bottom:24px;
+    }
+
+    /* 顶部栏 */
+    .page-header{
+      height:56px;
+      padding:0 14px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      background:linear-gradient(to bottom,rgba(0,0,0,.9),rgba(0,0,0,0));
+      position:sticky;
+      top:0;
+      z-index:10;
+    }
+    .back-btn{
+      width:32px;
+      height:32px;
+      border-radius:var(--radius-sm);
+      border:1px solid rgba(245,210,122,.45);
+      background:rgba(0,0,0,.35);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+      color:var(--gold);
+      flex-shrink:0;
+    }
+    .header-title{
+      font-size:16px;
+      font-weight:600;
+    }
+
+    .section-label{
+      margin:10px 14px 4px;
+      font-size:12px;
+      color:var(--text-sub);
+    }
+
+    /* 通用全屏错误块 */
+    .full-block{
+      margin:6px 14px 12px;
+      padding:22px 16px 18px;
+      border-radius:24px;
+      background:radial-gradient(circle at 20% 0%,rgba(255,255,255,.12),rgba(0,0,0,1));
+      border:1px solid rgba(245,210,122,.25);
+      text-align:center;
+    }
+    .error-icon{
+      width:72px;
+      height:72px;
+      margin:0 auto 10px;
+      border-radius:50%;
+      background:radial-gradient(circle at 30% 15%,rgba(255,255,255,.18),rgba(0,0,0,1));
+      border:1px solid rgba(255,126,179,.6);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:30px;
+    }
+    .error-title{
+      font-size:18px;
+      font-weight:600;
+      margin-bottom:6px;
+    }
+    .error-sub{
+      font-size:12px;
+      color:var(--text-sub);
+      line-height:1.7;
+      margin:0 auto 12px;
+      max-width:320px;
+    }
+    .error-meta{
+      font-size:11px;
+      color:var(--text-sub);
+      margin-bottom:10px;
+    }
+    .error-meta span{
+      color:var(--gold);
+    }
+    .btn-row{
+      display:flex;
+      gap:8px;
+      margin-top:4px;
+    }
+    .btn-primary{
+      flex:1;
+      min-width:0;
+      padding:10px 12px;
+      border-radius:var(--radius-sm);
+      background:linear-gradient(135deg,var(--gold),var(--pink));
+      border:none;
+      font-size:13px;
+      color:#050506;
+      font-weight:500;
+      white-space:nowrap;
+    }
+    .btn-outline{
+      flex:1;
+      min-width:0;
+      padding:10px 12px;
+      border-radius:var(--radius-sm);
+      background:#0c0d12;
+      border:1px solid rgba(245,210,122,.5);
+      font-size:13px;
+      color:var(--gold);
+      white-space:nowrap;
+    }
+
+    /* 404 / 内容不存在块 */
+    .notfound-block{
+      margin:6px 14px 12px;
+      padding:18px 14px 16px;
+      border-radius:20px;
+      background:var(--card);
+      border:1px solid rgba(38,42,63,.9);
+      text-align:center;
+    }
+    .nf-code{
+      font-size:32px;
+      font-weight:700;
+      letter-spacing:3px;
+      margin-bottom:4px;
+      background:linear-gradient(135deg,var(--gold),var(--pink));
+      -webkit-background-clip:text;
+      color:transparent;
+    }
+    .nf-title{
+      font-size:16px;
+      font-weight:500;
+      margin-bottom:4px;
+    }
+    .nf-sub{
+      font-size:12px;
+      color:var(--text-sub);
+      margin-bottom:10px;
+      line-height:1.6;
+    }
+    .nf-tag-row{
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-bottom:10px;
+      font-size:10px;
+    }
+    .nf-tag{
+      padding:3px 8px;
+      border-radius:999px;
+      border:1px dashed rgba(245,210,122,.45);
+      color:var(--text-sub);
+    }
+
+    /* 通用空状态组件（可嵌入任何页面） */
+    .empty-block{
+      margin:6px 14px 0;
+      padding:12px 12px 14px;
+      border-radius:18px;
+      background:#0c0d12;
+      border:1px dashed rgba(148,163,184,.9);
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      font-size:12px;
+    }
+    .empty-icon{
+      width:30px;
+      height:30px;
+      border-radius:999px;
+      background:radial-gradient(circle at 30% 10%,rgba(255,255,255,.16),rgba(0,0,0,1));
+      border:1px solid rgba(245,210,122,.45);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:16px;
+      flex-shrink:0;
+    }
+    .empty-main{
+      flex:1;
+      min-width:0;
+    }
+    .empty-title{
+      font-size:13px;
+      font-weight:500;
+      margin-bottom:2px;
+    }
+    .empty-desc{
+      font-size:11px;
+      color:var(--text-sub);
+      line-height:1.6;
+      margin-bottom:6px;
+    }
+    .empty-desc span{
+      color:var(--gold);
+    }
+    .empty-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    .btn-small-primary{
+      padding:6px 10px;
+      border-radius:var(--radius-sm);
+      background:linear-gradient(135deg,var(--gold),var(--pink));
+      border:none;
+      font-size:11px;
+      color:#050506;
+      white-space:nowrap;
+    }
+    .btn-small-outline{
+      padding:6px 10px;
+      border-radius:var(--radius-sm);
+      background:#050506;
+      border:1px solid rgba(245,210,122,.5);
+      font-size:11px;
+      color:var(--gold);
+      white-space:nowrap;
+    }
+
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- 顶部 -->
+  <header class="page-header">
+    <button class="back-btn">‹</button>
+    <div class="header-title">状态提示 / 错误与空页面模板</div>
+  </header>
+
+  <!-- 一、通用全屏错误页（网络 / 服务器错误） -->
+  <div class="section-label">一、通用错误页（网络异常 / 服务器错误，占位示意）</div>
+  <section class="full-block">
+    <div class="error-icon">⚠️</div>
+    <div class="error-title">页面加载失败（占位）</div>
+    <div class="error-sub">
+      网络可能不太给力，或者服务器正在忙碌。<br/>
+      你可以稍后再试，或检查当前网络状态（占位文案）。
+    </div>
+    <div class="error-meta">
+      错误代码占位：<span>ERR-500 / ERR-NETWORK</span><br/>
+      时间：2025-01-15  14:21（占位）
+    </div>
+    <div class="btn-row">
+      <button class="btn-primary">重新加载页面（占位）</button>
+      <button class="btn-outline">返回上一页（占位）</button>
+    </div>
+  </section>
+
+  <!-- 二、内容不存在 / 404 页 -->
+  <div class="section-label">二、内容不存在 / 404（短剧下架 / 链接错误，占位示意）</div>
+  <section class="notfound-block">
+    <div class="nf-code">404</div>
+    <div class="nf-title">未找到相关内容（占位）</div>
+    <div class="nf-sub">
+      你访问的短剧 / 活动可能已下架、链接已失效，<br/>
+      或当前区域暂不支持访问（占位说明）。
+    </div>
+    <div class="nf-tag-row">
+      <div class="nf-tag">可能原因：链接错误（占位）</div>
+      <div class="nf-tag">可能原因：内容下架（占位）</div>
+      <div class="nf-tag">可能原因：区域限制（占位）</div>
+    </div>
+    <div class="btn-row" style="margin-top:2px;">
+      <button class="btn-primary">去首页看看（占位）</button>
+      <button class="btn-outline">查看其他短剧（占位）</button>
+    </div>
+  </section>
+
+  <!-- 三、通用空状态组件（可嵌入任何页面） -->
+  <div class="section-label">三、通用空状态组件（可嵌入历史 / 收藏 / 列表等，占位示意）</div>
+  <section class="empty-block">
+    <div class="empty-icon">🕳</div>
+    <div class="empty-main">
+      <div class="empty-title">这里现在还是空的（占位）</div>
+      <div class="empty-desc">
+        当前页面暂时没有可展示的内容。你可以先去<span>首页 / 推荐页</span>
+        浏览短剧，或者尝试调整筛选条件后再回来看看（占位文案）。
+      </div>
+      <div class="empty-actions">
+        <button class="btn-small-primary">去推荐页刷一刷（占位）</button>
+        <button class="btn-small-outline">修改筛选条件（占位）</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

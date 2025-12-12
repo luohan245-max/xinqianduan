@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>更多功能 · 短剧平台（占位）</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <style>
+    :root{
+      --bg:#050506;
+      --card:#111218;
+      --card-soft:#101019;
+      --line:#262a3f;
+      --gold:#f5d27a;
+      --pink:#ff7eb3;
+      --text-main:#ffffff;
+      --text-sub:#9ea1b6;
+      --radius:16px;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html,body{
+      width:100%;height:100%;
+      background:var(--bg);
+      color:var(--text-main);
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",sans-serif;
+    }
+    .app{
+      max-width:430px;
+      margin:0 auto;
+      padding-bottom:18px;
+    }
+
+    /* 顶部栏 */
+    .header-bar{
+      height:56px;
+      padding:0 14px;
+      display:flex;
+      align-items:center;
+      background:linear-gradient(to bottom,rgba(0,0,0,.9),rgba(0,0,0,0));
+    }
+    .icon-btn{
+      width:32px;height:32px;
+      border-radius:999px;
+      background:rgba(0,0,0,.35);
+      border:1px solid rgba(245,210,122,.4);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--gold);
+      font-size:16px;
+      flex-shrink:0;
+    }
+    .header-title{
+      margin-left:8px;
+      font-size:16px;
+      font-weight:600;
+    }
+
+    /* 顶部说明 */
+    .top-intro{
+      margin:10px 14px 4px;
+    }
+    .top-title{
+      font-size:18px;
+      font-weight:600;
+      margin-bottom:4px;
+    }
+    .top-sub{
+      font-size:12px;
+      color:var(--text-sub);
+    }
+
+    /* 通用卡片 */
+    .card{
+      margin:10px 14px;
+      padding:10px 14px;
+      border-radius:var(--radius);
+      background:var(--card);
+      border:1px solid rgba(245,210,122,.12);
+    }
+    .card-title-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:6px;
+    }
+    .card-title{
+      font-size:14px;
+      font-weight:500;
+    }
+    .card-sub{
+      font-size:12px;
+      color:var(--text-sub);
+    }
+
+    /* 宫格图标 */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:12px 8px;
+      margin-top:6px;
+    }
+    .grid-item{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:flex-start;
+      gap:4px;
+      font-size:11px;
+      color:var(--text-sub);
+    }
+    .icon-ph{
+      width:40px;
+      height:40px;
+      border-radius:14px;
+      background:#0c0d12;
+      border:1px solid rgba(245,210,122,.4);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+      color:var(--gold);
+      margin-bottom:2px;
+    }
+    .grid-item span.label{
+      font-size:11px;
+    }
+    .grid-item span.tag{
+      font-size:9px;
+      padding:1px 5px;
+      border-radius:999px;
+      border:1px solid rgba(245,210,122,.35);
+      color:var(--gold);
+      margin-top:1px;
+    }
+
+    /* 分割线 */
+    .line{
+      height:1px;
+      background:var(--line);
+      opacity:.45;
+      margin:8px 0;
+    }
+
+    /* 行列表入口 */
+    .list-item{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:8px 0;
+      font-size:13px;
+    }
+    .list-left{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .list-icon{
+      width:28px;
+      height:28px;
+      border-radius:10px;
+      background:#0c0d12;
+      border:1px solid rgba(245,210,122,.35);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:15px;
+      color:var(--gold);
+      flex-shrink:0;
+    }
+    .list-text-main{
+      font-size:13px;
+    }
+    .list-text-sub{
+      font-size:11px;
+      color:var(--text-sub);
+      margin-top:1px;
+    }
+    .list-right{
+      font-size:11px;
+      color:var(--text-sub);
+      display:flex;
+      align-items:center;
+      gap:4px;
+    }
+    .list-right span.highlight{
+      color:var(--gold);
+    }
+
+    /* 底部提示 */
+    .tip-small{
+      margin:6px 14px 0;
+      font-size:11px;
+      color:var(--text-sub);
+    }
+    .tip-small span{
+      color:var(--gold);
+    }
+
+    /* 可点击手感（不影响移动端视觉） */
+    .icon-btn,
+    .grid-item,
+    .list-item {
+      cursor: pointer;
+    }
+
+    /* 全局兜底：防止未来插入 a 出现蓝色/下划线 */
+    a{
+      text-decoration:none !important;
+      color:inherit !important;
+    }
+
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- 顶部栏 -->
+  <div class="header-bar">
+    <div class="icon-btn" onclick="history.back()">‹</div>
+    <div class="header-title">更多功能（占位）</div>
+  </div>
+
+  <!-- 顶部说明 -->
+  <div class="top-intro">
+    <div class="top-title">全部入口一览（占位）</div>
+    <div class="top-sub">
+      这里汇集首页宫格未完全展示的功能入口，方便你快速跳转到各个二级页面。所有文案为占位，后续可按实际模块调整（占位）。
+    </div>
+  </div>
+
+  <!-- 一、内容相关入口 -->
+  <div class="card">
+    <div class="card-title-row">
+      <div class="card-title">内容相关入口（占位）</div>
+      <div class="card-sub">补充首页宫格以外的内容导航（占位）</div>
+    </div>
+
+    <div class="grid">
+      <div class="grid-item" onclick="location.href='45.排行榜页.html'">
+        <div class="icon-ph">🔥</div>
+        <span class="label">今日必看（占位）</span>
+      </div>
+      <div class="grid-item" onclick="location.href='45.排行榜页.html'">
+        <div class="icon-ph">⭐</div>
+        <span class="label">高分推荐（占位）</span>
+      </div>
+      <div class="grid-item" onclick="location.href='55.分类结果列表页.html'">
+        <div class="icon-ph">⏱</div>
+        <span class="label">短时速刷（占位）</span>
+      </div>
+      <div class="grid-item" onclick="location.href='55.分类结果列表页.html'">
+        <div class="icon-ph">🌙</div>
+        <span class="label">睡前放松（占位）</span>
+      </div>
+
+      <div class="grid-item" onclick="location.href='31.VIP剧场列表页.html'">
+        <div class="icon-ph">👑</div>
+        <span class="label">VIP 剧场（占位）</span>
+        <span class="tag">VIP</span>
+      </div>
+      <div class="grid-item" onclick="location.href='25.VIP专区.html'">
+        <div class="icon-ph">🎬</div>
+        <span class="label">电影专区（占位）</span>
+      </div>
+      <div class="grid-item" onclick="location.href='25.VIP专区.html'">
+        <div class="icon-ph">📺</div>
+        <span class="label">长剧入口（占位）</span>
+      </div>
+      <div class="grid-item" onclick="location.href='28.分类页-全部分类 + 筛选.html'">
+        <div class="icon-ph">🧩</div>
+        <span class="label">更多类型（占位）</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 二、福利 / 活动相关入口 -->
+  <div class="card">
+    <div class="card-title-row">
+      <div class="card-title">福利 & 活动（占位）</div>
+      <div class="card-sub">与福利中心 / 活动页联动（占位）</div>
+    </div>
+
+    <div class="grid">
+      <div class="grid-item" onclick="location.href='3.福利中心.html'">
+        <div class="icon-ph">🎁</div>
+        <span class="label">福利中心（占位）</span>
+      </div>
+      <div class="grid-item" onclick="location.href='3.福利中心.html'">
+        <div class="icon-ph">📅</div>
+        <span class="label">签到日历（占位）</span>
+      </div>
+      <div class="grid-item" onclick="location.href='46.活动中心页.html'">
+        <div class="icon-ph">🎡</div>
+        <span class="label">抽奖活动（占位）</span>
+      </div>
+      <div class="grid-item" onclick="location.href='46.活动中心页.html'">
+        <div class="icon-ph">⚡</div>
+        <span class="label">限时任务（占位）</span>
+      </div>
+
+      <div class="grid-item" onclick="location.href='29.通知中心页.html'">
+        <div class="icon-ph">📣</div>
+        <span class="label">活动公告（占位）</span>
+      </div>
+      <div class="grid-item" onclick="location.href='45.排行榜页.html'">
+        <div class="icon-ph">🏆</div>
+        <span class="label">活动排行榜（占位）</span>
+      </div>
+      <div class="grid-item" onclick="location.href='35.徽章中心主页.html'">
+        <div class="icon-ph">💎</div>
+        <span class="label">徽章活动（占位）</span>
+      </div>
+      <div class="grid-item" onclick="location.href='7.钱包 & 收益总览二级页.html'">
+        <div class="icon-ph">🎫</div>
+        <span class="label">兑换中心（占位）</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 三、账号 / 资产 / 工具类入口 -->
+  <div class="card">
+    <div class="card-title-row">
+      <div class="card-title">账号 / 资产 / 工具（占位）</div>
+      <div class="card-sub">与个人中心 / 钱包 / 团队联动（占位）</div>
+    </div>
+
+    <div class="grid">
+      <div class="grid-item" onclick="location.href='17.用户资料编辑页.html'">
+        <div class="icon-ph">👤</div>
+        <span class="label">个人资料（占位）</span>
+      </div>
+      <div class="grid-item" onclick="location.href='7.钱包 & 收益总览二级页.html'">
+        <div class="icon-ph">👛</div>
+        <span class="label">钱包总览（占位）</span>
+      </div>
+      <div class="grid-item" onclick="location.href='35.徽章中心主页.html'">
+        <div class="icon-ph">💠</div>
+        <span class="label">徽章中心（占位）</span>
+      </div>
+      <div class="grid-item" onclick="location.href='9.DP收益总览.html'">
+        <div class="icon-ph">📊</div>
+        <span class="label">收益总览（占位）</span>
+      </div>
+
+      <div class="grid-item" onclick="location.href='22.团队中心页.html'">
+        <div class="icon-ph">👥</div>
+        <span class="label">团队中心（占位）</span>
+      </div>
+      <div class="grid-item" onclick="location.href='29.通知中心页.html'">
+        <div class="icon-ph">📨</div>
+        <span class="label">通知中心（占位）</span>
+      </div>
+      <div class="grid-item" onclick="location.href='47.设置主页面.html'">
+        <div class="icon-ph">🛠</div>
+        <span class="label">设置（占位）</span>
+      </div>
+      <div class="grid-item" onclick="location.href='49.客服中心首页.html'">
+        <div class="icon-ph">💬</div>
+        <span class="label">客服中心（占位）</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 四、特殊入口（预留给你未来玩法） -->
+  <div class="card">
+    <div class="card-title-row">
+      <div class="card-title">预留特殊入口（占位）</div>
+      <div class="card-sub">可用于后续联动活动 / H5 / 外链（占位）</div>
+    </div>
+
+    <div class="list-item" onclick="location.href='46.活动中心页.html'">
+      <div class="list-left">
+        <div class="list-icon">🔗</div>
+        <div>
+          <div class="list-text-main">外部活动 H5（占位）</div>
+          <div class="list-text-sub">可跳转到品牌活动页 / 联合推广页（占位）。</div>
+        </div>
+      </div>
+      <div class="list-right">
+        <span class="highlight">跳转</span> ›
+      </div>
+    </div>
+
+    <div class="line"></div>
+
+    <div class="list-item" onclick="location.href='37.活动详情页.html'">
+      <div class="list-left">
+        <div class="list-icon">🪪</div>
+        <div>
+          <div class="list-text-main">合作伙伴专区（占位）</div>
+          <div class="list-text-sub">用于展示合作平台 / 渠道的入口（占位）。</div>
+        </div>
+      </div>
+      <div class="list-right">
+        <span>即将上线（占位）</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部提示 -->
+  <div class="tip-small">
+    提示：此页为首页宫格「更多」的 UI 占位，未来可以根据数据把高频使用的入口挪回首页，
+    低频入口保留在此处集中呈现；所有图标均为占位符，可替换为真实 SVG / 图片（占位）。
+  </div>
+
+</div>
+</body>
+</html>

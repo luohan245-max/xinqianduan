@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>联系客服 · 在线客服（占位）</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<style>
+:root{
+  --bg:#050506;
+  --card:#111218;
+  --line:#262a3f;
+  --gold:#f5d27a;
+  --pink:#ff7eb3;
+  --text:#ffffff;
+  --sub:#9ea1b6;
+  --radius:16px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{
+  width:100%;height:100%;
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+}
+
+.app{
+  max-width:430px;
+  margin:0 auto;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+/* 顶部栏 */
+.header{
+  height:56px;
+  padding:0 14px;
+  background:linear-gradient(to bottom,rgba(0,0,0,.85),rgba(0,0,0,0));
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-shrink:0;
+}
+
+.header .back{
+  width:32px;height:32px;
+  border-radius:999px;
+  background:rgba(0,0,0,.35);
+  border:1px solid rgba(245,210,122,.4);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--gold);
+}
+
+.header .avatar{
+  width:36px;height:36px;
+  border-radius:999px;
+  background:#0c0d12;
+  border:1px solid rgba(245,210,122,.35);
+}
+
+.header .info{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.header .name{
+  font-size:14px;
+  font-weight:600;
+}
+.header .status{
+  font-size:11px;
+  color:var(--sub);
+}
+
+.header .more{
+  margin-left:auto;
+  width:26px;height:26px;
+  border-radius:999px;
+  background:rgba(0,0,0,.3);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:var(--gold);
+}
+
+/* 聊天内容滚动区 */
+.chat-area{
+  flex:1;
+  overflow-y:auto;
+  padding:10px 14px 80px;
+}
+
+.date-line{
+  text-align:center;
+  font-size:11px;
+  color:var(--sub);
+  margin:10px 0;
+}
+
+.msg-row{
+  display:flex;
+  margin:8px 0;
+  gap:8px;
+}
+
+.msg-row.user{
+  justify-content:flex-end;
+}
+
+.msg-avatar{
+  width:32px;height:32px;
+  border-radius:999px;
+  background:#0c0d12;
+  border:1px solid rgba(245,210,122,.3);
+  flex-shrink:0;
+}
+
+.msg-bubble{
+  max-width:70%;
+  padding:10px 12px;
+  border-radius:14px;
+  font-size:13px;
+  line-height:1.45;
+}
+
+.msg.service .msg-bubble{
+  background:#0c0d12;
+  border:1px solid rgba(245,210,122,.25);
+}
+
+.msg.user .msg-bubble{
+  background:linear-gradient(135deg,var(--gold),var(--pink));
+  color:#050506;
+}
+
+.msg.system{
+  text-align:center;
+  margin:10px 0;
+}
+.msg.system span{
+  background:#0c0d12;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px dashed rgba(245,210,122,.35);
+  font-size:11px;
+  color:var(--sub);
+}
+
+/* 输入区 */
+.input-bar{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  max-width:430px;
+  margin:0 auto;
+  padding:10px 14px;
+  background:rgba(0,0,0,.9);
+  border-top:1px solid rgba(245,210,122,.1);
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+
+.btn-plus{
+  width:32px;height:32px;
+  border-radius:999px;
+  background:#0c0d12;
+  border:1px solid rgba(245,210,122,.35);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--gold);
+  font-size:20px;
+  flex-shrink:0;
+}
+
+.input-box{
+  flex:1;
+  padding:8px 12px;
+  background:#0c0d12;
+  border-radius:999px;
+  font-size:13px;
+  border:1px solid rgba(245,210,122,.2);
+  color:var(--text);
+}
+
+.btn-send{
+  padding:8px 14px;
+  border-radius:999px;
+  background:linear-gradient(135deg,var(--gold),var(--pink));
+  color:#050506;
+  font-size:12px;
+  border:none;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- 顶部栏 -->
+  <div class="header">
+    <div class="back">‹</div>
+    <div class="avatar"></div>
+    <div class="info">
+      <div class="name">在线客服（占位）</div>
+      <div class="status">通常在 3 分钟内回复（占位）</div>
+    </div>
+    <div class="more">⋮</div>
+  </div>
+
+  <!-- 聊天区 -->
+  <div class="chat-area">
+
+    <div class="date-line">今天（占位）</div>
+
+    <!-- 系统消息 -->
+    <div class="msg system">
+      <span>你已接入客服队列，请稍等（占位）</span>
+    </div>
+
+    <!-- 客服消息 -->
+    <div class="msg-row msg service">
+      <div class="msg-avatar"></div>
+      <div class="msg-bubble">
+        您好，我是在线客服，有什么可以帮您？（占位）
+      </div>
+    </div>
+
+    <!-- 用户消息 -->
+    <div class="msg-row msg user">
+      <div class="msg-bubble">
+        我想咨询一下提现审核要多久？（占位）
+      </div>
+    </div>
+
+    <!-- 客服回复 -->
+    <div class="msg-row msg service">
+      <div class="msg-avatar"></div>
+      <div class="msg-bubble">
+        通常会在 5-15 分钟内完成，请耐心等待，我们会第一时间通知您。（占位）
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 输入栏 -->
+  <div class="input-bar">
+    <div class="btn-plus">+</div>
+    <input class="input-box" placeholder="输入内容..." />
+    <button class="btn-send">发送</button>
+  </div>
+
+</div>
+</body>
+</html>

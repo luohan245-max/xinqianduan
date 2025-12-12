@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>我的订单 - 空状态</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <style>
+    :root{
+      --bg:#050509;
+      --card:#0f1119;
+      --card-soft:#151824;
+      --text-main:#f7f7fb;
+      --text-sub:#9ea1b6;
+      --accent-pink:#ff6ac8;
+      --accent-gold:#f6d57a;
+      --radius-lg:22px;
+      --shadow-soft:0 16px 40px rgba(0,0,0,0.7);
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{
+      background:#050509;
+      color:var(--text-main);
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",sans-serif;
+    }
+    .page{
+      max-width:430px;
+      margin:0 auto;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+    .header{
+      padding:12px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      border-bottom:1px solid rgba(255,255,255,0.08);
+      background:radial-gradient(circle at top,#171c32,#050509);
+    }
+    .back{font-size:18px;padding:4px 6px;}
+    .title{font-size:16px;font-weight:600;}
+    .filter{
+      font-size:12px;
+      color:var(--text-sub);
+    }
+    .placeholder{
+      flex:1;
+      padding:28px 18px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .card{
+      width:100%;
+      background:radial-gradient(circle at top,#20263b,#0f1119);
+      border-radius:24px;
+      padding:24px 20px 22px;
+      box-shadow:var(--shadow-soft);
+      border:1px solid rgba(255,255,255,0.1);
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:-45%;
+      background:
+        radial-gradient(circle at 18% 0,rgba(255,106,200,0.3),transparent 60%),
+        radial-gradient(circle at 85% 8%,rgba(246,213,122,0.24),transparent 60%);
+      opacity:.9;
+    }
+    .inner{position:relative;z-index:2;}
+    .icon-bill{
+      width:70px;height:70px;
+      margin:0 auto 14px;
+      border-radius:22px;
+      background:radial-gradient(circle at 30% 0,#292f47,#10131f);
+      border:1px solid rgba(255,255,255,0.16);
+      box-shadow:0 14px 28px rgba(0,0,0,0.8);
+      position:relative;
+      overflow:hidden;
+    }
+    .icon-bill::before{
+      content:"";
+      position:absolute;
+      inset:10px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.18);
+    }
+    .line{
+      position:absolute;
+      left:18px;
+      right:18px;
+      height:2px;
+      border-radius:999px;
+      background:linear-gradient(90deg,var(--accent-gold),var(--accent-pink));
+      top:26px;
+    }
+    .line:nth-child(2){top:36px;opacity:.6;}
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:4px 9px;
+      border-radius:999px;
+      background:rgba(0,0,0,0.4);
+      border:1px solid rgba(255,255,255,0.16);
+      font-size:11px;
+      color:var(--accent-gold);
+      margin-bottom:8px;
+    }
+    .dot{
+      width:6px;height:6px;border-radius:50%;
+      background:radial-gradient(circle,var(--accent-gold),#f39a3f);
+    }
+    .empty-title{
+      font-size:16px;
+      font-weight:600;
+      margin-bottom:6px;
+    }
+    .empty-sub{
+      font-size:13px;
+      color:var(--text-sub);
+      line-height:1.7;
+      margin-bottom:16px;
+    }
+    .btn-main{
+      width:100%;
+      border-radius:999px;
+      padding:10px 0;
+      border:none;
+      background:linear-gradient(135deg,var(--accent-pink),var(--accent-gold));
+      color:#050509;
+      font-size:14px;
+      font-weight:600;
+      margin-bottom:8px;
+    }
+    .btn-sub{
+      width:100%;
+      border-radius:999px;
+      padding:9px 0;
+      border:1px solid rgba(255,255,255,0.18);
+      background:rgba(0,0,0,0.35);
+      color:var(--text-sub);
+      font-size:13px;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <header class="header">
+    <div class="back">‹</div>
+    <div class="title">我的订单（占位）</div>
+    <div class="filter">全部 ▾（占位）</div>
+  </header>
+
+  <div class="placeholder">
+    <div class="card">
+      <div class="inner">
+        <div class="icon-bill">
+          <div class="line"></div>
+          <div class="line"></div>
+        </div>
+        <div class="chip">
+          <div class="dot"></div>
+          <span>当前暂无任何订单记录（占位）</span>
+        </div>
+        <div class="empty-title">你还没有产生消费记录（占位）</div>
+        <div class="empty-sub">
+          开通 VIP、充值钻石、购买徽章等产生的订单，会自动汇总到这里，方便你随时查看。（占位）
+        </div>
+        <button class="btn-main">去看看 VIP / 徽章权益（占位）</button>
+        <button class="btn-sub">返回钱包 & 收益总览（占位）</button>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

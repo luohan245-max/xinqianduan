@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>全部分类 · 短剧平台（占位）</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <style>
+    :root{
+      --bg:#050506;
+      --card:#111218;
+      --card-soft:#101019;
+      --line:#262a3f;
+      --gold:#f5d27a;
+      --pink:#ff7eb3;
+      --text-main:#ffffff;
+      --text-sub:#9ea1b6;
+      --radius:16px;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html,body{
+      width:100%;height:100%;
+      background:var(--bg);
+      color:var(--text-main);
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",sans-serif;
+    }
+    .app{
+      max-width:430px;
+      margin:0 auto;
+      padding-bottom:18px;
+    }
+
+    /* 顶部栏 */
+    .header-bar{
+      height:56px;
+      padding:0 14px;
+      display:flex;
+      align-items:center;
+      background:linear-gradient(to bottom,rgba(0,0,0,.9),rgba(0,0,0,0));
+    }
+    .icon-btn{
+      width:32px;height:32px;
+      border-radius:999px;
+      background:rgba(0,0,0,.35);
+      border:1px solid rgba(245,210,122,.4);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--gold);
+      font-size:16px;
+      flex-shrink:0;
+      text-decoration: none !important;
+    }
+    .header-title{
+      margin-left:8px;
+      font-size:16px;
+      font-weight:600;
+    }
+
+    /* 顶部说明 */
+    .top-intro{
+      margin:10px 14px 4px;
+    }
+    .top-title{
+      font-size:18px;
+      font-weight:600;
+      margin-bottom:4px;
+    }
+    .top-sub{
+      font-size:12px;
+      color:var(--text-sub);
+    }
+
+    /* 卡片通用 */
+    .card{
+      margin:10px 14px;
+      padding:10px 14px;
+      border-radius:var(--radius);
+      background:var(--card);
+      border:1px solid rgba(245,210,122,.12);
+    }
+    .card-title-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:6px;
+    }
+    .card-title{
+      font-size:14px;
+      font-weight:500;
+    }
+    .card-sub{
+      font-size:12px;
+      color:var(--text-sub);
+    }
+
+    /* 搜索 + 筛选 */
+    .search-row{
+      margin:6px 14px 0;
+      display:flex;
+      gap:8px;
+    }
+    .search-input{
+      flex:1;
+      min-width:0;
+      padding:8px 12px;
+      border-radius:999px;
+      background:#0c0d12;
+      border:1px solid rgba(245,210,122,.4);
+      font-size:13px;
+      color:var(--text-main);
+    }
+    .search-input::placeholder{
+      color:var(--text-sub);
+    }
+    .filter-btn{
+      width:40px;
+      border-radius:999px;
+      border:1px solid rgba(245,210,122,.4);
+      background:linear-gradient(135deg,var(--gold),var(--pink));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:14px;
+      color:#050506;
+      flex-shrink:0;
+      text-decoration: none;
+    }
+
+    /* Chip 行 */
+    .chip-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    .chip{
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(245,210,122,.25);
+      background:#0c0d12;
+      font-size:12px;
+      color:var(--text-sub);
+    }
+    .chip.active{
+      background:linear-gradient(135deg,var(--gold),var(--pink));
+      color:#050506;
+      border:none;
+    }
+
+    /* 分类 Grid */
+    .cat-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:8px;
+      margin-top:4px;
+    }
+    .cat-item{
+      padding:10px 10px;
+      border-radius:14px;
+      background:var(--card-soft);
+      border:1px solid rgba(245,210,122,.18);
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+    .cat-name-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:4px;
+    }
+    .cat-name{
+      font-size:14px;
+      font-weight:500;
+    }
+    .cat-count{
+      font-size:10px;
+      color:var(--text-sub);
+    }
+    .cat-tag-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:4px;
+      margin-top:6px;
+    }
+    .cat-mini-tag{
+      padding:2px 6px;
+      border-radius:999px;
+      border:1px dashed rgba(245,210,122,.35);
+      font-size:10px;
+      color:var(--text-sub);
+    }
+    .cat-foot{
+      margin-top:6px;
+      font-size:10px;
+      color:var(--text-sub);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .cat-foot span.highlight{
+      color:var(--gold);
+    }
+
+    /* 分割线 */
+    .line{
+      height:1px;
+      background:var(--line);
+      opacity:.45;
+      margin:8px 0;
+    }
+
+    /* 复杂筛选占位（条件行） */
+    .cond-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:4px;
+    }
+    .cond-chip{
+      padding:6px 10px;
+      border-radius:999px;
+      background:#0c0d12;
+      border:1px solid rgba(245,210,122,.25);
+      font-size:12px;
+      color:var(--text-sub);
+      display:flex;
+      align-items:center;
+      gap:4px;
+    }
+    .cond-chip span.value{
+      color:var(--gold);
+    }
+
+    /* 底部提示 */
+    .tip-small{
+      margin:6px 14px 0;
+      font-size:11px;
+      color:var(--text-sub);
+    }
+    .tip-small span{
+      color:var(--gold);
+    }
+
+    /* 全局：禁用 a 默认蓝色与下划线，保持视觉不变 */
+    a {
+      text-decoration: none !important;
+      color: inherit !important;
+    }
+
+    /* div → a 后，保持原布局 */
+    a.cat-item { display: flex; flex-direction: column; }
+    a.chip { display: inline-flex; }
+
+    /* 可点击手感（不影响移动端视觉） */
+    .icon-btn,
+    .cond-chip {
+      cursor: pointer;
+    }
+
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- 顶部栏 -->
+  <div class="header-bar">
+    <button class="icon-btn" onclick="history.back()">‹</button>
+    <div class="header-title">全部分类（占位）</div>
+  </div>
+
+  <!-- 顶部说明 -->
+  <div class="top-intro">
+    <div class="top-title">按分类发现短剧（占位）</div>
+    <div class="top-sub">
+      可以按照题材、情绪、受众、时长等维度筛选短剧内容，下方所有文字均为占位，后续可替换为真实配置（占位）。
+    </div>
+  </div>
+
+  <!-- 搜索 + 筛选按钮 -->
+<div class="search-row">
+  <input class="search-input" placeholder="在分类中搜索关键词（占位）" />
+  <a href="73.筛选弹层.html" class="filter-btn">筛</a>
+</div>
+
+  <!-- 快捷入口：常用分类 -->
+  <div class="card">
+    <div class="card-title-row">
+      <div class="card-title">常用分类（占位）</div>
+      <div class="card-sub">用户常看的热门类别入口（占位）</div>
+    </div>
+    <div class="chip-row">
+      <a class="chip active" href="27.搜索结果页.html">都市甜宠（占位）</a>
+      <a class="chip" href="27.搜索结果页.html">豪门总裁（占位）</a>
+      <a class="chip" href="27.搜索结果页.html">虐恋复仇（占位）</a>
+      <a class="chip" href="27.搜索结果页.html">古装穿越（占位）</a>
+      <a class="chip" href="27.搜索结果页.html">悬疑反转（占位）</a>
+      <a class="chip" href="27.搜索结果页.html">爽文爽剧（占位）</a>
+    </div>
+  </div>
+
+  <!-- 题材分类 -->
+  <div class="card">
+    <div class="card-title-row">
+      <div class="card-title">题材分类（占位）</div>
+      <div class="card-sub">按短剧主线题材划分（占位）</div>
+    </div>
+
+    <div class="cat-grid">
+      <a class="cat-item" href="55.分类结果列表页.html">
+        <div class="cat-name-row">
+          <div class="cat-name">都市 / 现实向（占位）</div>
+          <div class="cat-count">约 XX 部（占位）</div>
+        </div>
+        <div class="cat-tag-row">
+          <div class="cat-mini-tag">职场（占位）</div>
+          <div class="cat-mini-tag">婚恋（占位）</div>
+          <div class="cat-mini-tag">家庭（占位）</div>
+        </div>
+        <div class="cat-foot">
+          <span>适合：日常通勤刷剧（占位）</span>
+          <span class="highlight">进入列表 &gt;</span>
+        </div>
+      </a>
+
+      <a class="cat-item" href="55.分类结果列表页.html">
+        <div class="cat-name-row">
+          <div class="cat-name">古装 / 穿越（占位）</div>
+          <div class="cat-count">约 XX 部（占位）</div>
+        </div>
+        <div class="cat-tag-row">
+          <div class="cat-mini-tag">权谋（占位）</div>
+          <div class="cat-mini-tag">宫斗（占位）</div>
+          <div class="cat-mini-tag">仙侠（占位）</div>
+        </div>
+        <div class="cat-foot">
+          <span>适合：长线追更（占位）</span>
+          <span class="highlight">进入列表 &gt;</span>
+        </div>
+      </a>
+
+      <a class="cat-item" href="55.分类结果列表页.html">
+        <div class="cat-name-row">
+          <div class="cat-name">悬疑 / 反转（占位）</div>
+          <div class="cat-count">约 XX 部（占位）</div>
+        </div>
+        <div class="cat-tag-row">
+          <div class="cat-mini-tag">犯罪（占位）</div>
+          <div class="cat-mini-tag">推理（占位）</div>
+          <div class="cat-mini-tag">反转结局（占位）</div>
+        </div>
+        <div class="cat-foot">
+          <span>适合：高专注刷剧（占位）</span>
+          <span class="highlight">进入列表 &gt;</span>
+        </div>
+      </a>
+
+      <a class="cat-item" href="55.分类结果列表页.html">
+        <div class="cat-name-row">
+          <div class="cat-name">奇幻 / 玄幻（占位）</div>
+          <div class="cat-count">约 XX 部（占位）</div>
+        </div>
+        <div class="cat-tag-row">
+          <div class="cat-mini-tag">重生（占位）</div>
+          <div class="cat-mini-tag">系统流（占位）</div>
+          <div class="cat-mini-tag">超能力（占位）</div>
+        </div>
+        <div class="cat-foot">
+          <span>适合：脑洞向爽感（占位）</span>
+          <span class="highlight">进入列表 &gt;</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- 情绪 / 观看场景 -->
+  <div class="card">
+    <div class="card-title-row">
+      <div class="card-title">情绪 & 场景筛选（占位）</div>
+      <div class="card-sub">按观看心情与场景选择（占位）</div>
+    </div>
+
+    <div class="cat-grid">
+      <a class="cat-item" href="55.分类结果列表页.html">
+        <div class="cat-name-row">
+          <div class="cat-name">想要放松（占位）</div>
+          <div class="cat-count">XX 部（占位）</div>
+        </div>
+        <div class="cat-tag-row">
+          <div class="cat-mini-tag">轻喜剧（占位）</div>
+          <div class="cat-mini-tag">沙雕向（占位）</div>
+        </div>
+        <div class="cat-foot">
+          <span>适合：睡前 / 午休（占位）</span>
+          <span class="highlight">进入列表 &gt;</span>
+        </div>
+      </a>
+
+      <a class="cat-item" href="55.分类结果列表页.html">
+        <div class="cat-name-row">
+          <div class="cat-name">想要刺激（占位）</div>
+          <div class="cat-count">XX 部（占位）</div>
+        </div>
+        <div class="cat-tag-row">
+          <div class="cat-mini-tag">爽剧连环反转（占位）</div>
+          <div class="cat-mini-tag">高能不断（占位）</div>
+        </div>
+        <div class="cat-foot">
+          <span>适合：无聊想提神（占位）</span>
+          <span class="highlight">进入列表 &gt;</span>
+        </div>
+      </a>
+
+      <a class="cat-item" href="55.分类结果列表页.html">
+        <div class="cat-name-row">
+          <div class="cat-name">短时碎片刷（占位）</div>
+          <div class="cat-count">XX 部（占位）</div>
+        </div>
+        <div class="cat-tag-row">
+          <div class="cat-mini-tag">&lt; 30 秒 / 集（占位）</div>
+          <div class="cat-mini-tag">超短篇（占位）</div>
+        </div>
+        <div class="cat-foot">
+          <span>适合：排队 / 等车（占位）</span>
+          <span class="highlight">进入列表 &gt;</span>
+        </div>
+      </a>
+
+      <a class="cat-item" href="55.分类结果列表页.html">
+        <div class="cat-name-row">
+          <div class="cat-name">长线追更（占位）</div>
+          <div class="cat-count">XX 部（占位）</div>
+        </div>
+        <div class="cat-tag-row">
+          <div class="cat-mini-tag">&gt; 60 集（占位）</div>
+          <div class="cat-mini-tag">大体量剧（占位）</div>
+        </div>
+        <div class="cat-foot">
+          <span>适合：长期追剧（占位）</span>
+          <span class="highlight">进入列表 &gt;</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- 复杂筛选条件占位 -->
+  <div class="card">
+    <div class="card-title-row">
+      <div class="card-title">高级筛选条件（占位）</div>
+      <div class="card-sub">可组合多个条件过滤结果（占位）</div>
+    </div>
+
+    <div class="cond-row">
+      <div class="cond-chip" onclick="location.href='73.筛选弹层.html'">
+        类型：<span class="value">全部（占位）</span> ⌄
+      </div>
+      <div class="cond-chip" onclick="location.href='73.筛选弹层.html'">
+        集数：<span class="value">0–60 集（占位）</span> ⌄
+      </div>
+      <div class="cond-chip" onclick="location.href='73.筛选弹层.html'">
+        状态：<span class="value">全部 / 连载 / 完结（占位）</span> ⌄
+      </div>
+      <div class="cond-chip" onclick="location.href='73.筛选弹层.html'">
+        权限：<span class="value">全部 / 免费 / VIP（占位）</span> ⌄
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部提示 -->
+  <div class="tip-small">
+    提示：分类页仅为 UI 结构占位，后续可将每个分类卡片跳转到对应「短剧列表页」，并与 <span>搜索结果 / 排行榜</span> 做联动（占位）。
+  </div>
+
+</div>
+</body>
+</html>

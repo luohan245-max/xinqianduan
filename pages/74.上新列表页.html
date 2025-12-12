@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>上新</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+
+  <style>
+    :root {
+      --bg: #050509;
+      --text-main: #f7f7fb;
+      --text-sub: #9ea1b6;
+      --pink: #ff6ac8;
+      --gold: #f6d57a;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: radial-gradient(circle at top, #1b1f33 0%, #050509 60%);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      max-width: 430px;
+      margin: 0 auto;
+      padding-bottom: 70px;
+    }
+
+    /* 顶部栏 */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      background: rgba(5,5,10,0.72);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .back-btn {
+      font-size: 20px;
+      margin-right: 10px;
+    }
+
+    .top-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    /* Banner（小型金光背景） */
+    .banner {
+      height: 110px;
+      border-radius: 18px;
+      margin: 14px;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(255,126,179,0.35), transparent 60%),
+        radial-gradient(circle at 80% 50%, rgba(245,210,122,0.28), transparent 60%),
+        #0b0c14;
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 16px 36px rgba(0,0,0,0.65);
+    }
+
+    /* 列表区 */
+    .list {
+      padding: 0 14px 20px;
+    }
+
+    .item {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 18px;
+      padding: 10px;
+      border-radius: 14px;
+      background: rgba(21,24,36,0.55);
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 12px 26px rgba(0,0,0,0.5);
+    }
+
+    .cover {
+      width: 95px;
+      height: 135px;
+      background: linear-gradient(135deg,#3c425d,#1a1d2b);
+      border-radius: 12px;
+      flex-shrink: 0;
+    }
+
+    .info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .title {
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .tags {
+      margin: 6px 0;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text-sub);
+    }
+
+    .update {
+      font-size: 12px;
+      color: var(--text-sub);
+    }
+
+    .hot {
+      font-size: 12px;
+      margin-top: 2px;
+      color: var(--pink);
+    }
+
+    /* 底部导航（统一样式） */
+    .tab-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 64px;
+      background: rgba(5,6,10,0.96);
+      border-top: 1px solid rgba(245,210,122,0.16);
+      backdrop-filter: blur(22px);
+      display: flex;
+      justify-content: center;
+      z-index: 20;
+    }
+
+    .tab-bar-inner {
+      width: 100%;
+      max-width: 430px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .tab-item {
+      flex: 1;
+      text-align: center;
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    .tab-item-icon {
+      width: 22px;
+      height: 22px;
+      margin: 0 auto;
+      border-radius: 999px;
+      border: 1px solid rgba(245,210,122,0.3);
+      background: radial-gradient(circle at top, #30354c, #151728);
+    }
+
+    .tab-item-label {
+      margin-top: 2px;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <!-- 顶部 -->
+  <div class="topbar">
+    <div class="back-btn">←</div>
+    <div class="top-title">上新</div>
+  </div>
+
+  <!-- Banner -->
+  <div class="banner"></div>
+
+  <!-- 最新更新列表 -->
+  <div class="list">
+
+    <div class="item">
+      <div class="cover"></div>
+      <div class="info">
+        <div class="title">都市甜宠 · 标题占位</div>
+
+        <div class="tags">
+          <span class="tag">#甜宠</span>
+          <span class="tag">#都市</span>
+        </div>
+
+        <div class="update">更新至 10 集 · 今日更新</div>
+        <div class="hot">4.5M🔥</div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="cover"></div>
+      <div class="info">
+        <div class="title">古装权谋 · 标题占位</div>
+        <div class="tags">
+          <span class="tag">#古装</span>
+          <span class="tag">#权谋</span>
+        </div>
+        <div class="update">全 24 集</div>
+        <div class="hot">3.3M🔥</div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="cover"></div>
+      <div class="info">
+        <div class="title">反转悬疑 · 标题占位</div>
+        <div class="tags">
+          <span class="tag">#反转</span>
+          <span class="tag">#悬疑</span>
+        </div>
+        <div class="update">更新至 6 集</div>
+        <div class="hot">2.7M🔥</div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- 底部导航 -->
+<nav class="tab-bar">
+  <div class="tab-bar-inner">
+    <div class="tab-item"><div class="tab-item-icon"></div><div class="tab-item-label">首页</div></div>
+    <div class="tab-item"><div class="tab-item-icon"></div><div class="tab-item-label">推荐</div></div>
+    <div class="tab-item"><div class="tab-item-icon"></div><div class="tab-item-label">福利</div></div>
+    <div class="tab-item"><div class="tab-item-icon"></div><div class="tab-item-label">历史</div></div>
+    <div class="tab-item"><div class="tab-item-icon"></div><div class="tab-item-label">我的</div></div>
+  </div>
+</nav>
+
+</body>
+</html>

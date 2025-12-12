@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>我的收藏 · 占位</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <style>
+    :root {
+      --bg: #050506;
+      --bg-card: #111427;
+      --bg-card-soft: #151725;
+      --border-subtle: #262a3f;
+      --gold: #f5d27a;
+      --pink: #ff7eb3;
+      --text-main: #f7f7fb;
+      --text-sub: #9ea1b6;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 999px;
+      --shadow-soft: 0 18px 40px rgba(0,0,0,0.55);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      min-height: 100vh;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      margin: 0 auto;
+      padding-bottom: 16px;
+      position: relative;
+    }
+
+    @media (min-width: 768px) {
+      .app {
+        max-width: 520px;
+        margin: 16px auto;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: var(--shadow-soft);
+      }
+    }
+
+    .page {
+      padding: 12px 16px 24px;
+    }
+
+    /* 顶部栏 */
+    .page-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      padding: 6px 0 8px;
+      background: linear-gradient(to bottom, rgba(5,5,6,0.96), rgba(5,5,6,0.85), rgba(5,5,6,0));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .header-left,
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .header-center {
+      flex: 1;
+      min-width: 0;
+      text-align: center;
+    }
+
+    .circle-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      border: 1px solid rgba(245,210,122,0.5);
+      background:
+        radial-gradient(circle at top, rgba(255,126,179,0.3), transparent 60%),
+        linear-gradient(145deg, #111320, #070811);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+      font-size: 16px;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.9);
+      cursor: pointer;
+    }
+
+    .page-title {
+      font-size: 15px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* 通用模块 */
+    .section {
+      margin-top: 8px;
+      margin-bottom: 10px;
+    }
+
+    .section-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .section-sub {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .card {
+      border-radius: var(--radius-lg);
+      padding: 12px;
+      background:
+        radial-gradient(circle at top left, rgba(255,126,179,0.22), transparent 60%),
+        radial-gradient(circle at bottom right, rgba(245,210,122,0.18), transparent 60%),
+        linear-gradient(160deg, #191d30, #05060c);
+      border: 1px solid rgba(245,210,122,0.35);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.9);
+      margin-bottom: 12px;
+    }
+
+    .card-soft {
+      border-radius: var(--radius-lg);
+      padding: 12px;
+      background: linear-gradient(160deg, #141726, #070811);
+      border: 1px solid rgba(38,42,63,0.95);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.85);
+      margin-bottom: 10px;
+    }
+
+    /* 空状态图片占位 */
+    .ph-img-lg {
+      width: 100%;
+      height: 120px;
+      border-radius: 16px;
+      border: 1px dashed rgba(245,210,122,0.45);
+      background:
+        radial-gradient(circle at top, rgba(255,126,179,0.3), transparent 60%),
+        linear-gradient(145deg, #151827, #050506);
+      margin-bottom: 10px;
+    }
+
+    .btn-primary-wide {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, var(--gold), var(--pink));
+      color: #050506;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 0 18px rgba(255,126,179,0.8);
+      text-align: center;
+      margin-top: 6px;
+    }
+
+    /* 顶部操作区：编辑 / 全选 */
+    .top-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .top-actions-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .text-link {
+      color: var(--gold);
+      font-size: 11px;
+    }
+
+    /* 筛选 Tab（题材 / 状态） */
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .filter-pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(245,210,122,0.45);
+      background: rgba(10,10,18,0.96);
+      font-size: 11px;
+      color: var(--text-sub);
+      white-space: nowrap;
+    }
+
+    .filter-pill.is-active {
+      background: linear-gradient(135deg, var(--gold), var(--pink));
+      color: #050506;
+      border: none;
+      box-shadow: 0 0 12px rgba(255,126,179,0.7);
+    }
+
+    /* 收藏列表 */
+    .fav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .fav-item {
+      border-radius: var(--radius-md);
+      padding: 8px;
+      background: linear-gradient(160deg, #141726, #070811);
+      border: 1px solid rgba(38,42,63,0.95);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.85);
+      display: flex;
+      gap: 8px;
+      align-items: stretch;
+    }
+
+    .fav-cover {
+      width: 88px;
+      aspect-ratio: 3 / 4;
+      border-radius: 14px;
+      border: 1px dashed rgba(245,210,122,0.45);
+      background:
+        radial-gradient(circle at top, rgba(255,126,179,0.25), transparent 60%),
+        linear-gradient(145deg, #151827, #050506);
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .fav-tag-top {
+      position: absolute;
+      left: 6px;
+      top: 6px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: rgba(5,5,6,0.8);
+      border: 1px solid rgba(245,210,122,0.7);
+      font-size: 10px;
+      color: var(--gold);
+    }
+
+    .fav-main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .fav-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .fav-title {
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .fav-status-pill {
+      padding: 2px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(245,210,122,0.4);
+      font-size: 10px;
+      color: var(--text-sub);
+      white-space: nowrap;
+    }
+
+    .fav-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .meta-dot::before {
+      content: "· ";
+    }
+
+    .fav-progress-wrap {
+      margin-top: 2px;
+    }
+
+    .fav-progress-label {
+      font-size: 10px;
+      color: var(--text-sub);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .fav-progress-bar {
+      position: relative;
+      height: 3px;
+      border-radius: 999px;
+      background: rgba(148,163,184,0.5);
+      overflow: hidden;
+      margin-top: 2px;
+    }
+
+    .fav-progress-inner {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 40%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--gold), var(--pink));
+      box-shadow: 0 0 10px rgba(255,126,179,0.8);
+    }
+
+    .fav-bottom-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4px;
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    .fav-tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .fav-tag {
+      padding: 2px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(245,210,122,0.35);
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    .fav-ops-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .fav-op-link {
+      font-size: 10px;
+      color: var(--gold);
+    }
+
+    .badge-new {
+      padding: 2px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,126,179,0.7);
+      font-size: 10px;
+      color: var(--pink);
+    }
+
+    /* 空状态文案 */
+    .hint-title {
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .hint-sub {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .filter-pill,
+    .fav-item,
+    .fav-op-link,
+    .text-link,
+    .btn-primary-wide {cursor: pointer;}
+
+  </style>
+</head>
+<body>
+  <div class="app">
+    <main class="page" id="page-favorites">
+      <!-- 顶部栏 -->
+      <header class="page-header">
+        <div class="header-left">
+          <div class="circle-btn" onclick="history.back()" aria-label="返回">‹</div>
+        </div>
+        <div class="header-center">
+          <div class="page-title">我的收藏</div>
+        </div>
+        <div class="header-right">
+          <div class="circle-btn" onclick="location.href='17.用户资料编辑页.html'" aria-label="编辑">✎</div>
+        </div>
+      </header>
+
+      <!-- ① 无收藏空状态占位 -->
+      <section class="section card">
+        <div class="section-title-row">
+          <div class="section-title">无收藏时的展示占位</div>
+          <div class="section-sub">收藏列表为空时展示此卡片</div>
+        </div>
+
+        <div class="ph-img-lg"></div>
+
+        <div class="hint-title">还没有收藏任何短剧占位</div>
+        <div class="hint-sub">
+          这里是无收藏时的文案占位，可以引导用户去首页 / 推荐页添加收藏、追更喜欢的短剧。
+        </div>
+
+        <button class="btn-primary-wide" onclick="location.href='2.推荐页.html'">去首页 / 推荐页逛逛（占位）</button>
+      </section>
+
+      <!-- ② 顶部操作区 + 筛选 -->
+      <section class="section card-soft">
+        <div class="top-actions">
+          <span>以下为有收藏时的列表示例占位</span>
+          <div class="top-actions-right">
+            <span class="text-link">编辑（占位）</span>
+            <span class="text-link">全选（占位）</span>
+          </div>
+        </div>
+
+        <div class="filter-row">
+          <span class="filter-pill is-active" onclick="location.href='55.分类结果列表页.html'">全部</span>
+          <span class="filter-pill" onclick="location.href='55.分类结果列表页.html'">追更中</span>
+          <span class="filter-pill" onclick="location.href='55.分类结果列表页.html'">已完结</span>
+          <span class="filter-pill" onclick="location.href='55.分类结果列表页.html'">都市</span>
+          <span class="filter-pill" onclick="location.href='55.分类结果列表页.html'">古装</span>
+          <span class="filter-pill" onclick="location.href='55.分类结果列表页.html'">悬疑</span>
+        </div>
+      </section>
+
+      <!-- ③ 收藏列表（有收藏时示例） -->
+      <section class="section card-soft">
+        <div class="section-title-row">
+          <div class="section-title">收藏短剧列表占位</div>
+          <div class="section-sub">你点击任何一条可跳转到短剧详情页</div>
+        </div>
+
+        <div class="fav-list">
+          <!-- 收藏项 1：追更中 -->
+          <article class="fav-item" onclick="location.href='6.短剧详情页.html'">
+            <div class="fav-cover">
+              <div class="fav-tag-top">追更中</div>
+            </div>
+            <div class="fav-main">
+              <div class="fav-title-row">
+                <div class="fav-title">短剧标题占位 · 都市甜宠系</div>
+                <div class="fav-status-pill">连载中占位</div>
+              </div>
+
+              <div class="fav-meta-row">
+                <span>已看到：第 12 集 / 共 36 集 占位</span>
+                <span class="meta-dot">每集约 XX 分钟</span>
+              </div>
+
+              <div class="fav-progress-wrap">
+                <div class="fav-progress-label">
+                  <span>进度占位：约 30%–40%</span>
+                  <span>最近观看：2025-01-15 占位</span>
+                </div>
+                <div class="fav-progress-bar">
+                  <div class="fav-progress-inner" style="width: 35%;"></div>
+                </div>
+              </div>
+
+              <div class="fav-bottom-row">
+                <div class="fav-tag-row">
+                  <span class="fav-tag">都市</span>
+                  <span class="fav-tag">甜宠</span>
+                  <span class="fav-tag">VIP 专区占位</span>
+                </div>
+                <div class="fav-ops-row">
+                  <span class="fav-op-link" onclick="location.href='16.短剧播放器页.html'">继续播放（占位）</span>
+                  <span class="fav-op-link" onclick="history.back()">取消收藏（占位）</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- 收藏项 2：已完结 -->
+          <article class="fav-item" onclick="location.href='6.短剧详情页.html'">
+            <div class="fav-cover">
+              <div class="fav-tag-top">已完结</div>
+            </div>
+            <div class="fav-main">
+              <div class="fav-title-row">
+                <div class="fav-title">短剧标题占位 · 古装权谋向</div>
+                <div class="fav-status-pill">完结短剧占位</div>
+              </div>
+
+              <div class="fav-meta-row">
+                <span>已看到：第 24 集 / 共 24 集 占位</span>
+                <span class="meta-dot">看完时间：2025-01-10 占位</span>
+              </div>
+
+              <div class="fav-progress-wrap">
+                <div class="fav-progress-label">
+                  <span>进度占位：100%</span>
+                  <span>评分入口占位</span>
+                </div>
+                <div class="fav-progress-bar">
+                  <div class="fav-progress-inner" style="width: 100%;"></div>
+                </div>
+              </div>
+
+              <div class="fav-bottom-row">
+                <div class="fav-tag-row">
+                  <span class="fav-tag">古装</span>
+                  <span class="fav-tag">权谋</span>
+                  <span class="fav-tag">男强女强</span>
+                </div>
+                <div class="fav-ops-row">
+                  <span class="fav-op-link">再看一遍（占位）</span>
+                  <span class="fav-op-link">取消收藏（占位）</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- 收藏项 3：新上架 -->
+          <article class="fav-item" onclick="location.href='6.短剧详情页.html'">
+            <div class="fav-cover">
+              <div class="fav-tag-top badge-new">新上架</div>
+            </div>
+            <div class="fav-main">
+              <div class="fav-title-row">
+                <div class="fav-title">短剧标题占位 · 悬疑反转系</div>
+                <div class="fav-status-pill">刚加入收藏占位</div>
+              </div>
+
+              <div class="fav-meta-row">
+                <span>已看到：第 1 集 / 共 20 集 占位</span>
+                <span class="meta-dot">加入收藏时间：2025-01-16 占位</span>
+              </div>
+
+              <div class="fav-progress-wrap">
+                <div class="fav-progress-label">
+                  <span>进度占位：约 5%</span>
+                  <span>最近观看：2025-01-16 占位</span>
+                </div>
+                <div class="fav-progress-bar">
+                  <div class="fav-progress-inner" style="width: 8%;"></div>
+                </div>
+              </div>
+
+              <div class="fav-bottom-row">
+                <div class="fav-tag-row">
+                  <span class="fav-tag">悬疑</span>
+                  <span class="fav-tag">反转</span>
+                  <span class="fav-tag">高能预警占位</span>
+                </div>
+                <div class="fav-ops-row">
+                  <span class="fav-op-link" onclick="location.href='16.短剧播放器页.html'">开始观看（占位）</span>
+                  <span class="fav-op-link" onclick="location.href='16.短剧播放器页.html'">再看一遍（占位）</span>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>活动中心 · 模板</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  
+  <style>
+    :root{
+      --bg:#050506;
+      --card:#111218;
+      --card-soft:#101019;
+      --line:#262a3f;
+      --gold:#f5d27a;
+      --pink:#ff7eb3;
+      --text-main:#ffffff;
+      --text-sub:#9ea1b6;
+      --radius-lg:20px;
+      --radius-md:14px;
+      --radius-sm:999px;
+      --shadow-soft:0 18px 40px rgba(0,0,0,0.6);
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html,body{
+      width:100%;
+      height:100%;
+      background:var(--bg);
+      color:var(--text-main);
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",sans-serif;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    .app{
+      max-width:430px;
+      margin:0 auto;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+
+    /* ================= 顶部栏 ================= */
+    .page-header{
+      height:56px;
+      padding:0 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      background:linear-gradient(to bottom,rgba(0,0,0,.92),rgba(0,0,0,0));
+      position:sticky;
+      top:0;
+      z-index:10;
+    }
+
+    .header-left{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .back-btn{
+      width:32px;
+      height:32px;
+      border-radius:var(--radius-sm);
+      border:1px solid rgba(245,210,122,.45);
+      background:rgba(0,0,0,.35);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--gold);
+      font-size:18px;
+      flex-shrink:0;
+    }
+    .header-title{
+      font-size:16px;
+      font-weight:600;
+    }
+
+    .header-right{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:12px;
+      color:var(--text-sub);
+    }
+
+    /* ================= Tabs ================= */
+    .tab-bar{
+      padding:6px 14px 0;
+      display:flex;
+      gap:8px;
+    }
+
+    .tab{
+      padding:6px 12px;
+      border-radius:999px;
+      background:#111218;
+      border:1px solid rgba(38,42,63,.9);
+      color:var(--text-sub);
+      font-size:12px;
+      white-space:nowrap;
+    }
+
+    .tab.active{
+      background:linear-gradient(135deg,var(--gold),var(--pink));
+      border:none;
+      color:#050506;
+      font-weight:500;
+    }
+
+    /* ================= 活动列表 ================= */
+    .activity-list{
+      padding:8px 14px 20px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .activity-card{
+      display:flex;
+      gap:10px;
+      padding:10px;
+      border-radius:var(--radius-md);
+      background:var(--card);
+      border:1px solid rgba(38,42,63,.9);
+    }
+
+    .activity-thumb{
+      width:120px;
+      height:68px; /* 16:9 */
+      border-radius:12px;
+      background:radial-gradient(circle at 30% 0%,rgba(255,255,255,.14),rgba(0,0,0,1));
+      border:1px solid rgba(38,42,63,.9);
+      flex-shrink:0;
+    }
+
+    .activity-main{
+      flex:1;
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+
+    .activity-title{
+      font-size:13px;
+      font-weight:500;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+      line-height:1.35;
+    }
+
+    .activity-time{
+      font-size:11px;
+      color:var(--text-sub);
+    }
+
+    .status-pill{
+      margin-top:auto;
+      width:max-content;
+      padding:3px 8px;
+      border-radius:999px;
+      font-size:10px;
+      color:var(--gold);
+      border:1px solid rgba(245,210,122,.6);
+      background:rgba(0,0,0,.35);
+    }
+
+    .status-upcoming{
+      color:var(--pink);
+      border:1px solid rgba(255,126,179,.7);
+    }
+
+    .status-ended{
+      color:#9ea1b6;
+      border:1px solid rgba(148,163,184,.5);
+    }
+
+    /* ================= 空状态 ================= */
+    .empty-box{
+      padding:60px 20px;
+      text-align:center;
+      color:var(--text-sub);
+      font-size:12px;
+    }
+
+    .empty-icon{
+      width:68px;
+      height:68px;
+      margin:0 auto 12px;
+      border-radius:999px;
+      background:#111218;
+      border:1px solid rgba(38,42,63,.9);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:28px;
+      color:var(--text-sub);
+    }
+
+    /* 可点击手感（不影响移动端视觉） */
+    .back-btn,
+    .header-right,
+    .tab,
+    .activity-card {cursor: pointer;}
+
+    /* 全局兜底：防止未来插入 a 出现蓝色/下划线 */
+    a {
+      text-decoration: none !important;
+      color: inherit !important;
+    }
+
+    .empty-box span {cursor: pointer;}
+
+  </style>
+</head>
+
+<body>
+<div class="app">
+
+  <!-- 顶部栏 -->
+  <header class="page-header">
+    <div class="header-left">
+      <button class="back-btn" onclick="history.back()">‹</button>
+      <div class="header-title">活动中心（占位）</div>
+    </div>
+    <div class="header-right" onclick="location.href='26.客服页-帮助中心页.html'">
+      <span>说明</span>
+      <span>❓</span>
+    </div>
+  </header>
+
+  <!-- TAB 区 -->
+  <div class="tab-bar">
+    <div class="tab active" onclick="history.back()">进行中</div>
+    <div class="tab" onclick="history.back()">即将开始</div>
+    <div class="tab" onclick="history.back()">已结束</div>
+  </div>
+
+  <!-- ============= 活动列表（占位） ============= -->
+  <div class="activity-list">
+
+    <!-- 示例 1：进行中 -->
+    <div class="activity-card" onclick="location.href='37.活动详情页.html'">
+      <div class="activity-thumb"></div>
+      <div class="activity-main">
+        <div class="activity-title">活动标题占位，例如连续签到领宝箱活动</div>
+        <div class="activity-time">2025.01.01 - 2025.01.15</div>
+        <div class="status-pill">进行中</div>
+      </div>
+    </div>
+
+    <!-- 示例 2：预告 -->
+    <div class="activity-card" onclick="location.href='37.活动详情页.html'">
+      <div class="activity-thumb"></div>
+      <div class="activity-main">
+        <div class="activity-title">活动标题占位：春节限时抽奖（预告）</div>
+        <div class="activity-time">2025.02.01 开始</div>
+        <div class="status-pill status-upcoming">即将开始</div>
+      </div>
+    </div>
+
+    <!-- 示例 3：已结束 -->
+    <div class="activity-card" onclick="location.href='37.活动详情页.html'">
+      <div class="activity-thumb"></div>
+      <div class="activity-main">
+        <div class="activity-title">活动标题占位：11 月新手任务已结束</div>
+        <div class="activity-time">2024.11.01 - 2024.11.30</div>
+        <div class="status-pill status-ended">已结束</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============= 空状态模板（根据业务逻辑显示） ============= -->
+  <!-- 
+  <div class="empty-box">
+    <div class="empty-icon">🎁</div>
+    当前状态下暂无活动，请<span onclick="history.back()">切换其他分类</span>查看（占位）
+  </div>
+  -->
+
+</div>
+</body>
+</html>

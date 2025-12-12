@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>87.账号注销确认页</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+
+<style>
+:root {
+  --bg: #050509;
+  --card: #0f1119;
+  --card-soft: #151824;
+  --text-main: #f7f7fb;
+  --text-sub: #9ea1b6;
+  --accent-pink: #ff6ac8;
+  --accent-gold: #f6d57a;
+  --shadow-soft: 0 20px 50px rgba(0,0,0,0.75);
+  --radius-lg: 24px;
+  --radius-md: 16px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  background: radial-gradient(circle at top,#191e34 0,#050509 55%);
+  color:var(--text-main);
+  font-family:-apple-system, BlinkMacSystemFont,"SF Pro Display","Inter",sans-serif;
+}
+
+.page{
+  max-width:430px;
+  margin:0 auto;
+  padding:26px 16px 40px;
+}
+
+.header{
+  display:flex;
+  align-items:center;
+  margin-bottom:14px;
+}
+.back-btn{
+  font-size:20px;
+  padding-right:10px;
+  color:var(--text-sub);
+}
+.header-title{
+  font-size:17px;
+  font-weight:600;
+}
+
+.warning-box{
+  margin-top:18px;
+  padding:18px 16px 14px;
+  background:var(--card);
+  border-radius:var(--radius-lg);
+  border:1px solid rgba(255,255,255,0.12);
+  box-shadow:var(--shadow-soft);
+  position:relative;
+  overflow:hidden;
+}
+.warning-box::before{
+  content:"";
+  position:absolute;
+  inset:-40%;
+  background:
+    radial-gradient(circle at 20% 0,rgba(255,106,200,0.32),transparent 70%),
+    radial-gradient(circle at 80% 0,rgba(246,213,122,0.28),transparent 70%);
+  opacity:.85;
+}
+.warning-inner{position:relative;z-index:2;}
+
+.icon-circle{
+  width:52px;
+  height:52px;
+  border-radius:50%;
+  background:radial-gradient(circle at 30% 0,#fff7da,#f2c368,#c67f24);
+  box-shadow:0 10px 24px rgba(0,0,0,0.65);
+  margin-bottom:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:26px;
+  color:#2b1a04;
+  font-weight:700;
+}
+
+.notice-title{
+  font-size:16px;
+  font-weight:700;
+  margin-bottom:10px;
+  letter-spacing:0.3px;
+}
+
+.alert-text{
+  font-size:13px;
+  color:var(--text-sub);
+  line-height:1.7;
+  margin-bottom:12px;
+}
+
+.risk-list{
+  font-size:12px;
+  line-height:1.6;
+  margin-bottom:16px;
+}
+.risk-list div{
+  margin-bottom:6px;
+}
+.risk-list span{
+  color:var(--accent-pink);
+  font-weight:500;
+}
+
+.account-box{
+  margin-top:18px;
+  padding:14px 16px;
+  background:var(--card-soft);
+  border-radius:var(--radius-md);
+  border:1px solid rgba(255,255,255,0.12);
+  font-size:13px;
+}
+.account-box strong{
+  color:var(--accent-gold);
+  font-weight:600;
+}
+
+.btn-area{
+  margin-top:26px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.btn{
+  width:100%;
+  padding:12px 0;
+  border-radius:999px;
+  border:none;
+  font-size:15px;
+  font-weight:600;
+}
+.btn-danger{
+  background:linear-gradient(135deg,#ff6a7c,#ffb36a);
+  color:#3b070c;
+}
+.btn-cancel{
+  background:rgba(0,0,0,0.25);
+  border:1px solid rgba(255,255,255,0.25);
+  color:var(--text-main);
+}
+
+.footer-tip{
+  margin-top:10px;
+  font-size:11px;
+  text-align:center;
+  color:var(--text-sub);
+  opacity:.7;
+}
+
+    /* 可点击手感（不影响移动端视觉） */
+    .back-btn,
+    .btn-danger,
+    .btn-cancel {
+      cursor: pointer;
+    }
+
+    /* 全局兜底：防止未来插入 a 出现蓝色/下划线 */
+    a{
+      text-decoration:none !important;
+      color:inherit !important;
+    }
+
+</style>
+</head>
+
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="back-btn" onclick="history.back()">‹</div>
+    <div class="header-title">账号注销（占位）</div>
+  </div>
+
+  <div class="warning-box">
+    <div class="warning-inner">
+      <div class="icon-circle">!</div>
+
+      <div class="notice-title">你正在申请注销账号（占位）</div>
+
+      <div class="alert-text">
+        注销后，你的账号将永久失效，无法恢复，所有资产、观影历史、团队关系将被清空。（占位）
+      </div>
+
+      <div class="risk-list">
+        <div>• 你的 <span>DP / 钻石 / 金币</span> 将被清空（占位）</div>
+        <div>• 你的 <span>徽章资产</span> 将失效（占位）</div>
+        <div>• <span>团队奖励绑定关系</span> 将解除（占位）</div>
+        <div>• 你将无法登录当前账号（占位）</div>
+      </div>
+
+      <div class="account-box">
+        当前账号：<strong>user***923（占位）</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-area">
+    <button class="btn btn-danger" onclick="location.href='72.账号注销成功页.html'">确认注销账号（占位）</button>
+    <button class="btn btn-cancel" onclick="history.back()">取消并返回（占位）</button>
+  </div>
+
+  <div class="footer-tip">一旦注销成功，将无法再次恢复，请谨慎操作。（占位）</div>
+
+</div>
+</body>
+</html>

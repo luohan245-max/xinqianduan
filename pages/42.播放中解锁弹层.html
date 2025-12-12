@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>播放中解锁弹层 · 模板</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <style>
+    :root{
+      --bg:#050506;
+      --card:#111218;
+      --card-soft:#101019;
+      --line:#262a3f;
+      --gold:#f5d27a;
+      --pink:#ff7eb3;
+      --text-main:#ffffff;
+      --text-sub:#9ea1b6;
+      --radius-lg:18px;
+      --radius-md:14px;
+      --radius-sm:999px;
+      --shadow-soft:0 18px 40px rgba(0,0,0,0.55);
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html,body{
+      width:100%;
+      height:100%;
+      background:var(--bg);
+      color:var(--text-main);
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",sans-serif;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    body{
+      overflow:hidden; /* 示例页锁死滚动，实际接入可按需要调整 */
+    }
+
+    .app{
+      max-width:430px;
+      margin:0 auto;
+      height:100vh;
+      background:#000;
+      position:relative;
+      display:flex;
+      flex-direction:column;
+    }
+
+    /* ====== 顶部视频区域占位 ====== */
+    .video-area{
+      flex:1;
+      background:#050506;
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .video-ph{
+      width:100%;
+      height:100%;
+      background:radial-gradient(circle at 20% 0%,rgba(255,255,255,.12),rgba(0,0,0,1));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--text-sub);
+      font-size:13px;
+    }
+
+    /* 顶部简单信息占位（可选） */
+    .video-top-bar{
+      position:absolute;
+      top:10px;
+      left:10px;
+      right:10px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      pointer-events:none;
+    }
+    .badge-locked{
+      padding:3px 8px;
+      border-radius:999px;
+      background:rgba(0,0,0,.65);
+      border:1px solid rgba(245,210,122,.7);
+      font-size:11px;
+      color:var(--gold);
+      pointer-events:auto;
+    }
+    .episode-label{
+      padding:3px 8px;
+      border-radius:999px;
+      background:rgba(0,0,0,.65);
+      font-size:11px;
+      color:var(--text-sub);
+      pointer-events:auto;
+    }
+
+    /* ====== 解锁弹层整体（遮罩 + 抽屉） ====== */
+    .pay-overlay{
+      position:absolute;
+      inset:0;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-end;
+      z-index:50;
+    }
+
+    .pay-dim{
+      flex:1;
+      background:linear-gradient(to top,rgba(0,0,0,.9),rgba(0,0,0,.1));
+      backdrop-filter:blur(4px);
+    }
+
+    .pay-sheet{
+      background:#050507;
+      border-radius:22px 22px 0 0;
+      border-top:1px solid rgba(38,42,63,.9);
+      box-shadow:0 -12px 40px rgba(0,0,0,.8);
+      padding:10px 14px 14px;
+    }
+
+    .sheet-handle{
+      width:44px;
+      height:4px;
+      border-radius:999px;
+      background:#262a3f;
+      margin:0 auto 8px;
+    }
+
+    /* 顶部剧集信息 */
+    .sheet-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:10px;
+      margin-bottom:8px;
+    }
+    .sheet-title{
+      font-size:14px;
+      font-weight:500;
+      line-height:1.5;
+    }
+    .sheet-title span{
+      color:var(--gold);
+    }
+    .sheet-sub{
+      font-size:12px;
+      color:var(--text-sub);
+    }
+    .sheet-close{
+      width:24px;
+      height:24px;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,.9);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:14px;
+      color:var(--text-sub);
+      flex-shrink:0;
+    }
+
+    /* 解锁方式列表 */
+    .method-list{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      margin-top:4px;
+    }
+
+    .method-card{
+      padding:9px 10px;
+      border-radius:16px;
+      background:var(--card);
+      border:1px solid rgba(38,42,63,.9);
+      display:flex;
+      gap:8px;
+    }
+    .method-card.vip{
+      border:1px solid rgba(245,210,122,.55);
+      background:radial-gradient(circle at 0 0,rgba(245,210,122,.10),rgba(10,10,20,1));
+    }
+    .method-card.dp{
+      border:1px solid rgba(129,140,248,.6);
+      background:radial-gradient(circle at 0 0,rgba(129,140,248,.12),rgba(10,10,22,1));
+    }
+    .method-card.diamond{
+      border:1px solid rgba(244,114,182,.7);
+      background:radial-gradient(circle at 0 0,rgba(255,126,179,.12),rgba(14,8,20,1));
+    }
+
+    .method-icon{
+      width:26px;
+      height:26px;
+      border-radius:999px;
+      border:1px solid rgba(245,210,122,.6);
+      background:radial-gradient(circle at 30% 10%,rgba(255,255,255,.16),rgba(0,0,0,1));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:13px;
+      flex-shrink:0;
+    }
+
+    .method-main{
+      flex:1;
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+    }
+    .method-title{
+      font-size:13px;
+      font-weight:500;
+    }
+    .method-desc{
+      font-size:11px;
+      color:var(--text-sub);
+      line-height:1.5;
+    }
+    .method-desc span{
+      color:var(--gold);
+    }
+
+    .method-right{
+      flex-shrink:0;
+      display:flex;
+      flex-direction:column;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:4px;
+      font-size:11px;
+    }
+    .method-price{
+      font-size:12px;
+      color:var(--gold);
+      font-weight:500;
+    }
+    .method-tag{
+      padding:2px 6px;
+      border-radius:999px;
+      border:1px solid rgba(245,210,122,.55);
+      background:rgba(0,0,0,.45);
+      font-size:10px;
+      color:var(--text-sub);
+      text-align:center;
+    }
+
+    .method-btn{
+      padding:5px 8px;
+      border-radius:var(--radius-sm);
+      background:linear-gradient(135deg,var(--gold),var(--pink));
+      border:none;
+      font-size:11px;
+      color:#050506;
+      white-space:nowrap;
+    }
+
+    .method-btn-outline{
+      padding:5px 8px;
+      border-radius:var(--radius-sm);
+      background:#050507;
+      border:1px solid rgba(245,210,122,.6);
+      font-size:11px;
+      color:var(--gold);
+      white-space:nowrap;
+    }
+
+    /* 余额与提示 */
+    .balance-row{
+      margin-top:8px;
+      padding:8px 10px;
+      border-radius:14px;
+      background:#050509;
+      border:1px solid rgba(38,42,63,.9);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:11px;
+      color:var(--text-sub);
+    }
+    .balance-row span{
+      color:var(--gold);
+    }
+    .balance-link{
+      font-size:11px;
+      color:var(--pink);
+      text-decoration:underline;
+    }
+
+    /* 底部主操作栏 */
+    .sheet-footer{
+      margin-top:8px;
+      display:flex;
+      gap:8px;
+    }
+    .btn-cancel{
+      flex:1;
+      min-width:0;
+      padding:9px 10px;
+      border-radius:var(--radius-sm);
+      border:1px solid rgba(148,163,184,.9);
+      background:#050509;
+      font-size:13px;
+      color:var(--text-sub);
+      text-align:center;
+      white-space:nowrap;
+    }
+    .btn-confirm{
+      flex:1.2;
+      min-width:0;
+      padding:9px 10px;
+      border-radius:var(--radius-sm);
+      border:none;
+      background:linear-gradient(135deg,var(--gold),var(--pink));
+      font-size:13px;
+      color:#050506;
+      font-weight:500;
+      text-align:center;
+      white-space:nowrap;
+    }
+
+    .sheet-tip{
+      margin-top:4px;
+      font-size:10px;
+      color:var(--text-sub);
+      text-align:right;
+    }
+
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- 视频区域占位 -->
+  <section class="video-area">
+    <div class="video-ph">
+      视频播放区域占位（实际接入为短剧播放器）
+    </div>
+    <div class="video-top-bar">
+      <div class="badge-locked">当前集为付费内容（占位）</div>
+      <div class="episode-label">第 12 集 · 标题占位</div>
+    </div>
+  </section>
+
+  <!-- 播放中解锁弹层（遮罩 + 抽屉） -->
+  <div class="pay-overlay">
+    <div class="pay-dim"></div>
+
+    <div class="pay-sheet">
+      <div class="sheet-handle"></div>
+
+      <!-- 顶部信息 -->
+      <div class="sheet-header">
+        <div>
+          <div class="sheet-title">
+            解锁当前剧集 / 本剧（占位）<br/>
+            <span>剧名占位 · 第 12 集</span>
+          </div>
+          <div class="sheet-sub">
+            以下为 UI 结构示意，具体价格与文案由后端与运营配置（占位）。
+          </div>
+        </div>
+        <div class="sheet-close">✕</div>
+      </div>
+
+      <!-- 解锁方式列表 -->
+      <div class="method-list">
+
+        <!-- 方式一：VIP 解锁 -->
+        <div class="method-card vip">
+          <div class="method-icon">VIP</div>
+          <div class="method-main">
+            <div class="method-title">方式一 · 开通 / 续费 VIP（占位）</div>
+            <div class="method-desc">
+              开通后本剧全部付费集<span>无限观看</span>，平台其他 VIP 剧集也可畅看。
+              具体权益说明以 VIP 说明页为准（占位）。
+            </div>
+          </div>
+          <div class="method-right">
+            <div class="method-price">价格占位：XX DP / 月</div>
+            <button class="method-btn">去开通 VIP（占位）</button>
+          </div>
+        </div>
+
+        <!-- 方式二：DP 解锁单集 / 整剧 -->
+        <div class="method-card dp">
+          <div class="method-icon">DP</div>
+          <div class="method-main">
+            <div class="method-title">方式二 · 使用 DP 解锁（占位）</div>
+            <div class="method-desc">
+              当前集解锁价格：<span>X DP / 集</span>，也可一次性解锁<span>整部剧</span>。
+              解锁后重复观看本集 / 本剧不再重复扣费（占位）。
+            </div>
+          </div>
+          <div class="method-right">
+            <div class="method-price">本集：X DP（占位）</div>
+            <button class="method-btn">用 DP 解锁本集（占位）</button>
+            <button class="method-btn-outline">用 DP 解锁整剧（占位）</button>
+          </div>
+        </div>
+
+        <!-- 方式三：钻石 / 金币解锁 -->
+        <div class="method-card diamond">
+          <div class="method-icon">◆</div>
+          <div class="method-main">
+            <div class="method-title">方式三 · 使用钻石 / 金币（占位）</div>
+            <div class="method-desc">
+              若账号中已有<span>钻石 / 金币</span>，可以按平台汇率折算后用于解锁本集。
+              实际汇率由后端配置（占位）。
+            </div>
+          </div>
+          <div class="method-right">
+            <div class="method-price">约折合：Y 钻石（占位）</div>
+            <button class="method-btn-outline">用钻石解锁（占位）</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 余额提示 -->
+      <div class="balance-row">
+        <div>
+          当前账号余额（占位）：VIP 状态 · DP <span>XX.XX</span> · 钻石 <span>YY</span>
+        </div>
+        <div>
+          <span class="balance-link">去获取 / 充值（占位）</span>
+        </div>
+      </div>
+
+      <!-- 底部主按钮 -->
+      <div class="sheet-footer">
+        <div class="btn-cancel">暂不解锁，返回上一集（占位）</div>
+        <div class="btn-confirm">立即解锁当前集（占位）</div>
+      </div>
+      <div class="sheet-tip">
+        默认主按钮可根据当前选中的解锁方式动态变化（占位说明）。
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

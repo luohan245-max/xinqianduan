@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>退出登录确认弹层</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+
+  <style>
+    :root {
+      --bg: #050509;
+      --card: #0f1119;
+      --card-soft: #151824;
+      --text-main: #f7f7fb;
+      --text-sub: #9ea1b6;
+      --accent-pink: #ff6ac8;
+      --accent-gold: #f6d57a;
+      --accent-blue: #2575ff;
+      --shadow-soft: 0 18px 46px rgba(0,0,0,0.8);
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --radius-sm: 10px;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+
+    body{
+      min-height:100vh;
+      background:
+        radial-gradient(circle at top,#191e34 0,#050509 55%);
+      color:var(--text-main);
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",sans-serif;
+    }
+
+    .page{
+      max-width:430px;
+      margin:0 auto;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      padding:18px 16px;
+      position:relative;
+    }
+
+    /* 模拟页面内容被盖住的效果 */
+    .dummy-bg{
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(to bottom,rgba(0,0,0,0.2),rgba(0,0,0,0.6));
+      pointer-events:none;
+    }
+
+    /* 弹层遮罩 */
+    .overlay{
+      position:relative;
+      z-index:2;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .modal{
+      width:100%;
+      max-width:360px;
+      background: radial-gradient(circle at 0 0,#262c46,#0f1119);
+      border-radius:var(--radius-lg);
+      border:1px solid rgba(255,255,255,0.16);
+      box-shadow:var(--shadow-soft);
+      padding:18px 16px 14px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .modal::before{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background:
+        radial-gradient(circle at 15% 0,rgba(255,106,200,0.35),transparent 70%),
+        radial-gradient(circle at 85% 10,rgba(246,213,122,0.32),transparent 72%);
+      opacity:.9;
+    }
+
+    .modal-inner{
+      position:relative;
+      z-index:2;
+    }
+
+    .modal-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:10px;
+    }
+
+    .modal-title{
+      font-size:15px;
+      font-weight:600;
+      letter-spacing:0.4px;
+    }
+
+    .close-btn{
+      width:24px;
+      height:24px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.28);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:14px;
+      color:var(--text-sub);
+      background:rgba(0,0,0,0.35);
+    }
+
+    .icon-circle{
+      width:46px;
+      height:46px;
+      border-radius:50%;
+      margin:4px 0 6px;
+      background:radial-gradient(circle at 30% 0,#fff8dd,#f4c86d,#c7872e);
+      box-shadow:0 10px 24px rgba(0,0,0,0.7);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+    }
+    .icon-circle::before{
+      content:"⇦";
+      font-size:22px;
+      font-weight:700;
+      color:#3a2305;
+      transform:translateX(-1px);
+    }
+
+    .content{
+      font-size:13px;
+      color:var(--text-sub);
+      line-height:1.7;
+      margin-bottom:10px;
+    }
+
+    .content-strong{
+      font-size:13px;
+      margin-bottom:6px;
+    }
+    .highlight-user{
+      color:var(--accent-gold);
+      font-weight:500;
+    }
+
+    .tips{
+      font-size:11px;
+      color:var(--text-sub);
+      line-height:1.6;
+      opacity:.8;
+      margin-bottom:10px;
+    }
+
+    .btn-row{
+      margin-top:6px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .btn{
+      width:100%;
+      border-radius:999px;
+      padding:10px 0;
+      border:none;
+      font-size:14px;
+      font-weight:600;
+    }
+
+    .btn-danger{
+      background:linear-gradient(135deg,#ff6a7c,#ffb36a);
+      color:#2b0507;
+    }
+
+    .btn-ghost{
+      background:rgba(0,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.24);
+      color:var(--text-main);
+      font-size:13px;
+    }
+
+    .bottom-mini{
+      margin-top:4px;
+      font-size:11px;
+      color:var(--text-sub);
+      opacity:.75;
+      text-align:right;
+    }
+
+    /* 可点击手感（不影响移动端视觉） */
+    .close-btn,
+    .btn-danger,
+    .btn-ghost {
+      cursor: pointer;
+    }
+
+    /* 全局兜底：防止未来插入 a 出现蓝色/下划线 */
+    a{
+      text-decoration:none !important;
+      color:inherit !important;
+    }
+
+  </style>
+</head>
+
+<body>
+<div class="page">
+  <!-- 模拟原页面被压暗 -->
+  <div class="dummy-bg"></div>
+
+  <!-- 弹层 -->
+  <div class="overlay">
+    <div class="modal">
+      <div class="modal-inner">
+
+        <div class="modal-header">
+          <div class="modal-title">确认退出登录？（占位）</div>
+          <div class="close-btn" onclick="history.back()">×</div>
+        </div>
+
+        <div class="icon-circle"></div>
+
+        <div class="content-strong">
+          当前账号：<span class="highlight-user">user***923（占位）</span>
+        </div>
+
+        <div class="content">
+          退出后，将无法同步观影记录、钱包资产变动和团队收益，还需要重新登录才能继续观看与操作。（占位）
+        </div>
+
+        <div class="tips">
+          建议在安全网络环境下操作。若你不是本人的主动退出，请尽快更改密码并检查登录设备。（占位）
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-danger" onclick="location.href='69.登录失效-重新登录页.html'">
+            确认退出当前账号（占位）
+          </button>
+          <button class="btn btn-ghost" onclick="history.back()">
+            取消，继续使用（占位）
+          </button>
+        </div>
+
+        <div class="bottom-mini">
+          你可以稍后在「设置 &gt; 账户与安全」中再次退出登录。（占位）
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
