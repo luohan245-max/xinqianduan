@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>首页</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+
+  <style>
+    :root {
+      --bg: #050509;
+      --bg-soft: #0f1119;
+      --bg-card: #151824;
+      --text-main: #f7f7fb;
+      --text-sub: #9ea1b6;
+      --accent-pink: #ff6ac8;
+      --accent-gold: #f6d57a;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+
+      /* 为了统一底部导航的变量 */
+      --gold: #f6d57a;
+      --pink: #ff7eb3;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: radial-gradient(circle at top, #191e34 0, #050509 55%);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      max-width: 430px;
+      margin: 0 auto;
+      padding-bottom: 80px; /* 预留底部导航高度 */
+    }
+
+    /* 顶部 Banner：大背景 */
+    .banner-section {
+      position: relative;
+      height: 350px;
+      border-radius: 0 0 32px 32px;
+      overflow: hidden;
+    }
+
+    .banner-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 0,#3a4370 0,#1b1f36 35%,transparent 60%),
+        radial-gradient(circle at 80% 18%,#ff6ac8 0,transparent 48%),
+        radial-gradient(circle at 60% 90%,rgba(246,213,122,0.35) 0,transparent 55%),
+        #050509;
+      transform: scale(1.1);
+      filter: brightness(0.9) saturate(1.05);
+    }
+
+    /* 玻璃导航：压在 Banner 上，一整块半透明 */
+    .glass-header {
+      position: absolute;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 24px);
+      padding: 12px;
+      border-radius: 22px;
+      backdrop-filter: blur(14px);
+      background: rgba(0,0,0,0.25); /* 透 Banner */
+      border: 1px solid rgba(255,255,255,0.12);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .row1 { display: flex; align-items: center; gap: 8px; }
+
+    .search-box {
+      flex: 1;
+      background: rgba(255,255,255,0.09);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 13px;
+      color: var(--text-sub);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .icon-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 12px;
+      background: rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-gold);
+      border: 1px solid rgba(255,255,255,0.15);
+      font-size: 14px;
+    }
+
+    .vip-btn {
+      padding: 0 12px;
+      font-weight: bold;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #f8e39a, #f5a85b);
+      color: #3a2205;
+      border: none;
+      font-size: 13px;
+    }
+
+    /* 分类 Tab 行 */
+    .category-strip {
+      overflow-x: auto;
+      white-space: nowrap;
+      display: flex;
+      gap: 14px;
+      padding: 2px;
+    }
+    .category-strip::-webkit-scrollbar { display: none; }
+
+    .cat-item {
+      font-size: 13px;
+      color: var(--text-sub);
+      position: relative;
+      padding-bottom: 4px;
+    }
+    .cat-item.active {
+      color: #fff;
+      font-weight: 600;
+    }
+    .cat-item.active::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: -1px;
+      width: 60%;
+      height: 3px;
+      border-radius: 999px;
+      background: linear-gradient(90deg,var(--accent-pink),var(--accent-gold));
+    }
+
+    /* 顶部分类条里的链接样式（防止出现下划线 / 颜色错乱） */
+    .category-strip a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* 公共区块 */
+    .section { padding: 20px 14px 0; }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .section-title.pink { color: var(--accent-pink); }
+    .section-title.gold { color: var(--accent-gold); }
+    .section-sub { font-size: 11px; color: var(--text-sub); }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg,transparent,#ffffff60,transparent);
+      margin-top: 4px;
+    }
+
+    /* 新片上线：横滑卡片（竖封面） */
+    .h-scroll {
+      display: flex;
+      overflow-x: auto;
+      gap: 12px;
+      padding-bottom: 4px;
+    }
+    .h-scroll::-webkit-scrollbar{ display:none; }
+
+    .card-v {
+      flex: 0 0 130px;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #151824;
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.6);
+    }
+
+    .thumb-v {
+      width: 100%;
+      padding-top: 135%;
+      background: linear-gradient(135deg,#434a6b,#1b1e30);
+      position: relative;
+    }
+
+    .badge-new {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      padding: 3px 6px;
+      border-radius: 10px;
+      font-size: 10px;
+      background: linear-gradient(120deg,var(--accent-pink),var(--accent-gold));
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .info-v { padding: 8px; }
+    .info-title {
+      font-size: 13px;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 4px;
+    }
+    .info-meta {
+      font-size: 11px;
+      color: var(--text-sub);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* ========= 热播排行榜：统一金微光背景 + 左图右文 4×5 ========= */
+
+    .rank-section { padding: 20px 14px 0; }
+
+    /* 整块容器：统一金微光背景 */
+    .rank-wrap {
+      margin-top: 8px;
+      padding: 10px 10px 14px;
+      border-radius: 20px;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(246,213,122,0.25) 0, transparent 55%),
+        radial-gradient(circle at 100% 30%, rgba(255,106,200,0.18) 0, transparent 55%),
+        radial-gradient(circle at 50% 100%, rgba(246,213,122,0.18) 0, transparent 60%),
+        #0b0c12;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.75);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    /* 横向滑动：一列 + 0.8 列可见 */
+    .rank-scroll {
+      overflow-x: auto;
+      display: flex;
+      gap: 16px;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .rank-scroll::-webkit-scrollbar { display: none; }
+
+    .rank-col {
+      flex: 0 0 78%; /* 一列完整 + 下一列露一点 */
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .rank-item {
+      display: flex;
+      gap: 10px;
+      padding: 6px 0;
+      /* 单条不要卡片感 → 背景透明 */
+    }
+
+    .rank-cover {
+      width: 75px;
+      height: 100px;
+      border-radius: 12px;
+      background: linear-gradient(135deg,#2b3047,#151827);
+      position: relative;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    /* 排名角标：缩小到封面内部左上角 */
+    .rank-tag {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+      background: linear-gradient(135deg,#565a6f,#2a2d3c); /* 默认灰色 */
+    }
+    .rank-tag-1 {
+      background: radial-gradient(circle at 30% 0,#fff8d9,#f0c65b,#c88b2c);
+    }
+    .rank-tag-2 {
+      background: linear-gradient(135deg,#f6d57a,#ff7eb3);
+    }
+    .rank-tag-3 {
+      background: linear-gradient(135deg,#ff9ed0,#ff7eb3);
+    }
+
+    .rank-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .rank-title {
+      font-size: 13px;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 4px;
+    }
+
+    .rank-hot {
+      font-size: 12px;
+      color: var(--accent-pink);
+      margin-bottom: 4px;
+    }
+
+    .rank-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .tag-pill {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: rgba(8,10,18,0.55);
+      color: var(--text-sub);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    /* ========= 猜你喜欢：3 列纵向网格 ========= */
+
+    .guess-section {
+      padding: 22px 14px 18px;
+    }
+
+    .guess-divider {
+      height: 1px;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg,transparent,rgba(255,255,255,0.45),transparent);
+      opacity: 0.35;
+    }
+
+    .guess-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 10px;
+    }
+
+    .guess-title {
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .guess-sub {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .guess-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 10px;
+    }
+
+    .guess-card {
+      border-radius: 14px;
+      overflow: hidden;
+      background: #151824;
+      border: 1px solid rgba(255,255,255,0.05);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.7);
+    }
+
+    .guess-thumb {
+      width: 100%;
+      padding-top: 140%;
+      background: linear-gradient(135deg,#3b4163,#181b2b);
+    }
+
+    .guess-info { padding: 4px 4px 7px; }
+    .guess-name {
+      font-size: 11px;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* ========= 底部 TabBar：与推荐/福利/历史/我的统一 ========= */
+
+    .tab-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 64px;
+      background: rgba(5,6,10,0.96);
+      border-top: 1px solid rgba(245,210,122,0.16);
+      backdrop-filter: blur(22px);
+      display: flex;
+      justify-content: center;
+      z-index: 20;
+    }
+
+    .tab-bar-inner {
+      width: 100%;
+      max-width: 430px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    @media (min-width: 768px) {
+      .tab-bar-inner {
+        max-width: 520px;
+      }
+    }
+
+    .tab-bar a {
+      text-decoration: none !important;
+    }
+
+    .tab-item {
+      flex: 1;
+      text-align: center;
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    .tab-item-icon {
+      width: 22px;
+      height: 22px;
+      margin: 0 auto;
+      border-radius: 999px;
+      border: 1px solid rgba(245,210,122,0.3);
+      background: radial-gradient(circle at top, #30354c, #151728);
+    }
+
+    .tab-item-label {
+      margin-top: 2px;
+    }
+
+    .tab-item.is-active {
+      color: var(--gold);
+    }
+
+    .tab-item.is-active .tab-item-icon {
+      background: radial-gradient(circle at top, var(--gold), var(--pink));
+      border-color: transparent;
+      box-shadow: 0 0 12px rgba(255,126,179,0.7);
+    }
+
+    /* 全站链接禁用下划线 + 继承字体颜色（防止蓝色链接出现） */
+    a {
+      text-decoration: none !important;
+      color: inherit !important;
+    }
+
+  </style>
+</head>
+
+<body>
+<div class="page">
+
+  <!-- 顶部 Banner + 玻璃导航 -->
+  <section class="banner-section">
+    <div class="banner-bg"></div>
+
+    <div class="glass-header">
+      <div class="row1">
+        <div class="search-box" onclick="location.href='pages/38.搜索入口首页.html'">🔍 搜你想看的短剧（占位）</div>
+        <div class="icon-btn" onclick="location.href='pages/29.通知中心页.html'">🔔</div>
+        <div class="vip-btn" onclick="location.href='pages/25.VIP专区.html'">VIP</div>
+      </div>
+
+      <div class="category-strip">
+      <!-- 首页：当前页 -->
+      <a class="cat-item active" href="index.html">首页</a>
+
+      <!-- 上新：暂时指向：首页更多页 -->
+      <a class="cat-item" href="pages/74.上新列表页.html">上新</a>
+
+      <!-- 分类：指向【28.分类页-全部分类 + 筛选】 -->
+      <a class="cat-item" href="pages/28.分类页-全部分类 + 筛选.html">分类</a>
+
+      <!-- 排行：指向【45.排行榜页】 -->
+      <a class="cat-item" href="pages/45.排行榜页.html">排行</a>
+
+      <!-- VIP：指向【31.VIP剧场列表页】 -->
+      <a class="cat-item" href="pages/31.VIP剧场列表页.html">VIP</a>
+
+      <!-- 福利：指向【3.福利中心】 -->
+      <a class="cat-item" href="pages/3.福利中心.html">福利</a>
+
+      <!-- 更多：暂时也指向【30.首页更多页】 -->
+      <a class="cat-item" href="pages/30.首页更多页.html">更多</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 新片上线 -->
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-title pink">新片上线（占位）</div>
+        <div class="divider"></div>
+      </div>
+      <div class="section-sub">今日更新 · 5 部</div>
+    </div>
+
+    <div class="h-scroll">
+
+      <div class="card-v" onclick="location.href='pages/6.短剧详情页.html'">
+        <div class="thumb-v"><div class="badge-new">New</div></div>
+        <div class="info-v">
+          <div class="info-title">都市甜宠 · 标题占位</div>
+          <div class="info-meta"><span>更新 10 集</span><span>4.5M🔥</span></div>
+        </div>
+      </div>
+
+      <div class="card-v" onclick="location.href='pages/6.短剧详情页.html'">
+        <div class="thumb-v"><div class="badge-new">New</div></div>
+        <div class="info-v">
+          <div class="info-title">古装权谋 · 标题占位</div>
+          <div class="info-meta"><span>全 24 集</span><span>3.3M🔥</span></div>
+        </div>
+      </div>
+
+      <div class="card-v" onclick="location.href='pages/6.短剧详情页.html'">
+        <div class="thumb-v"><div class="badge-new">New</div></div>
+        <div class="info-v">
+          <div class="info-title">反转悬疑 · 标题占位</div>
+          <div class="info-meta"><span>更新 6 集</span><span>2.7M🔥</span></div>
+        </div>
+      </div>
+
+      <div class="card-v" onclick="location.href='pages/6.短剧详情页.html'">
+        <div class="thumb-v"><div class="badge-new">New</div></div>
+        <div class="info-v">
+          <div class="info-title">校园成长 · 标题占位</div>
+          <div class="info-meta"><span>更新中</span><span>1.9M🔥</span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 热播排行榜：4×5 左图右文 + 金微光背景 -->
+  <section class="rank-section">
+    <div class="section-header">
+      <div>
+        <div class="section-title gold">热播排行榜（占位）</div>
+        <div class="divider"></div>
+      </div>
+      <div class="section-sub">按 24 小时热度排序</div>
+    </div>
+
+    <div class="rank-wrap">
+      <div class="rank-scroll">
+
+        <!-- 第 1 列：1~4 -->
+        <div class="rank-col">
+
+          <div class="rank-item" onclick="location.href='pages/6.短剧详情页.html'">
+            <div class="rank-cover"><div class="rank-tag rank-tag-1">1</div></div>
+            <div class="rank-info">
+              <div class="rank-title">他不是你的老公 · 标题占位</div>
+              <div class="rank-hot">847.5K🔥</div>
+              <div class="rank-tags">
+                <span class="tag-pill">#狗血</span>
+                <span class="tag-pill">#都市</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="rank-item" onclick="location.href='pages/6.短剧详情页.html'">
+            <div class="rank-cover"><div class="rank-tag rank-tag-2">2</div></div>
+            <div class="rank-info">
+              <div class="rank-title">你惹上了总裁夫人 · 标题占位</div>
+              <div class="rank-hot">756.2K🔥</div>
+              <div class="rank-tags">
+                <span class="tag-pill">#复仇</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="rank-item" onclick="location.href='pages/6.短剧详情页.html'">
+            <div class="rank-cover"><div class="rank-tag rank-tag-3">3</div></div>
+            <div class="rank-info">
+              <div class="rank-title">怀孕后升职 · 标题占位</div>
+              <div class="rank-hot">732.2K🔥</div>
+              <div class="rank-tags">
+                <span class="tag-pill">#都市</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="rank-item" onclick="location.href='pages/6.短剧详情页.html'">
+            <div class="rank-cover"><div class="rank-tag">4</div></div>
+            <div class="rank-info">
+              <div class="rank-title">口是心非的反派 · 标题占位</div>
+              <div class="rank-hot">689.1K🔥</div>
+              <div class="rank-tags">
+                <span class="tag-pill">#反转</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 第 2 列：5~8 -->
+        <div class="rank-col">
+
+          <div class="rank-item" onclick="location.href='pages/6.短剧详情页.html'">
+            <div class="rank-cover"><div class="rank-tag">5</div></div>
+            <div class="rank-info">
+              <div class="rank-title">五十岁的爱情 · 标题占位</div>
+              <div class="rank-hot">652.4K🔥</div>
+              <div class="rank-tags"><span class="tag-pill">#家庭</span></div>
+            </div>
+          </div>
+
+          <div class="rank-item" onclick="location.href='pages/6.短剧详情页.html'">
+            <div class="rank-cover"><div class="rank-tag">6</div></div>
+            <div class="rank-info">
+              <div class="rank-title">霸总请你离婚 · 标题占位</div>
+              <div class="rank-hot">621.3K🔥</div>
+              <div class="rank-tags"><span class="tag-pill">#甜宠</span></div>
+            </div>
+          </div>
+
+          <div class="rank-item" onclick="location.href='pages/6.短剧详情页.html'">
+            <div class="rank-cover"><div class="rank-tag">7</div></div>
+            <div class="rank-info">
+              <div class="rank-title">她是反派白月光 · 标题占位</div>
+              <div class="rank-hot">598.7K🔥</div>
+              <div class="rank-tags"><span class="tag-pill">#反转</span></div>
+            </div>
+          </div>
+
+          <div class="rank-item" onclick="location.href='pages/6.短剧详情页.html'">
+            <div class="rank-cover"><div class="rank-tag">8</div></div>
+            <div class="rank-info">
+              <div class="rank-title">离婚后的她 · 标题占位</div>
+              <div class="rank-hot">571.9K🔥</div>
+              <div class="rank-tags"><span class="tag-pill">#家庭</span></div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 第 3 列：9~12 -->
+        <div class="rank-col">
+
+          <div class="rank-item" onclick="location.href='pages/6.短剧详情页.html'">
+            <div class="rank-cover"><div class="rank-tag">9</div></div>
+            <div class="rank-info">
+              <div class="rank-title">穿书后躺赢 · 标题占位</div>
+              <div class="rank-hot">549.3K🔥</div>
+              <div class="rank-tags"><span class="tag-pill">#穿越</span></div>
+            </div>
+          </div>
+
+          <div class="rank-item" onclick="location.href='pages/6.短剧详情页.html'">
+            <div class="rank-cover"><div class="rank-tag">10</div></div>
+            <div class="rank-info">
+              <div class="rank-title">他替我坐牢 · 标题占位</div>
+              <div class="rank-hot">523.1K🔥</div>
+              <div class="rank-tags"><span class="tag-pill">#狗血</span></div>
+            </div>
+          </div>
+
+          <div class="rank-item" onclick="location.href='pages/6.短剧详情页.html'">
+            <div class="rank-cover"><div class="rank-tag">11</div></div>
+            <div class="rank-info">
+              <div class="rank-title">成为他白月光 · 标题占位</div>
+              <div class="rank-hot">498.2K🔥</div>
+            </div>
+          </div>
+
+          <div class="rank-item" onclick="location.href='pages/6.短剧详情页.html'">
+            <div class="rank-cover"><div class="rank-tag">12</div></div>
+            <div class="rank-info">
+              <div class="rank-title">灰原的反派 · 标题占位</div>
+              <div class="rank-hot">482.0K🔥</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 第 4 列：13~16（示例到 16，可按需要继续补 17~20） -->
+        <div class="rank-col">
+
+          <div class="rank-item" onclick="location.href='pages/6.短剧详情页.html'">
+            <div class="rank-cover"><div class="rank-tag">13</div></div>
+            <div class="rank-info">
+              <div class="rank-title">反派她要复仇 · 标题占位</div>
+              <div class="rank-hot">471.3K🔥</div>
+            </div>
+          </div>
+
+          <div class="rank-item" onclick="location.href='pages/6.短剧详情页.html'">
+            <div class="rank-cover"><div class="rank-tag">14</div></div>
+            <div class="rank-info">
+              <div class="rank-title">变美后逆袭 · 标题占位</div>
+              <div class="rank-hot">451.2K🔥</div>
+            </div>
+          </div>
+
+          <div class="rank-item" onclick="location.href='pages/6.短剧详情页.html'">
+            <div class="rank-cover"><div class="rank-tag">15</div></div>
+            <div class="rank-info">
+              <div class="rank-title">他也曾爱我 · 标题占位</div>
+              <div class="rank-hot">439.8K🔥</div>
+            </div>
+          </div>
+
+          <div class="rank-item" onclick="location.href='pages/6.短剧详情页.html'">
+            <div class="rank-cover"><div class="rank-tag">16</div></div>
+            <div class="rank-info">
+              <div class="rank-title">她回来了 · 标题占位</div>
+              <div class="rank-hot">429.1K🔥</div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 猜你喜欢：3 列纵向网格 -->
+  <section class="guess-section">
+    <div class="guess-divider"></div>
+    <div class="guess-header">
+      <div class="guess-title">猜你喜欢（占位）</div>
+      <div class="guess-sub">基于你的观影习惯推荐</div>
+    </div>
+
+    <div class="guess-grid">
+      <div class="guess-card" onclick="location.href='pages/6.短剧详情页.html'">
+        <div class="guess-thumb"></div>
+        <div class="guess-info"><div class="guess-name">都市反转系 · 标题占位</div></div>
+      </div>
+      <div class="guess-card" onclick="location.href='pages/6.短剧详情页.html'">
+        <div class="guess-thumb"></div>
+        <div class="guess-info"><div class="guess-name">古装虐恋系 · 标题占位</div></div>
+      </div>
+      <div class="guess-card" onclick="location.href='pages/6.短剧详情页.html'">
+        <div class="guess-thumb"></div>
+        <div class="guess-info"><div class="guess-name">豪门狗血系 · 标题占位</div></div>
+      </div>
+      <div class="guess-card" onclick="location.href='pages/6.短剧详情页.html'">
+        <div class="guess-thumb"></div>
+        <div class="guess-info"><div class="guess-name">校园成长向 · 标题占位</div></div>
+      </div>
+      <div class="guess-card" onclick="location.href='pages/6.短剧详情页.html'">
+        <div class="guess-thumb"></div>
+        <div class="guess-info"><div class="guess-name">悬疑破案向 · 标题占位</div></div>
+      </div>
+      <div class="guess-card" onclick="location.href='pages/6.短剧详情页.html'">
+        <div class="guess-thumb"></div>
+        <div class="guess-info"><div class="guess-name">甜宠轻喜剧 · 标题占位</div></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- 底部 TabBar：首页高亮 -->
+<nav class="tab-bar">
+  <div class="tab-bar-inner">
+
+    <!-- 首页（当前页高亮） -->
+    <a class="tab-item is-active" href="index.html">
+      <div class="tab-item-icon"></div>
+      <div class="tab-item-label">首页</div>
+    </a>
+
+    <!-- 推荐 -->
+    <a class="tab-item" href="pages/2.推荐页.html">
+      <div class="tab-item-icon"></div>
+      <div class="tab-item-label">推荐</div>
+    </a>
+
+    <!-- 福利 -->
+    <a class="tab-item" href="pages/3.福利中心.html">
+      <div class="tab-item-icon"></div>
+      <div class="tab-item-label">福利</div>
+    </a>
+
+    <!-- 历史 -->
+    <a class="tab-item" href="pages/4.播放历史页.html">
+      <div class="tab-item-icon"></div>
+      <div class="tab-item-label">历史</div>
+    </a>
+
+    <!-- 我的 -->
+    <a class="tab-item" href="pages/5.个人中心.html">
+      <div class="tab-item-icon"></div>
+      <div class="tab-item-label">我的</div>
+    </a>
+
+  </div>
+</nav>
+
+</body>
+</html>
