@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>影视收益涨跌 · 历史战绩</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+
+  <style>
+    :root {
+      --bg: #050506;
+      --card: #0f1119;
+      --card-soft: #151726;
+      --border: #222533;
+      --text-main: #f7f7fb;
+      --text-sub: #9ea1b6;
+      --gold: #f5d27a;
+      --pink: #ff7eb3;
+      --green: #47ffb0;
+      --red: #ff6a7c;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+      --shadow: 0 8px 32px rgba(0,0,0,0.55);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.6;
+    }
+
+    .page {
+      max-width: 430px;
+      margin: 0 auto;
+      padding-bottom: 80px;
+    }
+
+    /* 顶部导航 */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+    }
+    .nav-left,
+    .nav-right {
+      font-size: 13px;
+      color: var(--text-sub);
+    }
+    .nav-title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    /* 筛选 Tab */
+    .filter-tabs {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 14px;
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+    .filter-tab {
+      flex: 1;
+      text-align: center;
+      padding: 6px 0;
+      border-radius: 999px;
+      margin: 0 4px;
+      background: rgba(255,255,255,0.02);
+      color: var(--text-sub);
+      border: 1px solid transparent;
+    }
+    .filter-tab.active {
+      color: #000;
+      background: linear-gradient(90deg, var(--gold), var(--pink));
+      border-color: rgba(245,210,122,0.7);
+    }
+
+    /* 概览卡片 */
+    .summary-card {
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(245,210,122,0.4);
+      box-shadow: var(--shadow);
+      margin: 0 14px 14px;
+      padding: 14px 14px 10px;
+      font-size: 13px;
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .summary-label {
+      color: var(--text-sub);
+      font-size: 12px;
+    }
+    .summary-value {
+      font-weight: 600;
+    }
+    .summary-value.win { color: var(--green); }
+    .summary-value.loss { color: var(--red); }
+
+    /* 分组标题（今天/昨天/更早） */
+    .group-title {
+      margin: 10px 16px 4px;
+      font-size: 12px;
+      color: var(--text-sub);
+    }
+
+    /* 记录卡片 */
+    .record-card {
+      background: var(--card-soft);
+      border-radius: var(--radius-md);
+      margin: 4px 14px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      font-size: 12px;
+    }
+    .record-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+    .round-id {
+      color: var(--text-sub);
+      font-size: 11px;
+    }
+    .round-time {
+      color: var(--text-sub);
+      font-size: 11px;
+    }
+
+    .record-middle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 4px 0;
+    }
+
+    .dir-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+    .dir-up {
+      color: var(--green);
+      border-color: rgba(71,255,176,0.6);
+      background: rgba(71,255,176,0.08);
+    }
+    .dir-down {
+      color: var(--red);
+      border-color: rgba(255,106,124,0.6);
+      background: rgba(255,106,124,0.08);
+    }
+
+    .index-info {
+      text-align: right;
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .record-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4px;
+    }
+    .amount-info {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+    .pnl {
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .pnl.win { color: var(--green); }
+    .pnl.loss { color: var(--red); }
+    .pnl.flat { color: var(--text-sub); }
+
+    .tag-small {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    /* 底部统计栏 */
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      max-width: 430px;
+      background: rgba(0,0,0,.55);
+      backdrop-filter: blur(10px);
+      padding: 8px 16px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- 顶部导航 -->
+  <div class="nav">
+    <div class="nav-left">‹ 返回</div>
+    <div class="nav-title">历史战绩（占位）</div>
+    <div class="nav-right">筛选</div>
+  </div>
+
+  <!-- 筛选 Tab：今日 / 近7天 / 近30天 -->
+  <div class="filter-tabs">
+    <div class="filter-tab active">今日战绩（占位）</div>
+    <div class="filter-tab">近 7 天（占位）</div>
+    <div class="filter-tab">近 30 天（占位）</div>
+  </div>
+
+  <!-- 概览卡片 -->
+  <div class="summary-card">
+    <div class="summary-row">
+      <div>
+        <div class="summary-label">今日参与局数（占位）</div>
+        <div class="summary-value">24 局（占位）</div>
+      </div>
+      <div>
+        <div class="summary-label">胜率（占位）</div>
+        <div class="summary-value win">58%（占位）</div>
+      </div>
+    </div>
+
+    <div class="summary-row">
+      <div>
+        <div class="summary-label">今日总投入（占位）</div>
+        <div class="summary-value">1.23 DP（占位）</div>
+      </div>
+      <div>
+        <div class="summary-label">今日净收益（占位）</div>
+        <div class="summary-value win">+0.56 DP（占位）</div>
+      </div>
+    </div>
+
+    <div class="summary-row">
+      <div>
+        <div class="summary-label">历史累计收益（占位）</div>
+        <div class="summary-value win">+3.45 DP（占位）</div>
+      </div>
+      <div>
+        <div class="summary-label">最大连胜 / 连败（占位）</div>
+        <div class="summary-value">3 连胜 / 2 连败（占位）</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 分组：今天 -->
+  <div class="group-title">今天（占位）</div>
+
+  <!-- 记录卡片 · 示例 1（盈利） -->
+  <div class="record-card">
+    <div class="record-top">
+      <div class="round-id">第 1024 局（占位）</div>
+      <div class="round-time">14:21（占位）</div>
+    </div>
+
+    <div class="record-middle">
+      <div>
+        <span class="dir-badge dir-up">本局方向：看涨（占位）</span>
+      </div>
+      <div class="index-info">
+        收盘指数：1248.12（占位）<br/>
+        涨跌：↑ +1.10%（占位）
+      </div>
+    </div>
+
+    <div class="record-bottom">
+      <div class="amount-info">
+        投入：0.10 DP（占位）<br/>
+        结算：0.19 DP（占位）
+      </div>
+      <div style="text-align:right;">
+        <div class="pnl win">本局盈亏：+0.09 DP（占位）</div>
+        <div class="tag-small">状态：已派彩（占位）</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 记录卡片 · 示例 2（亏损） -->
+  <div class="record-card">
+    <div class="record-top">
+      <div class="round-id">第 1023 局（占位）</div>
+      <div class="round-time">14:20（占位）</div>
+    </div>
+
+    <div class="record-middle">
+      <div>
+        <span class="dir-badge dir-down">本局方向：看跌（占位）</span>
+      </div>
+      <div class="index-info">
+        收盘指数：1231.45（占位）<br/>
+        涨跌：↑ +0.65%（占位）
+      </div>
+    </div>
+
+    <div class="record-bottom">
+      <div class="amount-info">
+        投入：0.05 DP（占位）<br/>
+        结算：0.00 DP（占位）
+      </div>
+      <div style="text-align:right;">
+        <div class="pnl loss">本局盈亏：-0.05 DP（占位）</div>
+        <div class="tag-small">状态：已结算（占位）</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 记录卡片 · 示例 3（平盘） -->
+  <div class="record-card">
+    <div class="record-top">
+      <div class="round-id">第 1022 局（占位）</div>
+      <div class="round-time">14:19（占位）</div>
+    </div>
+
+    <div class="record-middle">
+      <div>
+        <span class="dir-badge">本局方向：看涨（占位）</span>
+      </div>
+      <div class="index-info">
+        收盘指数：1230.00（占位）<br/>
+        涨跌：平盘 0.00%（占位）
+      </div>
+    </div>
+
+    <div class="record-bottom">
+      <div class="amount-info">
+        投入：0.03 DP（占位）<br/>
+        结算：0.03 DP（占位）
+      </div>
+      <div style="text-align:right;">
+        <div class="pnl flat">本局盈亏：0.00 DP（占位）</div>
+        <div class="tag-small">状态：平盘退回（占位）</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 分组：昨天 -->
+  <div class="group-title">昨天（占位）</div>
+
+  <div class="record-card">
+    <div class="record-top">
+      <div class="round-id">第 1018 局（占位）</div>
+      <div class="round-time">22:05（占位）</div>
+    </div>
+
+    <div class="record-middle">
+      <div>
+        <span class="dir-badge dir-up">本局方向：看涨（占位）</span>
+      </div>
+      <div class="index-info">
+        收盘指数：1201.32（占位）<br/>
+        涨跌：↑ +1.23%（占位）
+      </div>
+    </div>
+
+    <div class="record-bottom">
+      <div class="amount-info">
+        投入：0.02 DP（占位）<br/>
+        结算：0.038 DP（占位）
+      </div>
+      <div style="text-align:right;">
+        <div class="pnl win">本局盈亏：+0.018 DP（占位）</div>
+        <div class="tag-small">状态：已派彩（占位）</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 分组：更早 -->
+  <div class="group-title">更早（占位）</div>
+
+  <div class="record-card">
+    <div class="record-top">
+      <div class="round-id">第 980 局（占位）</div>
+      <div class="round-time">前天 19:32（占位）</div>
+    </div>
+
+    <div class="record-middle">
+      <div>
+        <span class="dir-badge dir-down">本局方向：看跌（占位）</span>
+      </div>
+      <div class="index-info">
+        收盘指数：1178.88（占位）<br/>
+        涨跌：↓ -0.85%（占位）
+      </div>
+    </div>
+
+    <div class="record-bottom">
+      <div class="amount-info">
+        投入：0.04 DP（占位）<br/>
+        结算：0.00 DP（占位）
+      </div>
+      <div style="text-align:right;">
+        <div class="pnl loss">本局盈亏：-0.04 DP（占位）</div>
+        <div class="tag-small">状态：已结算（占位）</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- 底部统计栏 -->
+<div class="bottom-bar">
+  <div>总局数：124（占位）</div>
+  <div>总净收益：+3.45 DP（占位）</div>
+  <div>返回玩法 ›</div>
+</div>
+
+</body>
+</html>

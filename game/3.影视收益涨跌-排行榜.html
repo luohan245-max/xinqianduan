@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>影视收益涨跌 · 排行榜</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+
+<style>
+/* =======================
+   Root Variables
+======================= */
+:root {
+  --bg: #050506;
+  --card: #0f1119;
+  --card-soft: #151726;
+  --border: #222533;
+  --text-main: #f7f7fb;
+  --text-sub: #9ea1b6;
+  --gold: #f5d27a;
+  --pink: #ff7eb3;
+  --green: #47ffb0;
+  --red: #ff6a7c;
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  --shadow: 0 8px 32px rgba(0,0,0,0.55);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  background: var(--bg);
+  color: var(--text-main);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+}
+
+.page {
+  max-width: 430px;
+  margin: 0 auto;
+  padding-bottom: 80px;
+}
+
+/* =======================
+   顶部导航栏
+======================= */
+.nav {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 16px;
+  align-items: center;
+}
+.nav-btn {
+  font-size: 13px;
+  color: var(--text-sub);
+}
+.nav-title {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* =======================
+   Tab 区域
+======================= */
+.tab-area {
+  display: flex;
+  gap: 10px;
+  padding: 0 14px;
+  margin-bottom: 14px;
+}
+.tab-btn {
+  flex: 1;
+  text-align: center;
+  padding: 8px 0;
+  font-size: 13px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid transparent;
+  color: var(--text-sub);
+}
+.tab-btn.active {
+  background: linear-gradient(90deg, var(--gold), var(--pink));
+  color: #000;
+  font-weight: 600;
+  border-color: rgba(245,210,122,0.7);
+}
+
+/* =======================
+   排行卡片
+======================= */
+.rank-card {
+  background: var(--card-soft);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  margin: 6px 14px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+}
+
+/* 排名标记 */
+.rank-index {
+  width: 32px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* 前三名特殊颜色 */
+.rank-1 { color: var(--gold); }
+.rank-2 { color: #c0c0c0; }
+.rank-3 { color: #cd7f32; }
+
+/* 脱敏昵称 & 数据 */
+.rank-info {
+  flex: 1;
+}
+.rank-info .name {
+  font-size: 14px;
+  font-weight: 600;
+}
+.rank-info .meta {
+  font-size: 11px;
+  color: var(--text-sub);
+  margin-top: 2px;
+}
+
+/* 盈亏显示 */
+.rank-pnl {
+  text-align: right;
+}
+.rank-pnl .pnl {
+  font-size: 14px;
+  font-weight: 600;
+}
+.pnl.win { color: var(--green); }
+.pnl.loss { color: var(--red); }
+
+.rank-pnl .tag {
+  font-size: 11px;
+  color: var(--text-sub);
+}
+
+/* =======================
+   底部统计栏
+======================= */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  max-width: 430px;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(10px);
+  padding: 10px 16px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+}
+</style>
+</head>
+
+<body>
+<div class="page">
+
+<!-- 顶部导航 -->
+<div class="nav">
+  <div class="nav-btn">‹ 返回</div>
+  <div class="nav-title">排行榜（占位）</div>
+  <div class="nav-btn">帮助</div>
+</div>
+
+<!-- Tab 区域 -->
+<div class="tab-area">
+  <div class="tab-btn active">今日盈利榜（占位）</div>
+  <div class="tab-btn">本周高玩榜（占位）</div>
+</div>
+
+<!-- 排行 1 -->
+<div class="rank-card">
+  <div class="rank-index rank-1">1</div>
+  <div class="rank-info">
+    <div class="name">用***923（占位）</div>
+    <div class="meta">参与局数：42 · 胜率：61%（占位）</div>
+  </div>
+  <div class="rank-pnl">
+    <div class="pnl win">+1.25 DP（占位）</div>
+    <div class="tag">今日盈利（占位）</div>
+  </div>
+</div>
+
+<!-- 排行 2 -->
+<div class="rank-card">
+  <div class="rank-index rank-2">2</div>
+  <div class="rank-info">
+    <div class="name">A***27（占位）</div>
+    <div class="meta">参与局数：33 · 胜率：58%（占位）</div>
+  </div>
+  <div class="rank-pnl">
+    <div class="pnl win">+0.98 DP（占位）</div>
+    <div class="tag">今日盈利（占位）</div>
+  </div>
+</div>
+
+<!-- 排行 3 -->
+<div class="rank-card">
+  <div class="rank-index rank-3">3</div>
+  <div class="rank-info">
+    <div class="name">K***87（占位）</div>
+    <div class="meta">参与局数：29 · 胜率：55%（占位）</div>
+  </div>
+  <div class="rank-pnl">
+    <div class="pnl win">+0.76 DP（占位）</div>
+    <div class="tag">今日盈利（占位）</div>
+  </div>
+</div>
+
+<!-- 其他排名 -->
+<div class="rank-card">
+  <div class="rank-index">4</div>
+  <div class="rank-info">
+    <div class="name">用***53（占位）</div>
+    <div class="meta">参与：21 · 胜率：47%（占位）</div>
+  </div>
+  <div class="rank-pnl">
+    <div class="pnl loss">-0.12 DP（占位）</div>
+    <div class="tag">今日盈亏（占位）</div>
+  </div>
+</div>
+
+<div class="rank-card">
+  <div class="rank-index">5</div>
+  <div class="rank-info">
+    <div class="name">Z***01（占位）</div>
+    <div class="meta">参与：19 · 胜率：42%（占位）</div>
+  </div>
+  <div class="rank-pnl">
+    <div class="pnl win">+0.22 DP（占位）</div>
+    <div class="tag">今日盈利（占位）</div>
+  </div>
+</div>
+
+</div>
+
+<!-- 底部栏 -->
+<div class="bottom-bar">
+  <div>累计参与：124 局（占位）</div>
+  <div>返回玩法 ›</div>
+</div>
+
+</body>
+</html>

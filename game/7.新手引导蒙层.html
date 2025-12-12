@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>新手引导蒙层 · 示范页</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+
+<style>
+:root{
+  --bg:#050506;
+  --text-main:#f7f7fb;
+  --text-sub:#9ea1b6;
+  --gold:#f5d27a;
+  --pink:#ff7eb3;
+}
+
+body{
+  margin:0;
+  height:100vh;
+  background:var(--bg);
+  font-family:-apple-system, Inter, sans-serif;
+}
+
+/* 通用蒙层 */
+.guide-overlay{
+  position:fixed;
+  top:0;left:0;
+  width:100%;height:100%;
+  background:rgba(0,0,0,.65);
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  padding:20px;
+}
+
+/* 内容框 */
+.guide-box{
+  width:100%;
+  background:rgba(15,17,25,0.92);
+  padding:18px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,0.1);
+  margin-bottom:20px;
+}
+
+.guide-title{
+  font-size:15px;
+  color:var(--gold);
+  font-weight:600;
+  margin-bottom:6px;
+}
+.guide-desc{
+  font-size:13px;
+  color:var(--text-sub);
+}
+.guide-btn{
+  width:100%;
+  padding:12px 0;
+  background:linear-gradient(90deg,var(--gold),var(--pink));
+  border-radius:12px;
+  text-align:center;
+  color:#000;
+  font-weight:600;
+  margin-top:12px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Step 1 -->
+<div class="guide-overlay" id="step1">
+  <div class="guide-box">
+    <div class="guide-title">当前局信息（占位）</div>
+    <div class="guide-desc">你可以在这里看到指数与倒计时（占位）</div>
+    <div class="guide-btn" onclick="next(1)">下一步（占位）</div>
+  </div>
+</div>
+
+<!-- Step 2 -->
+<div class="guide-overlay" id="step2" style="display:none;">
+  <div class="guide-box">
+    <div class="guide-title">这里是下注区域（占位）</div>
+    <div class="guide-desc">选择 DP 金额并选择看涨/看跌（占位）</div>
+    <div class="guide-btn" onclick="next(2)">继续（占位）</div>
+  </div>
+</div>
+
+<!-- Step 3 -->
+<div class="guide-overlay" id="step3" style="display:none;">
+  <div class="guide-box">
+    <div class="guide-title">全站动态（占位）</div>
+    <div class="guide-desc">你可以查看其他用户的下注方向（占位）</div>
+    <div class="guide-btn" onclick="next(3)">开始体验（占位）</div>
+  </div>
+</div>
+
+<script>
+function next(step){
+  document.getElementById("step"+step).style.display="none";
+  if(step < 3){
+    document.getElementById("step"+(step+1)).style.display="flex";
+  }
+}
+</script>
+
+</body>
+</html>

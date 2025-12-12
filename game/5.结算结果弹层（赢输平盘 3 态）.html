@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>结算结果弹层 · 示范页</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+
+<style>
+:root {
+  --bg: #050506;
+  --text-main: #f7f7fb;
+  --text-sub: #9ea1b6;
+  --gold: #f5d27a;
+  --pink: #ff7eb3;
+  --green: #47ffb0;
+  --red: #ff6a7c;
+}
+
+body {
+  margin:0;
+  background: var(--bg);
+  font-family: -apple-system, Inter, sans-serif;
+  color: var(--text-main);
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+/* -------- 弹层 -------- */
+.result-overlay {
+  position: fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(10px);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.result-box {
+  width: 85%;
+  background:#0f1119;
+  padding:22px;
+  border-radius:20px;
+  border:1px solid rgba(245,210,122,0.45);
+  text-align:center;
+}
+
+.result-title {
+  font-size:16px;
+  color:var(--gold);
+  margin-bottom:8px;
+}
+
+.result-value {
+  font-size:28px;
+  margin:10px 0;
+}
+
+.win { color:var(--green); }
+.loss { color:var(--red); }
+.flat { color:var(--text-sub); }
+
+.result-info {
+  font-size:13px;
+  color:var(--text-sub);
+  margin-bottom:14px;
+}
+
+.result-next {
+  font-size:12px;
+  color:var(--gold);
+  margin-bottom:16px;
+}
+
+.result-btn {
+  background: linear-gradient(90deg,var(--gold),var(--pink));
+  color:#000;
+  padding:12px 0;
+  font-weight:600;
+  border-radius:12px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 弹层 -->
+<div class="result-overlay">
+  <div class="result-box">
+
+    <div class="result-title">第 1024 局 结算结果（占位）</div>
+
+    <!-- 修改 class：win / loss / flat -->
+    <div class="result-value win">+0.027 DP（占位）</div>
+
+    <div class="result-info">
+      本局方向：看涨（占位）<br>
+      投入：0.03 DP（占位）
+    </div>
+
+    <div class="result-next">
+      下一局将在 00:08 后开始（占位）
+    </div>
+
+    <div class="result-btn">继续参与下一局（占位）</div>
+  </div>
+</div>
+
+</body>
+</html>

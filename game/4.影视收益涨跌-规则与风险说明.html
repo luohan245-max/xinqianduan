@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>影视收益涨跌 · 规则与风险说明</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+
+<style>
+/* =======================
+   Root 主题变量
+======================= */
+:root {
+  --bg: #050506;
+  --card: #0f1119;
+  --card-soft: #151726;
+  --border: #222533;
+  --text-main: #f7f7fb;
+  --text-sub: #9ea1b6;
+  --gold: #f5d27a;
+  --pink: #ff7eb3;
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  --shadow: 0 8px 32px rgba(0,0,0,0.55);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  background: var(--bg);
+  color: var(--text-main);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.7;
+}
+
+.page {
+  max-width: 430px;
+  margin: 0 auto;
+  padding: 20px 14px 100px;
+}
+
+/* =======================
+   顶部导航
+======================= */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.nav-btn {
+  color: var(--text-sub);
+  font-size: 13px;
+}
+.nav-title {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+/* =======================
+   长文排版
+======================= */
+h2 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--gold);
+  margin: 18px 0 10px;
+}
+
+p {
+  font-size: 13px;
+  color: var(--text-main);
+  margin-bottom: 12px;
+}
+
+ul {
+  padding-left: 18px;
+  margin-bottom: 12px;
+}
+ul li {
+  font-size: 13px;
+  color: var(--text-main);
+  margin-bottom: 6px;
+}
+
+/* 分割线 */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(255,255,255,0.08);
+  margin: 20px 0;
+}
+
+/* 底部固定栏 */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  max-width: 430px;
+  width: 100%;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(10px);
+  padding: 12px 16px;
+  font-size: 13px;
+  display: flex;
+  justify-content: flex-end;
+  color: var(--gold);
+}
+</style>
+</head>
+
+<body>
+<div class="page">
+
+  <!-- 顶部导航 -->
+  <div class="nav">
+    <div class="nav-btn">‹ 返回</div>
+    <div class="nav-title">规则与风险说明（占位）</div>
+    <div class="nav-btn"></div>
+  </div>
+
+  <!-- Section 1 -->
+  <h2>一、玩法说明（占位）</h2>
+  <p>本玩法为「影视收益指数涨跌预测」的 DP 积分娱乐模式，每局约为 1 分钟，由“下注期”与“封盘期”组成。用户可在下注期预测下一次指数结果为“涨”或“跌”，最终按指数变化结果进行结算。</p>
+
+  <ul>
+    <li>每局开始时会产生「开盘指数」（占位）</li>
+    <li>封盘后不可再下注（占位）</li>
+    <li>结算时根据「收盘指数」判断涨跌（占位）</li>
+    <li>若涨跌方向与用户选择一致，则为赢；反之则为输（占位）</li>
+    <li>若指数无变化，则为平盘，退还下注积分（占位）</li>
+  </ul>
+
+  <!-- Section 2 -->
+  <h2>二、DP 积分说明（占位）</h2>
+  <p>DP 积分为平台内的虚拟娱乐积分，仅可用于站内权益、活动或玩法，<b style="color:var(--pink);">不具备法币属性，不对应任何现实货币，不可提现</b>。</p>
+  <p>所有下注与收益均以 DP 形式结算（占位）。</p>
+
+  <!-- Section 3 -->
+  <h2>三、下注规则（占位）</h2>
+  <ul>
+    <li>每局最低下注额：0.01 DP（占位）</li>
+    <li>每局最高下注额度：由平台统一设定（占位）</li>
+    <li>同一局内用户可多次追加同方向下注（占位）</li>
+    <li>系统将自动合并同局、同方向的 DP 数量（占位）</li>
+    <li>封盘后下注将不再被接受（占位）</li>
+  </ul>
+
+  <!-- Section 4 -->
+  <h2>四、结算规则（占位）</h2>
+  <ul>
+    <li>涨：收盘指数 ＞ 开盘指数（占位）</li>
+    <li>跌：收盘指数 ＜ 开盘指数（占位）</li>
+    <li>平盘：指数相同 → 本金退回（占位）</li>
+    <li>结算后如遇网络延迟，以最终系统记录为准（占位）</li>
+    <li>异常情况（指数异常/网络断开）时系统自动退还本金（占位）</li>
+  </ul>
+
+  <!-- Section 5 -->
+  <h2>五、指数来源（占位）</h2>
+  <p>影视收益指数由平台依据影视相关模型、内容热度指标、站内观影活跃度等参数计算生成。指数仅用于游戏娱乐目的，不构成实际投资参考。</p>
+
+  <!-- Section 6 -->
+  <h2>六、风控与限制（占位）</h2>
+  <ul>
+    <li>连续多局下注失败时，系统可能弹出提示（占位）</li>
+    <li>单日累计亏损超出阈值可能触发临时限制（占位）</li>
+    <li>系统将监控异常下注行为并保留限制权（占位）</li>
+    <li>同一行为异常重复下注可能被自动风控（占位）</li>
+  </ul>
+
+  <!-- Section 7 -->
+  <h2>七、风险提示（占位）</h2>
+  <p><b style="color:var(--pink);">1. 本玩法存在积分损失风险。</b></p>
+  <p><b style="color:var(--pink);">2. 涨跌结果不可预测，所有娱乐结果均为随机波动。</b></p>
+  <p><b style="color:var(--pink);">3. 请理性参与，不建议未成年人或无法控制支出的用户参与。</b></p>
+  <p><b style="color:var(--pink);">4. 平台不承诺稳定收益，不构成任何投资、理财建议。</b></p>
+
+  <!-- Section 8 -->
+  <h2>八、用户责任（占位）</h2>
+  <ul>
+    <li>用户须自行管理账户安全（占位）</li>
+    <li>因个人设备、网络问题导致的异常由用户自行承担（占位）</li>
+    <li>不得利用系统漏洞或作弊，否则系统有权封禁账户（占位）</li>
+  </ul>
+
+  <!-- Section 9 -->
+  <h2>九、最终解释权（占位）</h2>
+  <p>本玩法的规则解释权归平台所有。平台有权根据运营情况调整规则，并在页面进行公布。</p>
+
+  <div class="divider"></div>
+
+  <p style="font-size:12px;color:var(--text-sub);text-align:center;">
+    本页内容仅为占位示例，可根据需要修改或扩写
+  </p>
+
+</div>
+
+<!-- 底部栏 -->
+<div class="bottom-bar">
+  返回玩法 ›
+</div>
+
+</body>
+</html>

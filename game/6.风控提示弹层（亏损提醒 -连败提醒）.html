@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>风控提示弹层 · 示范页</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+
+<style>
+:root{
+  --bg:#050506;
+  --text-main:#f7f7fb;
+  --text-sub:#9ea1b6;
+  --pink:#ff7eb3;
+}
+
+body{
+  margin:0;
+  height:100vh;
+  background:var(--bg);
+  font-family:-apple-system, Inter, sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+/* 弹层本体 */
+.risk-overlay{
+  width:100%;height:100%;
+  position:fixed;
+  top:0;left:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:rgba(0,0,0,.6);
+  backdrop-filter:blur(8px);
+}
+
+.risk-box{
+  width:80%;
+  background:#151726;
+  border-radius:18px;
+  border:1px solid var(--pink);
+  padding:22px;
+  text-align:center;
+}
+
+.risk-title{
+  font-size:16px;
+  font-weight:600;
+  color:var(--pink);
+  margin-bottom:10px;
+}
+
+.risk-desc{
+  font-size:13px;
+  color:var(--text-sub);
+  margin-bottom:18px;
+}
+
+.risk-btn{
+  background:var(--pink);
+  padding:12px 0;
+  border-radius:12px;
+  color:#000;
+  font-weight:600;
+}
+</style>
+</head>
+
+<body>
+
+<div class="risk-overlay">
+  <div class="risk-box">
+    <div class="risk-title">风险提示（占位）</div>
+    <div class="risk-desc">
+      你已连续 3 局未猜中，建议适当降低下注金额，保持冷静娱乐（占位）。
+    </div>
+    <div class="risk-btn">我知道了（占位）</div>
+  </div>
+</div>
+
+</body>
+</html>

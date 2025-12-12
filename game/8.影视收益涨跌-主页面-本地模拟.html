@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>影视收益涨跌 · DP积分场（整合版 V2 · 高亮引导）</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+
+<!-- ============================
+     GLOBAL THEME VARIABLES
+=============================== -->
+<style>
+:root {
+  --bg: #050506;
+  --card: #0f1119;
+  --card-soft: #141622;
+  --border: #1d2032;
+  --text-main: #f7f7fb;
+  --text-sub: #9ea1b6;
+  --gold: #f5d27a;
+  --pink: #ff69b4;
+  --green: #47ffb0;
+  --red: #ff6a7c;
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  --shadow: 0 8px 28px rgba(0,0,0,0.45);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--text-main);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+}
+.page {
+  max-width: 430px;
+  margin: 0 auto;
+  padding-bottom: 120px;
+}
+
+/* ======================================
+   Navigation Bar
+====================================== */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+}
+.nav .btn {
+  font-size: 13px;
+  color: var(--text-sub);
+}
+.nav .title {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* ======================================
+   Round Info Card
+====================================== */
+.round-card {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(245,210,122,0.4);
+  padding: 16px;
+  margin: 10px 14px;
+  box-shadow: var(--shadow);
+}
+
+.round-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.status-tag {
+  padding: 2px 8px;
+  font-size: 11px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--gold);
+  color: var(--gold);
+}
+
+.progress-wrapper { margin-top: 14px; }
+.progress {
+  height: 6px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.progress-inner {
+  height: 100%;
+  width: 50%;
+  background: linear-gradient(90deg, var(--gold), var(--pink));
+}
+#progressBar { transition: width 0.4s linear; }
+
+.countdown {
+  font-size: 12px;
+  color: var(--text-sub);
+  text-align: right;
+  margin-top: 6px;
+}
+
+/* ======================================
+   Index History Section
+====================================== */
+.section-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 16px 14px 8px;
+}
+
+.index-card {
+  background: var(--card-soft);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  margin: 0 14px;
+  padding: 14px;
+  font-size: 13px;
+}
+
+.chart-placeholder {
+  height: 80px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+  border-radius: var(--radius-md);
+  margin: 12px 0;
+}
+
+.history-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.history-row:last-child { border-bottom: none; }
+
+/* ======================================
+   Bet Area
+====================================== */
+.bet-card {
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  margin: 16px 14px;
+  font-size: 13px;
+}
+
+.amount-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.amount-btn {
+  padding: 6px 12px;
+  background: var(--card-soft);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.choose-row {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+}
+.choose-btn {
+  flex: 1;
+  text-align: center;
+  padding: 14px 0;
+  border-radius: var(--radius-md);
+  color: #fff;
+  font-size: 14px;
+}
+.btn-up {
+  border: 1px solid rgba(0,255,180,0.5);
+  background: rgba(0,255,180,0.25);
+}
+.btn-down {
+  border: 1px solid rgba(255,60,120,0.5);
+  background: rgba(255,60,120,0.25);
+}
+
+#actionBtn {
+  margin-top: 14px;
+  padding: 12px 0;
+  text-align: center;
+  border-radius: var(--radius-md);
+  background: linear-gradient(90deg, var(--gold), var(--pink));
+  font-size: 14px;
+  font-weight: 600;
+  color: #000;
+}
+
+/* ======================================
+   My Bet Section
+====================================== */
+.mybet-card {
+  background: var(--card-soft);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  padding: 14px;
+  margin: 12px 14px;
+  font-size: 13px;
+}
+.mybet-row { margin-bottom: 6px; }
+#myBetHistory div { margin-bottom: 4px; }
+
+/* ======================================
+   Global Bet Feed
+====================================== */
+.global-card {
+  background: var(--card-soft);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  padding: 14px;
+  margin: 12px 14px;
+  font-size: 13px;
+}
+.bar-wrapper {
+  height: 6px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 6px 0;
+}
+.bar-up {
+  background: var(--gold);
+  height: 100%;
+}
+.bar-down {
+  background: var(--pink);
+  height: 100%;
+}
+
+#globalBetList {
+  max-height: 110px;
+  overflow-y: auto;
+  margin-top: 10px;
+}
+.global-item {
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  font-size: 12px;
+}
+.global-item:last-child { border-bottom:none; }
+
+/* ======================================
+   Bottom Bar Fixed
+====================================== */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  max-width: 430px;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(10px);
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+}
+</style>
+</head>
+
+<body>
+<div class="page">
+
+<!-- ===============================
+     Navigation Bar
+================================= -->
+<div class="nav">
+  <div class="btn">‹</div>
+  <div class="title">影视收益涨跌 · DP 积分场</div>
+  <div style="display:flex; gap:10px;">
+    <div class="btn">规则</div>
+    <div class="btn">战绩</div>
+    <div class="btn">榜单</div>
+  </div>
+</div>
+
+<!-- ===============================
+     Round Info Card
+================================= -->
+<div class="round-card" id="roundCard">
+  <div class="round-header">
+    <div>
+      当前局：第 <span id="roundId">1024</span> 局（占位）<br>
+      开盘指数：<span id="openPrice">1234.56</span>（占位）<br>
+      上一局：↑ 涨 +2.31%（占位）
+    </div>
+    <div class="status-tag" id="roundStatus">下注中</div>
+  </div>
+
+  <div class="progress-wrapper">
+    <div class="progress">
+      <div id="progressBar" class="progress-inner"></div>
+    </div>
+    <div class="countdown">
+      剩余：<span id="countdown">27</span> 秒（占位）
+    </div>
+  </div>
+</div>
+
+<!-- ===============================
+     Index History
+================================= -->
+<div class="section-title">历史指数 & 涨跌记录（占位）</div>
+
+<div class="index-card">
+  <div>最近 10 局指数走势（占位）</div>
+  <div class="chart-placeholder"></div>
+
+  <div class="history-row">
+    <div>第1018局 · 1201.32</div>
+    <div style="color:var(--green);">↑ +1.23%</div>
+  </div>
+  <div class="history-row">
+    <div>第1019局 · 1197.88</div>
+    <div style="color:var(--red);">↓ -0.29%</div>
+  </div>
+</div>
+
+<!-- ===============================
+     Bet Area
+================================= -->
+<div class="bet-card" id="betCard">
+  <div style="font-weight:600;font-size:14px;">选择 DP 投入金额</div>
+
+  <div class="amount-list">
+    <div class="amount-btn">0.01</div>
+    <div class="amount-btn">0.05</div>
+    <div class="amount-btn">0.10</div>
+    <div class="amount-btn">0.20</div>
+    <div class="amount-btn">0.50</div>
+    <div class="amount-btn">自定义</div>
+  </div>
+
+  <div style="font-size:12px;color:var(--text-sub);margin-top:6px;">
+    可用余额：123.4567 DP（占位）
+  </div>
+
+  <div class="choose-row">
+    <div class="choose-btn btn-up">看涨（占位）</div>
+    <div class="choose-btn btn-down">看跌（占位）</div>
+  </div>
+
+  <div id="actionBtn">确认下注（占位）</div>
+</div>
+
+<!-- ===============================
+     My Bet Info
+================================= -->
+<div class="mybet-card">
+  <div class="mybet-row">本局方向：<span id="myBetDirection">--</span></div>
+  <div class="mybet-row">累计下注：<span id="myBetAmount">0.00</span> DP</div>
+
+  <div class="mybet-row" style="margin-top:6px;">最近下注记录：</div>
+  <div id="myBetHistory" style="font-size:12px;color:var(--text-sub);">
+    <!-- JS 注入 -->
+  </div>
+</div>
+
+<!-- ===============================
+     Global Bet Feed
+================================= -->
+<div class="global-card" id="globalCard">
+  <div style="margin-bottom:6px;font-size:13px;">
+    本局总投入：<span id="globalTotalAmount">0.00</span> DP（占位）
+  </div>
+
+  <div class="bar-wrapper"><div class="bar-up" id="barUp"></div></div>
+  <div class="bar-wrapper"><div class="bar-down" id="barDown"></div></div>
+
+  <div style="font-size:12px;color:var(--text-sub);margin-top:4px;">
+    看涨 <span id="percentUp">0</span>% /
+    看跌 <span id="percentDown">0</span>%（占位）
+  </div>
+
+  <div id="globalBetList" class="bet-feed">
+    <!-- JS 注入 -->
+  </div>
+</div>
+
+</div>
+
+<!-- ===============================
+     Bottom Bar
+================================= -->
+<div class="bottom-bar">
+  <div>今日局数：<span id="todayRounds">24</span></div>
+  <div>今日收益：<span id="todayProfit">+0.56 DP</span></div>
+  <div>战绩 ›</div>
+</div>
+
+<!-- ===============================
+     Overlays · 弹层样式
+================================= -->
+<style>
+/* 结算结果弹层 */
+.result-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(10px);
+  display: none; /* JS 控制为 flex */
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+.result-box {
+  width: 86%;
+  max-width: 400px;
+  background: #0f1119;
+  border-radius: 20px;
+  padding: 22px 18px;
+  border: 1px solid rgba(245,210,122,0.45);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+  text-align: center;
+}
+.result-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.result-value {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 10px 0 14px;
+}
+.result-value.win { color: var(--green); }
+.result-value.loss { color: var(--red); }
+.result-value.flat { color: var(--text-sub); }
+.result-info {
+  font-size: 13px;
+  color: var(--text-sub);
+  margin-bottom: 12px;
+}
+.result-next {
+  font-size: 12px;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+.result-btn {
+  width: 100%;
+  padding: 12px 0;
+  border-radius: 12px;
+  background: linear-gradient(90deg, var(--gold), var(--pink));
+  color: #000;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* 风控提示弹层 */
+.risk-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(8px);
+  display: none; /* JS 控制为 flex */
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+.risk-box {
+  width: 82%;
+  max-width: 380px;
+  background: #151726;
+  border-radius: 18px;
+  padding: 22px 18px;
+  border: 1px solid var(--pink);
+  text-align: center;
+}
+.risk-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--pink);
+  margin-bottom: 10px;
+}
+.risk-desc {
+  font-size: 13px;
+  color: var(--text-sub);
+  margin-bottom: 18px;
+  line-height: 1.6;
+}
+.risk-btn-ok {
+  width: 100%;
+  padding: 12px 0;
+  border-radius: 12px;
+  background: var(--pink);
+  color: #000;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* ===============================
+   新手引导蒙层 · 高亮模式
+================================= */
+.guide-overlay {
+  position: fixed;
+  inset: 0;
+  /* 注意：这里不再加黑色背景，透明即可 */
+  background: transparent;
+  display: none;              /* JS 控制为 flex */
+  justify-content: center;
+  align-items: flex-end;
+  padding: 20px 16px;
+  z-index: 9999;
+  pointer-events: none;       /* 默认不拦截事件，只让引导框可点击 */
+}
+
+/* 高亮框：负责“圈起来 + 其它区域变暗” */
+.guide-highlight {
+  position: fixed;            /* 用视口坐标定位 */
+  border-radius: 18px;
+  border: 1px solid rgba(245,210,122,0.95);      /* 金色描边 */
+  box-shadow:
+    0 0 24px rgba(245,210,122,0.9),              /* 内圈金色光晕 */
+    0 0 0 9999px rgba(0,0,0,0.75);               /* 外圈整屏压暗 */
+  pointer-events: none;                          /* 完全不拦截点击 */
+  transition: all 0.25s ease;
+  z-index: 10000;
+}
+
+/* 底部说明卡片：永远压在高亮层上面，不会被盖灰 */
+.guide-box {
+  width: 100%;
+  max-width: 430px;
+  background: rgba(15,17,25,0.98);
+  border-radius: 16px;
+  padding: 18px 16px 16px;
+  border: 1px solid rgba(255,255,255,0.14);
+  margin-bottom: 20px;
+  z-index: 10001;            /* 比 guide-highlight 高一层 */
+  pointer-events: auto;      /* 让按钮可以点击 */
+}
+
+.guide-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+.guide-desc {
+  font-size: 13px;
+  color: var(--text-sub);
+  line-height: 1.6;
+}
+.guide-btn {
+  margin-top: 12px;
+  width: 100%;
+  padding: 12px 0;
+  border-radius: 12px;
+  background: linear-gradient(90deg, var(--gold), var(--pink));
+  color: #000;
+  font-weight: 600;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* 高亮框：负责“挖洞 + 其他区域压暗” */
+.guide-highlight {
+  position: fixed;
+  z-index: 9998;
+  border-radius: 18px;
+  border: 1px solid rgba(245,210,122,0.95); /* 明亮金色描边 */
+
+  /* 关键：用巨大的外阴影来把其余区域压暗，框内保持原来亮度 */
+  box-shadow:
+    0 0 25px rgba(245,210,122,0.9),         /* 金色发光 */
+    0 0 0 9999px rgba(0,0,0,0.78);          /* 外面整屏压暗 */
+
+  pointer-events: none;
+  transition: all 0.25s ease;
+}
+</style>
+
+<!-- ===============================
+     结算结果弹层
+================================= -->
+<div class="result-overlay" id="resultOverlay">
+  <div class="result-box">
+    <div class="result-title">
+      第 <span id="resultRoundId">1024</span> 局结算结果（占位）
+    </div>
+    <!-- JS 会切换 win / loss / flat -->
+    <div class="result-value win" id="resultValue">
+      +0.027 DP（占位）
+    </div>
+    <div class="result-info" id="resultInfo">
+      本局方向：看涨（占位）<br>
+      投入：0.03 DP（占位）
+    </div>
+    <div class="result-next" id="resultNext">
+      下一局将在 00:08 后开始（占位）
+    </div>
+    <div class="result-btn" id="resultConfirmBtn">
+      继续参与下一局（占位）
+    </div>
+  </div>
+</div>
+
+<!-- ===============================
+     风控提示弹层
+================================= -->
+<div class="risk-overlay" id="riskOverlay">
+  <div class="risk-box">
+    <div class="risk-title">风险提示（占位）</div>
+    <div class="risk-desc" id="riskText">
+      你已连续 3 局未猜中，建议适当降低下注金额，保持冷静娱乐（占位）。
+    </div>
+    <div class="risk-btn-ok" id="riskConfirmBtn">
+      我知道了（占位）
+    </div>
+  </div>
+</div>
+
+<!-- ===============================
+     新手引导蒙层 · Step 1
+================================= -->
+<!-- Step 1：当前局信息 -->
+<div class="guide-overlay" id="step1">
+  <div id="guideHighlight1" class="guide-highlight"></div>
+  <div class="guide-box">
+    <div class="guide-title">当前局信息（占位）</div>
+    <div class="guide-desc">
+      在这里你可以看到当前局编号、指数和倒计时，下注前先确认轮次信息（占位）。
+    </div>
+    <div class="guide-btn" onclick="nextGuide(1)">
+      下一步（占位）
+    </div>
+  </div>
+</div>
+
+<!-- Step 2：下注区域 -->
+<div class="guide-overlay" id="step2">
+  <div id="guideHighlight2" class="guide-highlight"></div>
+  <div class="guide-box">
+    <div class="guide-title">下注区域（占位）</div>
+    <div class="guide-desc">
+      先选择 DP 金额，再选择看涨或看跌，确认后就会参与本局预测（占位）。
+    </div>
+    <div class="guide-btn" onclick="nextGuide(2)">
+      继续（占位）
+    </div>
+  </div>
+</div>
+
+<!-- Step 3：全站动态 -->
+<div class="guide-overlay" id="step3">
+  <div id="guideHighlight3" class="guide-highlight"></div>
+  <div class="guide-box">
+    <div class="guide-title">全站动态（占位）</div>
+    <div class="guide-desc">
+      这里展示其他用户最近的下注方向与金额，仅供参考，请理性判断，不要盲目跟风（占位）。
+    </div>
+    <div class="guide-btn" onclick="nextGuide(3)">
+      开始体验（占位）
+    </div>
+  </div>
+</div>
+
+<script>
+// ================================
+// 配置区域（本地 / 真实 API 可切）
+// ================================
+const USE_MOCK = true;                 // true=本地模拟，false=真实API
+const API_URL  = "/api/game/current";  // 真实 API 地址占位
+const POLL_INTERVAL = 1000;            // 1 秒 tick
+
+// 风控相关：连败次数 / 今日盈亏（简单模拟）
+let lossStreak = 0;
+let todayProfit = 0;
+
+// 记录当前结果弹层是否已处理过该局
+let lastHandledRound = null;
+
+// 首次引导（开发期：强制每次都看一遍）
+localStorage.removeItem("guideFinished");
+let firstVisit = true;
+
+window.onload = () => {
+  if (firstVisit) showGuideStep(1);
+  startLoop();
+};
+
+// 根据配置选择 mock 还是 API
+function startLoop() {
+  if (USE_MOCK) {
+    startMockLoop();
+  } else {
+    startPolling();
+  }
+}
+
+/* ================================
+   本地模拟主循环：每 1 秒生成一次假数据
+================================ */
+function startMockLoop() {
+  let roundId = 1000;
+  let countdown = 10;
+  let phase = "betting";
+
+  setInterval(() => {
+    const data = buildMockData(roundId, countdown, phase);
+
+    updateRoundInfo(data);
+    updateCountdown(data);
+    updatePhase(data);
+    updateMyBet(data);
+    updateGlobalBets(data);
+    checkRisk(data);
+    handleResultPopup(data);
+
+    // 简单模拟：倒计时与阶段变化
+    countdown--;
+    if (countdown <= 0) {
+      if (phase === "betting") {
+        phase = "locking";
+        countdown = 3;
+      } else if (phase === "locking") {
+        phase = "result";
+        countdown = 3;
+      } else {
+        // 结算结束，进入下一局
+        phase = "betting";
+        countdown = 10;
+        roundId++;
+      }
+    }
+  }, POLL_INTERVAL);
+}
+
+// 生成一份模拟数据
+function buildMockData(roundId, countdown, phase) {
+  // 随机给一个结果（涨 / 跌 / 平）
+  const results = ["up","down","flat"];
+  const result = results[Math.floor(Math.random() * results.length)];
+
+  const myBetAmount = 0.03;
+  const winAmount   = result === "up" ? 0.027 : (result === "down" ? -0.03 : 0);
+
+  return {
+    round_id: roundId,
+    open_price: 1234.56,
+    phase: phase,
+    countdown: countdown,
+    betting_time: 10,
+    lock_time: 3,
+    result: result,
+    next_countdown: 8,
+    my_bet: {
+      direction: "up",
+      amount: myBetAmount.toFixed(3),
+      win: Math.abs(winAmount).toFixed(3),
+      history: [
+        { time: "00:12", amount: "0.01" },
+        { time: "00:25", amount: "0.02" }
+      ]
+    },
+    global_bets: [
+      { mask: "用***923", direction: "up", amount: "0.03" },
+      { mask: "用***17",  direction: "down", amount: "0.05" },
+      { mask: "用***5A8", direction: "up", amount: "0.10" }
+    ],
+    total_amount: "12.34",
+    percent_up: 57,
+    percent_down: 43,
+    risk: {
+      loss_streak: lossStreak,
+      today_loss: todayProfit
+    }
+  };
+}
+
+/* ================================
+   真实 API 轮询（预留）
+================================ */
+function startPolling() {
+  setInterval(async () => {
+    const data = await fetchGameData();
+    if (!data) return;
+
+    updateRoundInfo(data);
+    updateCountdown(data);
+    updatePhase(data);
+    updateMyBet(data);
+    updateGlobalBets(data);
+    checkRisk(data);
+    handleResultPopup(data);
+  }, POLL_INTERVAL);
+}
+
+async function fetchGameData() {
+  try {
+    const res = await fetch(API_URL);
+    return await res.json();
+  } catch (err) {
+    console.log("API 请求失败：", err);
+    return null;
+  }
+}
+
+/* ================================
+   更新：当前局信息
+================================ */
+function updateRoundInfo(data) {
+  document.getElementById("roundId").innerText  = data.round_id;
+  document.getElementById("openPrice").innerText = data.open_price;
+  document.getElementById("roundStatus").innerText =
+    data.phase === "betting" ? "下注中" :
+    data.phase === "locking" ? "封盘中" :
+    "结算中";
+}
+
+/* ================================
+   更新：倒计时 + 进度条
+================================ */
+function updateCountdown(data) {
+  const cd  = document.getElementById("countdown");
+  const bar = document.getElementById("progressBar");
+
+  cd.innerText = data.countdown;
+
+  let max = data.phase === "betting" ? data.betting_time :
+            data.phase === "locking" ? data.lock_time : 1;
+  let percent = (data.countdown / max) * 100;
+  bar.style.width = percent + "%";
+}
+
+/* ================================
+   更新：下注/封盘/结算按钮状态
+================================ */
+function updatePhase(data) {
+  const btn = document.getElementById("actionBtn");
+
+  if (data.phase === "betting") {
+    btn.innerText = "确认下注（占位）";
+    btn.disabled = false;
+    btn.style.opacity = "1";
+    btn.style.background = "linear-gradient(90deg,var(--gold),var(--pink))";
+  } else if (data.phase === "locking") {
+    btn.innerText = "封盘中（占位）";
+    btn.disabled = true;
+    btn.style.opacity = ".5";
+  } else if (data.phase === "result") {
+    btn.innerText = "结算中…（占位）";
+    btn.disabled = true;
+    btn.style.opacity = ".5";
+  }
+}
+
+/* ================================
+   更新：我的下注数据
+================================ */
+function updateMyBet(data) {
+  if (!data.my_bet) return;
+
+  const dir = data.my_bet.direction === "up" ? "看涨" : "看跌";
+
+  document.getElementById("myBetDirection").innerText = dir;
+  document.getElementById("myBetAmount").innerText    = data.my_bet.amount;
+
+  const list = data.my_bet.history.map(item =>
+    `<div>${item.time} · ${item.amount} DP（占位）</div>`
+  ).join("");
+
+  document.getElementById("myBetHistory").innerHTML = list;
+}
+
+/* ================================
+   更新：全站下注动态
+================================ */
+function updateGlobalBets(data) {
+  let html = data.global_bets.map(item =>
+    `<div class="global-item">
+       ${item.mask} · ${item.direction === "up" ? "猜涨" : "猜跌"}：${item.amount} DP
+     </div>`
+  ).join("");
+
+  document.getElementById("globalBetList").innerHTML = html;
+
+  document.getElementById("globalTotalAmount").innerText = data.total_amount;
+  document.getElementById("percentUp").innerText   = data.percent_up;
+  document.getElementById("percentDown").innerText = data.percent_down;
+
+  document.getElementById("barUp").style.width   = data.percent_up + "%";
+  document.getElementById("barDown").style.width = data.percent_down + "%";
+}
+
+/* ================================
+   风控触发（连败 / 今日亏损）
+================================ */
+function checkRisk(data) {
+  if (data.risk.loss_streak >= 3) {
+    showRisk(`你已连续 ${data.risk.loss_streak} 局未猜中（占位）`);
+  }
+  if (data.risk.today_loss <= -1) {
+    showRisk("今日亏损超过 1 DP，请谨慎！（占位）");
+  }
+}
+
+/* ================================
+   结算阶段 → 弹出结果框
+================================ */
+function handleResultPopup(data) {
+  if (data.phase !== "result") return;
+
+  if (lastHandledRound === data.round_id) return;
+  lastHandledRound = data.round_id;
+
+  const overlay = document.getElementById("resultOverlay");
+  const value   = document.getElementById("resultValue");
+  const info    = document.getElementById("resultInfo");
+  const next    = document.getElementById("resultNext");
+
+  document.getElementById("resultRoundId").innerText = data.round_id;
+
+  if (data.result === "up") {
+    value.className = "result-value win";
+    value.innerText = "+" + data.my_bet.win + " DP（占位）";
+    todayProfit += parseFloat(data.my_bet.win);
+    lossStreak = 0;
+  } else if (data.result === "down") {
+    value.className = "result-value loss";
+    value.innerText = "-" + data.my_bet.amount + " DP（占位）";
+    todayProfit -= parseFloat(data.my_bet.amount);
+    lossStreak += 1;
+  } else {
+    value.className = "result-value flat";
+    value.innerText = "平盘（占位）";
+  }
+
+  info.innerHTML = `
+    本局方向：${data.my_bet.direction === "up" ? "看涨" : "看跌"}（占位）<br>
+    投入：${data.my_bet.amount} DP（占位）
+  `;
+  next.innerText = `下一局将在 ${data.next_countdown} 秒后开始（占位）`;
+
+  overlay.style.display = "flex";
+
+  document.getElementById("resultConfirmBtn").onclick = () => {
+    overlay.style.display = "none";
+  };
+}
+
+/* ================================
+   风控弹层
+================================ */
+function showRisk(text) {
+  const overlay = document.getElementById("riskOverlay");
+  const dom     = document.getElementById("riskText");
+
+  dom.innerHTML = text;
+  overlay.style.display = "flex";
+
+  document.getElementById("riskConfirmBtn").onclick = () => {
+    overlay.style.display = "none";
+  };
+}
+
+/* ================================
+   高亮框定位：把金色框对齐目标模块
+================================ */
+function positionGuideHighlight(targetId, highlightId) {
+  const target    = document.getElementById(targetId);
+  const highlight = document.getElementById(highlightId);
+  if (!target || !highlight) return;
+
+  const rect = target.getBoundingClientRect();
+
+  highlight.style.left   = rect.left + "px";
+  highlight.style.top    = rect.top  + "px";
+  highlight.style.width  = rect.width  + "px";
+  highlight.style.height = rect.height + "px";
+}
+
+/* ================================
+   新手引导蒙层
+================================ */
+// 根据目标模块，给对应的高亮框定位
+function positionGuideHighlight(targetId, highlightId) {
+  const target   = document.getElementById(targetId);
+  const highlight = document.getElementById(highlightId);
+  if (!target || !highlight) return;
+
+  const rect = target.getBoundingClientRect();
+
+  highlight.style.left   = rect.left   + "px";
+  highlight.style.top    = rect.top    + "px";
+  highlight.style.width  = rect.width  + "px";
+  highlight.style.height = rect.height + "px";
+}
+
+// 显示某一步引导
+function showGuideStep(n) {
+  // 先把所有 step 隐藏
+  ["step1", "step2", "step3"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = "none";
+  });
+
+  const overlay = document.getElementById("step" + n);
+  if (!overlay) return;
+
+  // 针对不同步骤，高亮不同模块
+  if (n === 1) {
+    positionGuideHighlight("roundCard",  "guideHighlight1");
+  } else if (n === 2) {
+    positionGuideHighlight("betCard",    "guideHighlight2");
+  } else if (n === 3) {
+    positionGuideHighlight("globalCard", "guideHighlight3");
+  }
+
+  overlay.style.display = "flex";
+}
+
+// 点击“下一步 / 开始体验”
+function nextGuide(step) {
+  const overlay = document.getElementById("step" + step);
+  if (overlay) overlay.style.display = "none";
+
+  if (step < 3) {
+    showGuideStep(step + 1);
+  } else {
+    // 结束引导，记一次本地状态
+    localStorage.setItem("guideFinished", "1");
+  }
+}
+</script>
+
+</body>
+</html>
