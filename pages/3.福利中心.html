@@ -265,32 +265,43 @@
     /* ====== 底部导航 ====== */
     /* ===== TabBar unified with index.html ===== */
 
-.tab-bar {
+:root{
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* 兜底：html/body 背景锁死，防止底部露白 */
+html, body{
+  background: #050506 !important;
+}
+
+/* TabBar：改成纯色不透明 + 去掉顶线 + 补齐底部安全区 */
+.tab-bar{
   position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 64px;
-  background: rgba(5,6,10,0.96);
-  border-top: 1px solid rgba(245,210,122,0.16);
-  backdrop-filter: blur(22px);
+  left: 0; right: 0; bottom: 0;
+  z-index: 9999;
+
+  border-top: none !important;
+  box-shadow: none !important;
+
+  background: #050506 !important;         /* 关键：纯色，彻底不透 */
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+
+  height: calc(64px + var(--safe-bottom));
+  padding-bottom: var(--safe-bottom);
+
   display: flex;
   justify-content: center;
-  z-index: 20;
 }
 
-.tab-bar-inner {
-  width: 100%;
-  max-width: 430px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-
-@media (min-width: 768px) {
-  .tab-bar-inner {
-    max-width: 520px;
-  }
+/* 某些 WebView/iOS 会在最底部再露一条，这里强行盖住 */
+.tab-bar::after{
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  bottom: calc(-1 * var(--safe-bottom));
+  height: var(--safe-bottom);
+  background: #050506;
 }
 
 .tab-item {
@@ -478,32 +489,7 @@ body {
 /* 3) TabBar：不要半透明（半透明+blur最容易透出白边） */
 :root { --safe-bottom: env(safe-area-inset-bottom, 0px); }
 
-.tab-bar{
-  border-top: none !important;
-  box-shadow: none !important;
 
-  background: #050509 !important;   /* 关键：纯色！ */
-  -webkit-backdrop-filter: none !important;
-  backdrop-filter: none !important;
-
-  height: calc(64px + var(--safe-bottom));
-  padding-bottom: var(--safe-bottom);
-
-  position: fixed;
-  left: 0; right: 0; bottom: 0;
-}
-
-/* 4) 再补一层“底部遮罩”，专门盖住极端机型/WebView的白底条 */
-.tab-bar::after{
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: calc(-1 * var(--safe-bottom));
-  height: var(--safe-bottom);
-  background: #050509;
-}
-    
   </style>
 </head>
 
