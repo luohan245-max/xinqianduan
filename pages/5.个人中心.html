@@ -37,22 +37,23 @@
       min-height: 100vh;
     }
 
-    .app {
+    .page {
       width: 100%;
       max-width: 430px;
       min-height: 100vh;
       margin: 0 auto;
-      padding-bottom: 80px; /* 底部导航预留 */
+      padding-bottom: 80px; /* 给 TabBar 预留 */
       position: relative;
+      overflow: hidden;
     }
 
+    /* PC 行为与 index.html 完全一致 */
     @media (min-width: 768px) {
-      .app {
-        max-width: 520px;
-        margin: 16px auto;
-        border-radius: 24px;
-        overflow: hidden;
-        box-shadow: var(--shadow-soft);
+    .page {
+      max-width: 430px;
+      margin: 0 auto;
+      border-radius: 0;
+      box-shadow: none;
       }
     }
 
@@ -476,10 +477,10 @@
   </style>
 </head>
 <body>
-  <div class="app">
+  <div class="page">
     <main class="page" id="page-profile">
       <!-- 顶部标题 -->
-      <header class="page-header">
+      <header class="page-header ns-header ns-header--flow">
         <div class="page-title">我的</div>
         <div class="page-header-right" onclick="location.href='47.设置主页面.html'">账号中心占位</div>
       </header>
