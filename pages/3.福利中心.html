@@ -50,18 +50,16 @@
       min-height: 100vh;
       margin: 0 auto;
 
-      /* 关键：内容底部预留 = TabBar(64) + safe-area */
-      padding-bottom: calc(84px + var(--safe-bottom));
+      /* ✅ 修正：与全站统一（80px）= TabBar(64) + 缓冲(16) + safe-area */
+      padding-bottom: calc(80px + var(--safe-bottom));
       position: relative;
     }
 
-    /* 统一左右内边距（不改你的布局风格，只是更规范） */
+    /* 统一左右内边距 */
     .pad-x { padding-left: 16px; padding-right: 16px; }
 
     /* ====== Header ====== */
-    header {
-      padding-top: 16px;
-    }
+    header { padding-top: 16px; }
     .page-title { font-size: 22px; font-weight: 800; letter-spacing: .2px; }
     .page-sub {
       margin-top: 6px;
@@ -174,7 +172,7 @@
       user-select: none;
     }
 
-    /* ====== 账户金币余额卡片（新增） ====== */
+    /* ====== 账户金币余额卡片 ====== */
     .balance-card{
       margin-top: 10px;
       padding: 14px 14px;
@@ -325,7 +323,7 @@
       white-space: nowrap;
     }
 
-    /* ===== 福利入口大卡片（2×2，小卡片入口）===== */
+    /* ===== 福利入口大卡片 ===== */
     .hub-card{
       padding: 12px;
       border-radius: 20px;
@@ -378,16 +376,14 @@
     }
 
     /* =======================
-       TabBar 白线终结方案（核心）
-       1) 背景纯色不透明
-       2) safe-area 完全铺满
-       3) 后置兜底背景层 tab-bar-bg
-       4) translateZ(0) 防 1px 缝
+       TabBar：修正点
+       ✅ 1) 背景铺满 safe-area
+       ✅ 2) tab-bar-inner 在 >=768 时放宽到 520（与 index 对齐）
     ======================= */
     .tab-bar-bg{
       position: fixed;
       left: 0; right: 0; bottom: 0;
-      height: calc(64px + var(--safe-bottom) + 24px);
+      height: calc(64px + var(--safe-bottom));
       background: var(--bg);
       z-index: 9990;
       transform: translateZ(0);
@@ -403,7 +399,7 @@
       justify-content: center;
       align-items: flex-start;
 
-      background: var(--bg) !important;     /* 纯色不透明 */
+      background: var(--bg) !important;
       border-top: none !important;
       box-shadow: none !important;
       outline: none !important;
@@ -420,11 +416,15 @@
       align-items: center;
       height: 64px;
 
-      /* 不要任何背景/圆角/阴影，避免“亮边” */
       background: transparent !important;
       border: none !important;
       box-shadow: none !important;
       transform: translateZ(0);
+    }
+
+    /* ✅ 修正：与 index 一致的 PC inner 宽度 */
+    @media (min-width: 768px) {
+      .tab-bar-inner { max-width: 520px; }
     }
 
     .tab-item{
@@ -472,7 +472,7 @@
       </nav>
     </header>
 
-    <!-- 账户金币余额（新增） -->
+    <!-- 账户金币余额 -->
     <section class="section pad-x">
       <div class="section-header">
         <div>
@@ -618,7 +618,7 @@
       </div>
     </section>
 
-    <!-- 抽奖中心（大卡片 + 2×2 入口） -->
+    <!-- 抽奖中心 -->
     <section class="section pad-x" id="welfare-lottery-hub">
       <div class="section-header">
         <div>
@@ -667,11 +667,11 @@
 
   </div>
 
-  <!-- 兜底背景层：专门干掉“白线/透底” -->
+  <!-- 兜底背景层：铺满 safe-area，避免底部露白 -->
   <div class="tab-bar-bg" aria-hidden="true"></div>
 
   <!-- Bottom TabBar -->
-  <nav class="tab-bar">
+  <nav class="tab-bar" aria-label="底部导航">
     <div class="tab-bar-inner">
       <a class="tab-item" href="../index.html">
         <div class="tab-item-icon"></div>
@@ -701,7 +701,7 @@
   </nav>
 
   <script>
-    // tabs 演示（占位）：切换 active 状态，不改变页面内容
+    // tabs 演示：切换 active 状态，不改变页面内容
     document.querySelectorAll('.tab-pill').forEach(pill=>{
       pill.addEventListener('click', ()=>{
         document.querySelectorAll('.tab-pill').forEach(x=>x.classList.remove('active'));
