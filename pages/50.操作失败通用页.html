@@ -239,6 +239,15 @@
       margin-bottom:2px;
     }
 
+    .tips span{pointer-events:none;}
+ 
+    .back-btn,
+    .btn-primary,
+    .btn-secondary,
+    .btn-text span{
+      cursor:pointer;
+    }
+
   </style>
 </head>
 <body>
@@ -247,7 +256,7 @@
   <!-- 顶部栏 -->
   <header class="page-header">
     <div class="header-left">
-      <button class="back-btn">‹</button>
+      <button class="back-btn" onclick="history.back()">‹</button>
       <div class="header-title">操作失败（通用模板占位）</div>
     </div>
     <div class="header-right">错误处理占位</div>
@@ -293,10 +302,10 @@
 
     <!-- 主按钮区：根据场景替换文案与路由 -->
     <div class="btn-main-row">
-      <button class="btn-primary">重新尝试当前操作（占位）</button>
-      <button class="btn-secondary">返回上一页 / 其他方式（占位）</button>
+      <button class="btn-primary" onclick="history.back()">重新尝试当前操作（占位）</button>
+      <button class="btn-secondary" onclick="history.back()">返回上一页 / 其他方式（占位）</button>
       <div class="btn-text">
-        若问题持续存在，可前往 <span>客服中心</span> 提交工单或发起在线咨询（占位）。
+        若问题持续存在，可前往 <span onclick="location.href='49.客服中心首页.html'">客服中心</span> 提交工单或发起在线咨询（占位）。
       </div>
     </div>
 

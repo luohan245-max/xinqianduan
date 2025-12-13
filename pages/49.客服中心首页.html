@@ -217,6 +217,14 @@
       color:var(--gold);
     }
 
+    .back-btn,
+    .quick-card,
+    .section-more,
+    .faq-item{
+      cursor:pointer;
+    }
+
+
   </style>
 </head>
 <body>
@@ -225,7 +233,7 @@
   <!-- 顶部栏 -->
   <header class="page-header">
     <div class="header-left">
-      <button class="back-btn">‹</button>
+      <button class="back-btn" onclick="history.back()">‹</button>
       <div class="header-title">客服中心（占位）</div>
     </div>
     <div class="header-right">服务时间占位</div>
@@ -240,22 +248,21 @@
   <div class="search-wrap">
     <div class="search-box">
       <span class="search-icon">🔍</span>
-      <input class="search-input" placeholder="搜索问题，例如：无法登录 / 提现进度（占位）" />
-    </div>
+      <input class="search-input" placeholder="搜索问题，例如：无法登录 / 提现进度（占位）" onclick="location.href='26.客服页-帮助中心页.html'"/>
   </div>
 
   <!-- 快捷入口：在线客服 / 提交工单 / 消息记录 -->
   <div class="quick-row">
-    <div class="quick-card">
+    <div class="quick-card" onclick="location.href='32.联系客服-在线聊天.html'">
       <div class="quick-title">在线客服（占位）</div>
       <div class="quick-desc">进入实时聊天窗口，与人工或机器人客服对话（占位）。</div>
       <div class="quick-tag">推荐</div>
     </div>
-    <div class="quick-card secondary">
+    <div class="quick-card secondary" onclick="location.href='32.联系客服-在线聊天.html'">
       <div class="quick-title">提交工单（占位）</div>
       <div class="quick-desc">用于反馈复杂问题，支持上传截图与详细说明（占位）。</div>
     </div>
-    <div class="quick-card soft">
+    <div class="quick-card soft" onclick="location.href='32.联系客服-在线聊天.html'">
       <div class="quick-title">消息记录（占位）</div>
       <div class="quick-desc">查看与客服的历史对话和工单处理进度（占位）。</div>
     </div>
@@ -265,7 +272,7 @@
   <section class="section">
     <div class="section-header">
       <div class="section-title">账号与安全（占位）</div>
-      <div class="section-more">更多 · 进入详情（占位）</div>
+      <div class="section-more" onclick="location.href='26.客服页-帮助中心页.html'">更多 · 进入详情（占位）</div>
     </div>
     <div class="faq-item">
       <div class="faq-q">忘记密码 / 无法登录时怎么办？（占位）</div>
@@ -285,7 +292,7 @@
   <section class="section">
     <div class="section-header">
       <div class="section-title">充值 · 资产 · 提现（占位）</div>
-      <div class="section-more">更多 · 进入详情（占位）</div>
+      <div class="section-more" onclick="location.href='26.客服页-帮助中心页.html'">更多 · 进入详情（占位）</div>
     </div>
     <div class="faq-item">
       <div class="faq-q">充值成功但资产未到账怎么办？（占位）</div>
@@ -305,7 +312,7 @@
   <section class="section">
     <div class="section-header">
       <div class="section-title">看剧体验与权限（占位）</div>
-      <div class="section-more">更多 · 进入详情（占位）</div>
+      <div class="section-more" onclick="location.href='26.客服页-帮助中心页.html'">更多 · 进入详情（占位）</div>
     </div>
     <div class="faq-item">
       <div class="faq-q">为什么部分剧集需要 VIP / DP 解锁？（占位）</div>
@@ -325,17 +332,17 @@
   <section class="section">
     <div class="section-header">
       <div class="section-title">活动与福利（占位）</div>
-      <div class="section-more">更多 · 进入详情（占位）</div>
+      <div class="section-more" onclick="location.href='26.客服页-帮助中心页.html'">更多 · 进入详情（占位）</div>
     </div>
-    <div class="faq-item">
+    <div class="faq-item" onclick="location.href='26.客服页-帮助中心页.html'">
       <div class="faq-q">如何参与签到、抽奖、任务活动？（占位）</div>
       <div class="faq-tag">活动</div>
     </div>
-    <div class="faq-item">
+    <div class="faq-item" onclick="location.href='26.客服页-帮助中心页.html'">
       <div class="faq-q">活动奖励多久发放？在哪里查看？（占位）</div>
       <div class="faq-tag">奖励</div>
     </div>
-    <div class="faq-item">
+    <div class="faq-item" onclick="location.href='26.客服页-帮助中心页.html'">
       <div class="faq-q">活动页面打不开 / 显示异常怎么办？（占位）</div>
       <div class="faq-tag">页面</div>
     </div>

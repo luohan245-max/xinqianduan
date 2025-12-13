@@ -419,7 +419,7 @@
 
   // 游客访问 → 回首页
   document.getElementById('btnGuest').addEventListener('click', () => {
-    location.href = '../index.html';
+    history.back();
   });
 
   // 返回首页按钮
@@ -429,7 +429,7 @@
 
   // 右上角关闭按钮
   document.querySelector('.close').addEventListener('click', () => {
-    location.href = '../index.html';
+    history.back();
   });
 </script>
 

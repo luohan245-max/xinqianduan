@@ -206,13 +206,13 @@ html,body{
 
   <!-- 顶部栏 -->
   <div class="header">
-    <div class="back">‹</div>
+    <div class="back" onclick="history.back()">‹</div>
     <div class="avatar"></div>
     <div class="info">
       <div class="name">在线客服（占位）</div>
       <div class="status">通常在 3 分钟内回复（占位）</div>
     </div>
-    <div class="more">⋮</div>
+    <div class="more" onclick="location.reload()">⋮</div>
   </div>
 
   <!-- 聊天区 -->
@@ -252,9 +252,9 @@ html,body{
 
   <!-- 输入栏 -->
   <div class="input-bar">
-    <div class="btn-plus">+</div>
+    <div class="btn-plus" onclick="location.reload()">+</div>
     <input class="input-box" placeholder="输入内容..." />
-    <button class="btn-send">发送</button>
+    <button class="btn-send" onclick="location.reload()">发送</button>
   </div>
 
 </div>

@@ -391,6 +391,10 @@
       color: inherit !important;
     }
 
+    .badge-row{cursor: pointer;}
+
+    .shop-card{cursor: pointer;}
+
   </style>
 </head>
 <body>
@@ -448,7 +452,7 @@
         按国家维度展示持有数量与当前涨跌，仅为 UI 占位，具体百分比由行情接口替换（占位）。
       </div>
 
-      <div class="badge-row">
+      <div class="badge-row" onclick="location.href='8.徽章收益可视化.html'">
         <div class="badge-icon"></div>
         <div class="badge-main">
           <div class="badge-name">日本徽章（占位）</div>
@@ -460,7 +464,7 @@
         </div>
       </div>
 
-      <div class="badge-row">
+      <div class="badge-row" onclick="location.href='8.徽章收益可视化.html'">
         <div class="badge-icon"></div>
         <div class="badge-main">
           <div class="badge-name">越南徽章（占位）</div>
@@ -472,7 +476,7 @@
         </div>
       </div>
 
-      <div class="badge-row">
+      <div class="badge-row" onclick="location.href='8.徽章收益可视化.html'">
         <div class="badge-icon"></div>
         <div class="badge-main">
           <div class="badge-name">美国徽章（占位）</div>
@@ -534,7 +538,7 @@
     <span>价格与额度均为示意（占位）</span>
   </div>
 
-  <div class="shop-card">
+  <div class="shop-card" onclick="location.href='37.活动详情页.html'">
     <div class="shop-top">
       <div class="shop-left">
         <div class="shop-icon"></div>
@@ -562,7 +566,7 @@
     </div>
   </div>
 
-  <div class="shop-card">
+  <div class="shop-card" onclick="location.href='37.活动详情页.html'">
     <div class="shop-top">
       <div class="shop-left">
         <div class="shop-icon"></div>
@@ -584,8 +588,8 @@
         简要说明占位：适合愿意承受一定波动、追求更高收益空间的用户使用。
       </div>
       <div class="shop-actions">
-        <button class="btn-outline" onclick="location.href='37.活动详情页.html'">查看详情（占位）</button>
-        <button class="btn-primary" onclick="location.href='7.钱包%20%26%20收益总览二级页.html'">购买占位</button>
+        <button class="btn-outline" onclick="event.stopPropagation();location.href='37.活动详情页.html'">查看详情（占位）</button>
+        <button class="btn-primary" onclick="event.stopPropagation();location.href='37.活动详情页.html'">购买占位</button>
       </div>
     </div>
   </div>
@@ -594,8 +598,8 @@
   <section class="empty-block">
     <div class="empty-title">还没有任何徽章资产（占位）</div>
     <div>
-      当前账号尚未持有任何国家的徽章。你可以先阅读<span>规则说明</span>，
-      再从上方的<span>可购买徽章列表</span>中选择合适的批次，后续这里会展示你的徽章数量与收益情况（占位）。
+      当前账号尚未持有任何国家的徽章。你可以先阅读<span onclick="location.href='53.徽章合伙人资格协议.html'">规则说明</span>，
+      再从上方的<span onclick="location.href='7.钱包%20%26%20收益总览二级页.html'">可购买徽章列表</span>中选择合适的批次，后续这里会展示你的徽章数量与收益情况（占位）。
     </div>
     <div class="empty-actions">
       <div class="btn-outline" onclick="location.href='53.徽章合伙人资格协议.html'">了解规则（占位）</div>

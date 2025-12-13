@@ -325,6 +325,15 @@
       text-align:right;
     }
 
+    .sheet-close,
+    .method-btn,
+    .method-btn-outline,
+    .balance-link,
+    .btn-cancel,
+    .btn-confirm{
+      cursor:pointer;
+    }
+
   </style>
 </head>
 <body>
@@ -343,7 +352,7 @@
 
   <!-- 播放中解锁弹层（遮罩 + 抽屉） -->
   <div class="pay-overlay">
-    <div class="pay-dim"></div>
+    <div class="pay-dim" onclick="closeUnlock()"></div>
 
     <div class="pay-sheet">
       <div class="sheet-handle"></div>
@@ -359,7 +368,7 @@
             以下为 UI 结构示意，具体价格与文案由后端与运营配置（占位）。
           </div>
         </div>
-        <div class="sheet-close">✕</div>
+        <div class="sheet-close" onclick="closeUnlock()">✕</div>
       </div>
 
       <!-- 解锁方式列表 -->
@@ -377,7 +386,7 @@
           </div>
           <div class="method-right">
             <div class="method-price">价格占位：XX DP / 月</div>
-            <button class="method-btn">去开通 VIP（占位）</button>
+            <button class="method-btn" onclick="location.href='25.VIP专区.html'">去开通 VIP（占位）</button>
           </div>
         </div>
 
@@ -393,8 +402,8 @@
           </div>
           <div class="method-right">
             <div class="method-price">本集：X DP（占位）</div>
-            <button class="method-btn">用 DP 解锁本集（占位）</button>
-            <button class="method-btn-outline">用 DP 解锁整剧（占位）</button>
+            <button class="method-btn" onclick="unlockByDP('episode')">用 DP 解锁本集（占位）</button>
+            <button class="method-btn-outline" onclick="unlockByDP('all')">用 DP 解锁整剧（占位）</button>
           </div>
         </div>
 
@@ -410,7 +419,7 @@
           </div>
           <div class="method-right">
             <div class="method-price">约折合：Y 钻石（占位）</div>
-            <button class="method-btn-outline">用钻石解锁（占位）</button>
+            <button class="method-btn-outline" onclick="unlockByDiamond()">用钻石解锁（占位）</button>
           </div>
         </div>
 
@@ -422,14 +431,14 @@
           当前账号余额（占位）：VIP 状态 · DP <span>XX.XX</span> · 钻石 <span>YY</span>
         </div>
         <div>
-          <span class="balance-link">去获取 / 充值（占位）</span>
+          <span class="balance-link" onclick="location.href='7.钱包 & 收益总览二级页.html'">去获取 / 充值（占位）</span>
         </div>
       </div>
 
       <!-- 底部主按钮 -->
       <div class="sheet-footer">
-        <div class="btn-cancel">暂不解锁，返回上一集（占位）</div>
-        <div class="btn-confirm">立即解锁当前集（占位）</div>
+        <div class="btn-cancel" onclick="closeUnlock()">暂不解锁，返回上一集（占位）</div>
+        <div class="btn-confirm" onclick="unlockConfirm()">立即解锁当前集（占位）</div>
       </div>
       <div class="sheet-tip">
         默认主按钮可根据当前选中的解锁方式动态变化（占位说明）。
@@ -439,5 +448,29 @@
   </div>
 
 </div>
+
+<script>
+  function closeUnlock(){
+    // 播放中解锁弹层：关闭 = 回到上一播放状态
+    history.back();
+  }
+
+  function unlockByDP(type){
+    alert('DP 解锁占位：' + (type === 'all' ? '整剧' : '本集'));
+    // 后续接真实解锁逻辑
+  }
+
+  function unlockByDiamond(){
+    alert('钻石解锁占位');
+    // 后续接真实解锁逻辑
+  }
+
+  function unlockConfirm(){
+    alert('确认解锁占位');
+    // 成功后：关闭弹层，继续播放
+    closeUnlock();
+  }
+</script>
+
 </body>
 </html>

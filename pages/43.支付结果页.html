@@ -254,6 +254,14 @@
       color:var(--text-sub);
     }
 
+    .back-btn,
+    .btn-primary,
+    .btn-secondary,
+    .btn-ghost{
+      cursor:pointer;
+    }
+
+
   </style>
 </head>
 <body>
@@ -261,7 +269,7 @@
 
   <!-- 顶部栏 -->
   <header class="page-header">
-    <button class="back-btn">‹</button>
+    <button class="back-btn" onclick="history.back()">‹</button>
     <div class="header-title">支付 / 交易结果（模板占位）</div>
   </header>
 
@@ -316,10 +324,10 @@
     </div>
 
     <div class="btn-row">
-      <button class="btn-secondary">查看订单详情（占位）</button>
-      <button class="btn-primary">去使用权益 / 继续看剧（占位）</button>
+      <button class="btn-secondary" onclick="location.href='14.订单详情.html'">查看订单详情（占位）</button>
+      <button class="btn-primary" onclick="location.href='2.推荐页.html'">去使用权益 / 继续看剧（占位）</button>
     </div>
-    <button class="btn-ghost">返回首页 / 我的（占位）</button>
+    <button class="btn-ghost" onclick="location.href='../index.html'">返回首页 / 我的（占位）</button>
   </section>
 
   <!-- ================= 失败态示例 ================= -->
@@ -365,10 +373,10 @@
     </div>
 
     <div class="btn-row">
-      <button class="btn-secondary">返回上一页（占位）</button>
-      <button class="btn-primary">重新尝试支付（占位）</button>
+      <button class="btn-secondary" onclick="history.back()">返回上一页（占位）</button>
+      <button class="btn-primary" onclick="history.back()">重新尝试支付（占位）</button>
     </div>
-    <button class="btn-ghost">遇到问题？联系在线客服（占位）</button>
+    <button class="btn-ghost" onclick="location.href='32.联系客服-在线聊天.html'">遇到问题？联系在线客服（占位）</button>
   </section>
 
 </div>

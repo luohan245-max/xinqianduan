@@ -252,6 +252,8 @@
       white-space:nowrap;
     }
 
+    .empty-desc span{ cursor:pointer; }
+
   </style>
 </head>
 <body>
@@ -259,7 +261,7 @@
 
   <!-- 顶部 -->
   <header class="page-header">
-    <button class="back-btn">‹</button>
+    <button class="back-btn" onclick="history.back()">‹</button>
     <div class="header-title">状态提示 / 错误与空页面模板</div>
   </header>
 
@@ -277,8 +279,8 @@
       时间：2025-01-15  14:21（占位）
     </div>
     <div class="btn-row">
-      <button class="btn-primary">重新加载页面（占位）</button>
-      <button class="btn-outline">返回上一页（占位）</button>
+      <button class="btn-primary" onclick="location.reload()">重新加载页面（占位）</button>
+      <button class="btn-outline" onclick="history.back()">返回上一页（占位）</button>
     </div>
   </section>
 
@@ -297,8 +299,8 @@
       <div class="nf-tag">可能原因：区域限制（占位）</div>
     </div>
     <div class="btn-row" style="margin-top:2px;">
-      <button class="btn-primary">去首页看看（占位）</button>
-      <button class="btn-outline">查看其他短剧（占位）</button>
+      <button class="btn-primary" onclick="location.href='../index.html'">去首页看看（占位）</button>
+      <button class="btn-outline" onclick="location.href='2.推荐页.html'">查看其他短剧（占位）</button>
     </div>
   </section>
 
@@ -309,12 +311,12 @@
     <div class="empty-main">
       <div class="empty-title">这里现在还是空的（占位）</div>
       <div class="empty-desc">
-        当前页面暂时没有可展示的内容。你可以先去<span>首页 / 推荐页</span>
+        当前页面暂时没有可展示的内容。你可以先去<span onclick="location.href='../index.html'">首页 / 推荐页</span>
         浏览短剧，或者尝试调整筛选条件后再回来看看（占位文案）。
       </div>
       <div class="empty-actions">
-        <button class="btn-small-primary">去推荐页刷一刷（占位）</button>
-        <button class="btn-small-outline">修改筛选条件（占位）</button>
+        <button class="btn-small-primary" onclick="location.href='2.推荐页.html'">去推荐页刷一刷（占位）</button>
+        <button class="btn-small-outline" onclick="history.back()">修改筛选条件（占位）</button>
       </div>
     </div>
   </section>

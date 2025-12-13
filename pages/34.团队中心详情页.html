@@ -427,6 +427,16 @@
       color:var(--gold);
     }
 
+    .back-btn,
+    .rule-btn,
+    .tab,
+    .search-btn,
+    .chip-mini,
+    .member-card,
+    .tx-card{
+      cursor: pointer;
+    }
+
   </style>
 </head>
 <body>
@@ -435,11 +445,11 @@
   <!-- 顶部栏 -->
   <header class="page-header">
     <div class="header-left">
-      <button class="back-btn">‹</button>
+      <button class="back-btn" onclick="history.back()">‹</button>
       <div class="header-title">团队中心详情（占位）</div>
     </div>
     <div class="header-right">
-      <button class="rule-btn">团队规则（占位）</button>
+      <button class="rule-btn" onclick="location.href='22.团队中心页.html'">团队规则（占位）</button>
     </div>
   </header>
 
@@ -536,18 +546,18 @@
 
   <!-- Tab 区：概览 / 成员列表 / 团队收益 -->
   <div class="tabs">
-    <div class="tab active">团队概览（占位）</div>
-    <div class="tab">成员列表（占位）</div>
-    <div class="tab">团队收益明细（占位）</div>
+    <div class="tab active" onclick="document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));this.classList.add('active');">团队概览（占位）</div>
+    <div class="tab" onclick="document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));this.classList.add('active');">成员列表（占位）</div>
+    <div class="tab" onclick="document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));this.classList.add('active');">团队收益明细（占位）</div>
   </div>
 
   <!-- 成员列表搜索 + 筛选 -->
   <div class="search-row">
     <input class="search-input" placeholder="按昵称 / UID 搜索成员（占位）" />
-    <div class="search-btn">🔍</div>
+    <div class="search-btn" onclick="location.reload()">🔍</div>
   </div>
   <div class="filter-mini">
-    <div class="chip-mini active">全部层级（占位）</div>
+    <div class="chip-mini active" onclick="document.querySelectorAll('.chip-mini').forEach(x=>x.classList.remove('active'));this.classList.add('active');">全部层级（占位）</div>
     <div class="chip-mini">第 1 层（直推）（占位）</div>
     <div class="chip-mini">第 2 层（占位）</div>
     <div class="chip-mini">第 3 层（占位）</div>
@@ -558,7 +568,7 @@
   </div>
 
   <!-- 成员列表示例 1 -->
-  <div class="member-card">
+  <div class="member-card" onclick="location.href='23.团队成员列表页.html'">
     <div class="member-top">
       <div class="member-left">
         <div class="member-avatar"></div>
@@ -618,7 +628,7 @@
   </div>
 
   <!-- 团队收益明细示例 1 -->
-  <div class="tx-card">
+  <div class="tx-card" onclick="location.href='24.团队收益明细页.html'">
     <div class="tx-row-top">
       <div class="tx-main">
         <div class="tx-title">来自成员 UID 12345678 的看剧收益分成（占位）</div>
@@ -636,7 +646,7 @@
   </div>
 
   <!-- 团队收益明细示例 2 -->
-  <div class="tx-card">
+  <div class="tx-card" onclick="location.href='24.团队收益明细页.html'">
     <div class="tx-row-top">
       <div class="tx-main">
         <div class="tx-title">来自成员 UID 23456789 的任务收益分成（占位）</div>

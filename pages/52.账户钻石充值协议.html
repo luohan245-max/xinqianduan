@@ -115,6 +115,32 @@
       text-decoration:none;
     }
 
+    /* 顶部返回（协议页统一） */
+   .nav-back{
+     position:fixed;
+     top:calc(env(safe-area-inset-top, 0px) + 12px);
+     left:calc(env(safe-area-inset-left, 0px) + 12px);
+    z-index:9999;
+
+     width:32px;
+     height:32px;
+     border-radius:12px;
+     border:1px solid rgba(245,210,122,.45);
+     background:rgba(0,0,0,.35);
+
+     display:flex;
+     align-items:center;
+     justify-content:center;
+
+     color:var(--link);
+     font-size:18px;
+     line-height:1;
+     cursor:pointer;
+
+     user-select:none;
+     -webkit-tap-highlight-color:transparent;
+   }
+
     .divider{
       margin:14px 0 8px;
       height:1px;
@@ -133,6 +159,8 @@
   </style>
 </head>
 <body>
+  <div class="nav-back" onclick="history.back()" aria-label="返回">←</div>
+
 <div class="page">
 
   <!-- 顶部信息 -->
@@ -376,9 +404,9 @@
     <h2>第十二条　其他条款</h2>
     <p>
       12.1　本协议是对您在本平台进行钻石充值与使用行为的专项约定，与
-      <a href="用户协议.html">《用户服务协议》</a>、
-      <a href="隐私政策.html">《隐私政策》</a>、
-      <a href="风险声明.html">《风险声明》</a>
+      <a href="39.用户协议 : 隐私政策 : 风险声明.html">《用户服务协议》</a>、
+      <a href="39.用户协议 : 隐私政策 : 风险声明.html">《隐私政策》</a>、
+      <a href="39.用户协议 : 隐私政策 : 风险声明.html">《风险声明》</a>
       等共同构成完整的用户协议体系（链接文件名为占位，供接入时使用）。
     </p>
     <p>

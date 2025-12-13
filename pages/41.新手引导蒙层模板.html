@@ -309,6 +309,9 @@
       display:none; /* 只是示例，实际接入时改成基于 class 切换 */
     }
 
+    .btn-skip,.btn-next{ cursor:pointer; }
+    
+
   </style>
 </head>
 <body>
@@ -387,8 +390,8 @@
         也可以点击麦克风使用语音搜索（占位说明）。
       </div>
       <div class="guide-actions">
-        <div class="btn-skip">跳过引导（占位）</div>
-        <div class="btn-next">下一步（占位）</div>
+        <div class="btn-skip" onclick="closeGuide()">跳过引导（占位）</div>
+        <div class="btn-next" onclick="showGuideStep(2)">下一步（占位）</div>
       </div>
       <div class="guide-dots">
         <div class="guide-dot active"></div>
@@ -415,8 +418,8 @@
         建议你每天来这里看一眼，有新活动会在这里优先展示（占位说明）。
       </div>
       <div class="guide-actions">
-        <div class="btn-skip">跳过引导（占位）</div>
-        <div class="btn-next">下一步（占位）</div>
+        <div class="btn-skip" onclick="closeGuide()">跳过引导（占位）</div>
+        <div class="btn-next" onclick="showGuideStep(3)">下一步（占位）</div>
       </div>
       <div class="guide-dots">
         <div class="guide-dot"></div>
@@ -443,8 +446,8 @@
         后续想查看收益或管理账号，都可以从这里进入（占位说明）。
       </div>
       <div class="guide-actions">
-        <div class="btn-skip">不再提示（占位）</div>
-        <div class="btn-next">我知道了（占位）</div>
+        <div class="btn-skip" onclick="closeGuide()">不再提示（占位）</div>
+        <div class="btn-next" onclick="closeGuide()">我知道了（占位）</div>
       </div>
       <div class="guide-dots">
         <div class="guide-dot"></div>
@@ -455,5 +458,21 @@
   </div>
 
 </div>
+
+<script>
+  function showGuideStep(n){
+    document.querySelectorAll('.guide-overlay.step1, .guide-overlay.step2, .guide-overlay.step3')
+      .forEach(el => el.style.display = 'none');
+    const target = document.querySelector('.guide-overlay.step' + n);
+    if (target) target.style.display = 'block';
+  }
+
+  function closeGuide(){
+    // 作为“独立模板页”时：优先回来源；没有历史则回首页
+    if (history.length > 1) history.back();
+    else location.href = '../index.html';
+  }
+</script>
+
 </body>
 </html>

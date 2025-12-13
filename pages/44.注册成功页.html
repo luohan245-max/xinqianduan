@@ -259,6 +259,12 @@
       color:var(--gold);
     }
 
+    .header-right{ cursor:pointer; }
+
+    .btn-text span{ cursor:pointer; }
+
+    .btn-text span{ pointer-events:none; }
+
   </style>
 </head>
 <body>
@@ -270,7 +276,7 @@
       <button class="back-btn" onclick="location.href='19.登录页.html'">‹</button>
       <div class="header-title">注册成功（占位）</div>
     </div>
-    <div class="header-right">关闭 / 跳过占位</div>
+    <div class="header-right" onclick="location.href='../index.html'">关闭 / 跳过占位</div>
   </header>
 
   <!-- 核心成功卡片 -->
@@ -345,7 +351,7 @@
   前往福利中心领取新手奖励（占位）
 </button>
     <div class="btn-text">
-      你随时可以在 <span>「我的」</span> 中查看钱包、徽章和团队数据（占位说明）。
+      你随时可以在 <span onclick="location.href='5.个人中心.html'">「我的」</span> 中查看钱包、徽章和团队数据（占位说明）。
     </div>
   </div>
 

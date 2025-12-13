@@ -327,6 +327,16 @@
       color:var(--gold);
     }
 
+    .icon-btn,
+    .btn,
+    .tab,
+    .chip,
+    .btn-play,
+    .btn-open,
+    .empty-card span{
+      cursor: pointer;
+    }
+
   </style>
 </head>
 <body>
@@ -335,7 +345,7 @@
   <!-- 顶部栏 -->
   <div class="header-bar">
     <div class="header-left">
-      <div class="icon-btn">‹</div>
+      <div class="icon-btn" onclick="history.back()">‹</div>
       <div class="header-title">VIP 剧场（占位）</div>
     </div>
     <div class="header-right">
@@ -364,19 +374,19 @@
         VIP 权益示例：专属短剧 / 跳过部分广告 / 提升收益倍率等（占位）。
       </div>
       <div class="vip-btns">
-        <div class="btn primary">开通 / 续费 VIP（占位）</div>
-        <div class="btn ghost">查看 VIP 权益说明（占位）</div>
+        <div class="btn primary" onclick="location.href='25.VIP专区.html'">开通 / 续费 VIP（占位）</div>
+        <div class="btn ghost" onclick="location.href='12.VIP开通说明.html'">查看 VIP 权益说明（占位）</div>
       </div>
     </div>
   </div>
 
   <!-- Tab：短剧 / 电影 / 限免 / 即将下架 -->
   <div class="tab-row">
-    <div class="tab active">全部 VIP 内容（占位）</div>
-    <div class="tab">VIP 短剧（占位）</div>
-    <div class="tab">VIP 电影（占位）</div>
-    <div class="tab">限时免费（占位）</div>
-    <div class="tab">即将下架（占位）</div>
+    <div class="tab active" onclick="document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));this.classList.add('active');">全部 VIP 内容（占位）</div>
+    <div class="tab" onclick="document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));this.classList.add('active');">VIP 短剧（占位）</div>
+    <div class="tab" onclick="document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));this.classList.add('active');" >VIP 电影（占位）</div>
+    <div class="tab" onclick="document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));this.classList.add('active');">限时免费（占位）</div>
+    <div class="tab" onclick="document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));this.classList.add('active');">即将下架（占位）</div>
   </div>
 
   <!-- 筛选条件卡片 -->
@@ -386,17 +396,17 @@
       <div class="card-sub">可与搜索 / 分类联动（占位）</div>
     </div>
     <div class="chip-row">
-      <div class="chip active">综合排序（占位）</div>
-      <div class="chip">最新上线（占位）</div>
-      <div class="chip">热度优先（占位）</div>
-      <div class="chip">剩余时间优先（占位）</div>
+      <div class="chip active" onclick="document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));this.classList.add('active');">综合排序（占位）</div>
+      <div class="chip" onclick="document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));this.classList.add('active');">最新上线（占位）</div>
+      <div class="chip" onclick="document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));this.classList.add('active');">热度优先（占位）</div>
+      <div class="chip" onclick="document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));this.classList.add('active');">剩余时间优先（占位）</div>
     </div>
     <div class="chip-row" style="margin-top:6px;">
-      <div class="chip active">全部题材（占位）</div>
-      <div class="chip">都市（占位）</div>
-      <div class="chip">古装（占位）</div>
-      <div class="chip">悬疑（占位）</div>
-      <div class="chip">甜宠（占位）</div>
+      <div class="chip active" onclick="document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));this.classList.add('active');">全部题材（占位）</div>
+      <div class="chip" onclick="document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));this.classList.add('active');">都市（占位）</div>
+      <div class="chip" onclick="document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));this.classList.add('active');">古装（占位）</div>
+      <div class="chip" onclick="document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));this.classList.add('active');">悬疑（占位）</div>
+      <div class="chip" onclick="document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));this.classList.add('active');">甜宠（占位）</div>
     </div>
   </div>
 
@@ -432,8 +442,8 @@
           </div>
         </div>
         <div class="vip-bottom-row">
-          <button class="btn-play">立即播放（占位）</button>
-          <button class="btn-open">升级 VIP（占位）</button>
+          <button class="btn-play" onclick="location.href='16.短剧播放器页.html'">立即播放（占位）>立即播放（占位）</button>
+          <button class="btn-open" onclick="location.href='25.VIP专区.html'">升级 VIP（占位）</button>
         </div>
       </div>
     </div>
@@ -507,8 +517,8 @@
   <!-- 空状态（未开通 VIP / 暂无内容时可用） -->
   <div class="empty-card">
     当前筛选条件下暂未找到可观看的 VIP 内容。<br>
-    如果你尚未开通 VIP，可前往 <span>「VIP 开通 & 说明」</span> 了解详细权益；若已开通，可尝试切换到
-    <span>「全部 VIP 内容」</span> 或调整筛选条件（占位）。
+    如果你尚未开通 VIP，可前往 <span onclick="location.href='25.VIP专区.html'">「VIP 开通 & 说明」</span> 了解详细权益；若已开通，可尝试切换到
+    <span onclick="location.reload()">「全部 VIP 内容」</span> 或调整筛选条件（占位）。
   </div>
 
   <!-- 底部提示 -->
