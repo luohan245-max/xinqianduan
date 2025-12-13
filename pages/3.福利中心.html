@@ -20,11 +20,7 @@
       --shadow-soft: 0 18px 40px rgba(0,0,0,0.55);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     html, body {
       background: var(--bg);
@@ -33,776 +29,616 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    body {
-      min-height: 100vh;
-    }
+    body { min-height: 100vh; }
 
-    .app {
-      width: 100%;
-      max-width: 430px;
-      min-height: 100vh;
-      margin: 0 auto;
-      padding-bottom: 80px; /* 底部导航 */
-      position: relative;
-    }
+    .app { max-width: 430px; margin: 0 auto; padding: 18px 16px 90px; }
 
-    @media (min-width: 768px) {
-      .app {
-        max-width: 520px;
-        margin: 16px auto;
-        border-radius: 24px;
-        box-shadow: var(--shadow-soft);
-        overflow: hidden;
-      }
-    }
+    .page-title { font-size: 22px; font-weight: 800; letter-spacing: .2px; }
 
-    .page {
-      padding: 12px 16px 24px;
-    }
-
-    /* 顶部 */
-    .page-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      padding: 4px 0 8px;
-    }
-
-    .page-header-left {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .page-header-title {
-      font-size: 18px;
-      font-weight: 600;
-    }
-
-    .page-header-sub {
+    .page-sub {
+      margin-top: 6px;
       font-size: 12px;
-      color: var(--text-sub);
+      color: rgba(255,255,255,0.55);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
-    .icon-btn {
+    .help-btn {
       width: 30px;
       height: 30px;
       border-radius: 999px;
-      border: 1px solid rgba(245,210,122,0.35);
-      background:
-        radial-gradient(circle at top, rgba(255,126,179,0.26), transparent 60%),
-        linear-gradient(145deg, rgba(9,10,18,0.96), rgba(12,13,22,0.96));
+      border: 1px solid rgba(245,210,122,0.28);
+      background: rgba(245,210,122,0.08);
+      color: rgba(245,210,122,0.95);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 13px;
-      color: var(--gold);
-      box-shadow: 0 8px 18px rgba(0,0,0,0.7);
+      font-weight: 800;
+      cursor: pointer;
+      user-select: none;
     }
 
-    /* Tab 标签 */
     .welfare-tabs {
+      margin-top: 14px;
       display: flex;
-      gap: 8px;
-      margin-top: 8px;
-      margin-bottom: 10px;
+      gap: 10px;
+      align-items: center;
       overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
       padding-bottom: 2px;
     }
-
-    .welfare-tabs::-webkit-scrollbar {
-      height: 0;
-    }
+    .welfare-tabs::-webkit-scrollbar { display: none; }
 
     .tab-pill {
-      padding: 5px 12px;
+      padding: 8px 12px;
       border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.8);
       font-size: 12px;
-      color: var(--text-sub);
-      border: 1px solid rgba(245,210,122,0.25);
-      background: #0c0d14;
       white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+    }
+    .tab-pill.active {
+      border: 1px solid rgba(245,210,122,0.55);
+      background: linear-gradient(135deg, rgba(255,126,179,0.25), rgba(245,210,122,0.22));
+      color: #fff;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.45);
     }
 
-    .tab-pill.is-active {
-      background: linear-gradient(135deg, var(--gold), var(--pink));
-      color: #050506;
-      border: none;
-      box-shadow: 0 0 12px rgba(255,126,179,0.6);
-      font-weight: 500;
-    }
+    .section { margin-top: 18px; }
 
-    /* 通用区域 / 卡片 */
-    .section {
-      margin-top: 8px;
-    }
-
-    .section-title-row {
+    .section-header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      margin-bottom: 6px;
+      align-items: flex-end;
+      margin-bottom: 10px;
     }
 
     .section-title {
-      font-size: 14px;
-      font-weight: 500;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: .2px;
     }
+
+    .section-title.gold { color: rgba(245,210,122,0.95); }
+    .section-title.pink { color: rgba(255,126,179,0.95); }
 
     .section-sub {
       font-size: 11px;
-      color: var(--text-sub);
+      color: rgba(255,255,255,0.45);
+    }
+
+    .section-divider {
+      height: 1px;
+      margin-top: 6px;
+      background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.25), rgba(255,255,255,0));
+      opacity: .55;
     }
 
     .card {
-      background:
-        radial-gradient(circle at top left, rgba(255,126,179,0.16), transparent 60%),
-        linear-gradient(160deg, #181b2c, #0a0c16);
-      border-radius: var(--radius-lg);
-      border: 1px solid rgba(245,210,122,0.25);
-      padding: 12px;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.8);
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(21,23,37,0.92), rgba(13,14,24,0.92));
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
     }
 
-    .card-soft {
-      background: linear-gradient(160deg, #101322, #080914);
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border-subtle);
-      padding: 12px;
-      box-shadow: 0 10px 26px rgba(0,0,0,0.8);
-    }
+    .card-pad { padding: 14px; }
 
-    .ph-text {
-      height: 10px;
+    .btn-primary {
+      padding: 10px 12px;
       border-radius: 999px;
-      background: linear-gradient(90deg, #2e3144, #181b2a);
-      margin-bottom: 5px;
+      border: 0;
+      background: linear-gradient(135deg, rgba(255,126,179,0.95), rgba(245,210,122,0.95));
+      color: #2b1a06;
+      font-weight: 900;
+      font-size: 12px;
+      cursor: pointer;
+      user-select: none;
+      box-shadow: 0 12px 22px rgba(0,0,0,0.45);
+    }
+    .btn-primary:active { transform: translateY(1px); }
+
+    .btn-ghost {
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.75);
+      font-size: 11px;
+      cursor: pointer;
+      user-select: none;
     }
 
-    .w-100 { width: 100%; }
-    .w-90 { width: 90%; }
-    .w-80 { width: 80%; }
-    .w-70 { width: 70%; }
-    .w-60 { width: 60%; }
-    .w-50 { width: 50%; }
-
-    /* ========== 签到模块 ========== */
-    .checkin-summary {
+    /* ====== 签到模块 ====== */
+    .checkin-top {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
+      align-items: flex-start;
+      gap: 12px;
     }
 
-    .checkin-stat {
+    .checkin-left { min-width: 0; }
+    .checkin-title {
       display: flex;
-      flex-direction: column;
-      gap: 4px;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .checkin-title .days {
+      font-size: 22px;
+      font-weight: 900;
+      color: rgba(245,210,122,0.95);
+      line-height: 1;
+    }
+    .checkin-title .label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.7);
+      font-weight: 700;
+    }
+    .checkin-sub {
       font-size: 11px;
-    }
-
-    .checkin-number {
-      font-size: 18px;
-      font-weight: 600;
-      background: linear-gradient(135deg, var(--gold), var(--pink));
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-
-    .checkin-tag {
-      font-size: 11px;
-      padding: 2px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(245,210,122,0.55);
-      background: rgba(8,8,14,0.96);
-      color: var(--text-sub);
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .btn-checkin {
-      padding: 8px 14px;
-      border-radius: 999px;
-      border: none;
-      background: linear-gradient(135deg, var(--gold), var(--pink));
-      color: #050506;
-      font-size: 13px;
-      font-weight: 500;
-      box-shadow: 0 0 14px rgba(255,126,179,0.7);
-      cursor: pointer;
-      white-space: nowrap;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.4;
     }
 
     .progress-bar {
-      width: 100%;
-      height: 4px;
+      margin-top: 14px;
+      height: 10px;
       border-radius: 999px;
-      background: rgba(40,43,60,0.9);
+      background: rgba(255,255,255,0.06);
       overflow: hidden;
-      margin-top: 4px;
+      border: 1px solid rgba(255,255,255,0.08);
     }
 
-    .progress-inner {
-      width: 40%;
+    .progress-fill {
+      width: 55%;
       height: 100%;
+      background: linear-gradient(90deg, rgba(255,126,179,0.95), rgba(245,210,122,0.95));
       border-radius: 999px;
-      background: linear-gradient(90deg, var(--gold), var(--pink));
-      box-shadow: 0 0 10px rgba(255,126,179,0.7);
+      box-shadow: 0 0 16px rgba(245,210,122,0.35);
     }
 
-    .checkin-days-row {
-      margin-top: 10px;
+    .checkin-days {
+      margin-top: 14px;
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 6px;
+      gap: 8px;
     }
 
-    .day-cell {
-      height: 32px;
+    .day-chip {
+      height: 28px;
       border-radius: 10px;
-      border: 1px solid rgba(245,210,122,0.2);
-      background: rgba(9,9,16,0.96);
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.65);
       font-size: 10px;
-      color: var(--text-sub);
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 2px;
+    }
+    .day-chip.active {
+      border-color: rgba(245,210,122,0.45);
+      background: rgba(245,210,122,0.10);
+      color: rgba(245,210,122,0.95);
+      box-shadow: 0 0 14px rgba(245,210,122,0.15);
     }
 
-    .day-cell.is-today {
-      border-color: rgba(255,126,179,0.9);
-      box-shadow: 0 0 14px rgba(255,126,179,0.75);
-    }
-
-    .day-reward {
-      height: 6px;
-      width: 70%;
-      border-radius: 999px;
-      background: linear-gradient(90deg, #f5d27a, #ff7eb3);
-      opacity: 0.9;
-    }
-
-    /* ========== 任务列表 ========== */
-    .task-list {
-      margin-top: 4px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
+    /* ====== 任务列表 ====== */
+    .task-list { display: grid; gap: 10px; }
     .task-item {
+      padding: 12px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      gap: 8px;
-      padding: 8px;
-      border-radius: var(--radius-md);
-      background: linear-gradient(160deg, #131629, #080914);
-      border: 1px solid rgba(38,42,63,0.9);
+      gap: 10px;
     }
-
-    .task-info {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      font-size: 11px;
-    }
-
-    .task-meta {
-      font-size: 10px;
-      color: var(--text-sub);
-    }
-
-    .task-right {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 6px;
-      min-width: 80px;
-    }
+    .task-left { min-width: 0; }
+    .task-title { font-size: 13px; font-weight: 800; margin-bottom: 4px; }
+    .task-sub { font-size: 11px; color: rgba(255,255,255,0.45); }
 
     .reward-pill {
-      font-size: 10px;
-      padding: 3px 8px;
+      padding: 7px 10px;
       border-radius: 999px;
-      border: 1px solid rgba(245,210,122,0.6);
-      background: rgba(8,8,14,0.96);
-      color: var(--gold);
+      border: 1px solid rgba(245,210,122,0.38);
+      background: rgba(245,210,122,0.08);
+      color: rgba(245,210,122,0.95);
+      font-size: 11px;
+      font-weight: 800;
       white-space: nowrap;
     }
 
-    .btn-task {
-      padding: 4px 10px;
-      border-radius: 999px;
-      border: none;
-      font-size: 11px;
-      background: linear-gradient(135deg, var(--gold), var(--pink));
-      color: #050506;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .btn-task-secondary {
-      background: transparent;
-      border: 1px solid rgba(245,210,122,0.5);
-      color: var(--gold);
-    }
-
-    /* ========== 抽奖模块：分割转盘 + 奖品卡片 ========== */
-
-    .lottery-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 11px;
-      margin-bottom: 6px;
-      color: var(--text-sub);
-    }
-
-    .lottery-count {
-      padding: 3px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(245,210,122,0.9);
-      background: rgba(8,8,14,0.96);
-      color: var(--gold);
-      font-size: 11px;
-    }
-
-    .lottery-wheel {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      border-radius: 50%;
-      margin-top: 6px;
-      padding: 10px;
-      background:
-        radial-gradient(circle at center, rgba(255,216,111,0.35), transparent 65%),
-        #050506;
-      box-shadow:
-        0 0 30px rgba(255,216,111,0.95),
-        0 26px 54px rgba(0,0,0,0.95);
-      position: relative;
-    }
-
-    .lottery-wheel-inner {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      border: 1px solid rgba(245,210,122,0.7);
-      position: relative;
-      overflow: hidden;
-      background:
-        conic-gradient(
-          from -90deg,
-          rgba(80,33,89,0.96) 0deg 45deg,
-          rgba(38,19,67,0.96) 45deg 90deg,
-          rgba(88,46,57,0.96) 90deg 135deg,
-          rgba(94,55,46,0.96) 135deg 180deg,
-          rgba(80,33,89,0.96) 180deg 225deg,
-          rgba(38,19,67,0.96) 225deg 270deg,
-          rgba(88,46,57,0.96) 270deg 315deg,
-          rgba(94,55,46,0.96) 315deg 360deg
-        );
-    }
-
-    .lottery-wheel-inner::before {
-      content: "";
-      position: absolute;
-      inset: 15%;
-      border-radius: 50%;
-      background:
-        radial-gradient(circle, rgba(0,0,0,0.25), transparent 65%),
-        rgba(0,0,0,0.55);
-    }
-
-    .wheel-core-label {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 12px;
-      color: #f7f7fb;
-      text-shadow: 0 2px 6px rgba(0,0,0,0.8);
-    }
-
-    .wheel-prize {
-      position: absolute;
-      font-size: 11px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: rgba(5,5,12,0.9);
-      border: 1px dashed rgba(245,210,122,0.9);
-      color: var(--gold);
-      white-space: nowrap;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.85);
-    }
-
-    .wheel-prize-1 { top: 10%; left: 50%; transform: translate(-50%, -50%); }
-    .wheel-prize-2 { top: 22%; right: 12%; transform: translate(50%, -50%); }
-    .wheel-prize-3 { top: 50%; right: 5%; transform: translate(50%, -50%); }
-    .wheel-prize-4 { bottom: 22%; right: 12%; transform: translate(50%, 50%); }
-    .wheel-prize-5 { bottom: 8%; left: 50%; transform: translate(-50%, 50%); }
-    .wheel-prize-6 { bottom: 22%; left: 12%; transform: translate(-50%, 50%); }
-    .wheel-prize-7 { top: 50%; left: 5%; transform: translate(-50%, -50%); }
-    .wheel-prize-8 { top: 22%; left: 12%; transform: translate(-50%, -50%); }
-
-    .btn-lottery {
-      padding: 9px 26px;
-      margin: 12px auto 6px;
-      display: block;
-      border-radius: 999px;
-      border: none;
-      background: linear-gradient(135deg, var(--gold), var(--pink));
-      color: #050506;
-      font-size: 13px;
-      font-weight: 600;
-      box-shadow: 0 0 20px rgba(255,126,179,0.85);
-      cursor: pointer;
-    }
-
-    .lottery-tip {
-      font-size: 11px;
-      color: var(--text-sub);
-      text-align: center;
-      margin-bottom: 6px;
-    }
-
-    /* 奖品卡片列表 */
-    .prize-list {
-      margin-top: 8px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .prize-card {
-      flex: 1 1 calc(50% - 4px);
-      min-width: calc(50% - 4px);
-      border-radius: 14px;
-      border: 1px dashed rgba(245,210,122,0.6);
-      background: linear-gradient(160deg, #121421, #080914);
-      padding: 8px 8px 10px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.75);
-      font-size: 11px;
-      color: var(--text-sub);
-    }
-
-    .prize-title {
-      font-size: 12px;
-      margin-bottom: 4px;
-      color: var(--text-main);
-    }
-
-    .prize-reward {
-      margin-top: 4px;
-      font-size: 10px;
-      color: var(--gold);
-    }
-
-    /* 底部 TabBar */
-    .tab-bar {
+    /* ====== 底部导航 ====== */
+    .tabbar {
       position: fixed;
-      left: 0;
-      right: 0;
+      left: 50%;
+      transform: translateX(-50%);
       bottom: 0;
-      height: 64px;
-      background: rgba(5,6,10,0.96);
-      border-top: 1px solid rgba(245,210,122,0.16);
-      backdrop-filter: blur(22px);
-      display: flex;
-      justify-content: center;
-      z-index: 20;
-    }
-
-    .tab-bar a {
-      text-decoration: none !important;
-    }
-
-    .tab-bar-inner {
       width: 100%;
       max-width: 430px;
-      display: flex;
-      justify-content: space-around;
+      background: rgba(5,5,6,0.92);
+      backdrop-filter: blur(14px);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 10px 10px 12px;
+      z-index: 999;
+    }
+    .tabbar-inner {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
       align-items: center;
     }
-
-    @media (min-width: 768px) {
-      .tab-bar-inner {
-        max-width: 520px;
-      }
-    }
-
-    .tab-item {
-      flex: 1;
-      text-align: center;
+    .tab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: rgba(255,255,255,0.45);
       font-size: 10px;
-      color: var(--text-sub);
+      text-decoration: none;
+      user-select: none;
     }
-
-    .tab-item-icon {
-      width: 22px;
-      height: 22px;
-      margin: 0 auto;
+    .tab .dot {
+      width: 26px;
+      height: 26px;
       border-radius: 999px;
-      border: 1px solid rgba(245,210,122,0.3);
-      background: radial-gradient(circle at top, #30354c, #151728);
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.04);
+    }
+    .tab.active { color: rgba(255,255,255,0.90); font-weight: 800; }
+    .tab.active .dot {
+      border: 0;
+      background: linear-gradient(135deg, rgba(255,126,179,0.95), rgba(245,210,122,0.95));
+      box-shadow: 0 0 18px rgba(245,210,122,0.25);
     }
 
-    .tab-item-label {
-      margin-top: 2px;
+    /* ===== 顶部金币余额卡片（新增） ===== */
+    .balance-card{
+      margin-top: 10px;
+      padding: 14px 14px;
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(246,213,122,0.18) 0, transparent 55%),
+        radial-gradient(circle at 100% 40%, rgba(255,106,200,0.14) 0, transparent 60%),
+        linear-gradient(180deg, rgba(21,24,36,0.92), rgba(15,17,25,0.92));
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 12px 36px rgba(0,0,0,0.55);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
     }
-
-    .tab-item.is-active {
-      color: var(--gold);
+    .balance-left{ min-width:0; }
+    .balance-label{
+      font-size: 12px;
+      color: rgba(246,213,122,0.95);
+      letter-spacing: .3px;
+      margin-bottom: 6px;
     }
-
-    .tab-item.is-active .tab-item-icon {
-      background: radial-gradient(circle at top, var(--gold), var(--pink));
-      border-color: transparent;
-      box-shadow: 0 0 12px rgba(255,126,179,0.7);
+    .balance-amount{
+      font-size: 22px;
+      font-weight: 800;
+      line-height: 1;
+      display:flex;
+      align-items:baseline;
+      gap:8px;
+      margin-bottom: 8px;
     }
-
-    /* 全局：禁用默认链接下划线和默认蓝色，继承父级文字颜色 */
-    a {
-      text-decoration: none !important;
-      color: inherit !important;
+    .balance-amount .coin-icon{
+      font-size: 18px;
+      filter: drop-shadow(0 6px 10px rgba(246,213,122,0.25));
     }
+    .balance-tip{
+      font-size: 11px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.35;
+      max-width: 260px;
+    }
+    .balance-btn{
+      flex-shrink:0;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(246,213,122,0.35);
+      background: rgba(246,213,122,0.10);
+      color: rgba(246,213,122,0.95);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+    }
+    .balance-btn:active{ transform: translateY(1px); }
 
+    /* ===== 福利入口大卡片（2×2，小卡片入口）===== */
+    .hub-card{
+      padding: 12px;
+      border-radius: 20px;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(246,213,122,0.16) 0, transparent 55%),
+        radial-gradient(circle at 100% 40%, rgba(255,106,200,0.12) 0, transparent 60%),
+        linear-gradient(180deg, rgba(21,24,36,0.92), rgba(15,17,25,0.92));
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 14px 40px rgba(0,0,0,0.65);
+    }
+    .hub-grid{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .hub-item{
+      border-radius: 16px;
+      overflow:hidden;
+      background: rgba(8,10,18,0.28);
+      border: 1px solid rgba(255,255,255,0.08);
+      cursor: pointer;
+    }
+    .hub-thumb{
+      width:100%;
+      height: 76px;
+      background:
+        radial-gradient(circle at 25% 10%, rgba(255,106,200,0.40) 0, transparent 55%),
+        radial-gradient(circle at 90% 40%, rgba(246,213,122,0.28) 0, transparent 60%),
+        linear-gradient(135deg, rgba(59,65,99,0.85), rgba(24,27,43,0.85));
+      position:relative;
+    }
+    .hub-thumb::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.22));
+    }
+    .hub-name{
+      padding: 10px 10px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.88);
+      letter-spacing: .2px;
+    }
+    .hub-sub{
+      font-size: 10px;
+      color: rgba(255,255,255,0.55);
+      margin-top: 4px;
+      font-weight: 500;
+    }
   </style>
 </head>
+
 <body>
   <div class="app">
-    <main class="page" id="page-welfare">
-      <!-- 顶部 -->
-      <header class="page-header">
-        <div class="page-header-left">
-          <div class="page-header-title">福利中心</div>
-          <div class="page-header-sub">签到 · 任务 · 抽奖 · 奖励占位</div>
-        </div>
-        <button class="icon-btn" onclick="location.href='26.客服页-帮助中心页.html'">?</button>
-      </header>
+    <div class="page-title">福利中心</div>
+    <div class="page-sub">
+      <span>签到 / 任务 / 抽奖 · 奖励占位</span>
+      <div class="help-btn" onclick="location.href='29.客服页-帮助中心页.html'">?</div>
+    </div>
 
-      <!-- Tabs -->
-      <nav class="welfare-tabs">
-        <button class="tab-pill is-active">签到</button>
-        <button class="tab-pill" onclick="location.reload()">金币任务</button>
-        <button class="tab-pill" onclick="location.reload()">新手任务</button>
-        <button class="tab-pill" onclick="location.reload()">抽奖</button>
-      </nav>
+    <!-- Tabs -->
+    <nav class="welfare-tabs" aria-label="福利中心 tabs">
+      <div class="tab-pill active">签到</div>
+      <div class="tab-pill">金币任务</div>
+      <div class="tab-pill">新手任务</div>
+      <div class="tab-pill">抽奖</div>
+    </nav>
 
-      <!-- 签到模块 -->
-      <section class="section">
-        <div class="section-title-row">
-          <div class="section-title">签到奖励</div>
-          <div class="section-sub">连续签到 / 累计奖励 占位</div>
+  <!-- 账户金币余额（新增） -->
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-title">账户金币</div>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-sub">实时余额（占位）</div>
+    </div>
+
+    <div class="balance-card">
+      <div class="balance-left">
+        <div class="balance-label">当前金币</div>
+        <div class="balance-amount"><span class="coin-icon">🪙</span><span id="coinBalance">12,480</span></div>
+        <div class="balance-tip">金币可用于解锁剧集、参与抽奖、兑换福利（占位）。</div>
+      </div>
+      <button class="balance-btn" onclick="location.href='7.钱包 & 收益总览二级页1版.html'">去钱包</button>
+    </div>
+  </section>
+
+<!-- 签到奖励 -->
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <div class="section-title pink">签到奖励</div>
+          <div class="section-divider"></div>
         </div>
-        <div class="card">
-          <div class="checkin-summary">
-            <div class="checkin-stat">
-              <span style="font-size:11px;color:var(--text-sub);">连续签到</span>
-              <span class="checkin-number">7 天</span>
-              <span class="checkin-tag">累计奖励 占位</span>
+        <div class="section-sub">连续签到 / 累计奖励 占位</div>
+      </div>
+
+      <div class="card card-pad">
+        <div class="checkin-top">
+          <div class="checkin-left">
+            <div class="checkin-title">
+              <div class="days">7天</div>
+              <div class="label">累计奖励占位</div>
             </div>
-            <button class="btn-checkin" onclick="location.reload()">立即签到</button>
+            <div class="checkin-sub">连续签到可获得更多金币 / 观影卡奖励（占位）</div>
           </div>
-          <div class="ph-text w-80"></div>
-          <div class="progress-bar">
-            <div class="progress-inner"></div>
-          </div>
-          <div class="checkin-days-row">
-            <div class="day-cell is-today">
-              <span>Day 1</span>
-              <div class="day-reward"></div>
-            </div>
-            <div class="day-cell"><span>Day 2</span><div class="day-reward"></div></div>
-            <div class="day-cell"><span>Day 3</span><div class="day-reward"></div></div>
-            <div class="day-cell"><span>Day 4</span><div class="day-reward"></div></div>
-            <div class="day-cell"><span>Day 5</span><div class="day-reward"></div></div>
-            <div class="day-cell"><span>Day 6</span><div class="day-reward"></div></div>
-            <div class="day-cell"><span>Day 7</span><div class="day-reward"></div></div>
-          </div>
+          <button class="btn-primary" onclick="alert('签到占位')">立即签到</button>
         </div>
-      </section>
 
-      <!-- 金币任务 -->
-      <section class="section">
-        <div class="section-title-row">
-          <div class="section-title">金币任务</div>
-          <div class="section-sub">日常任务 / 持续任务 占位</div>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
         </div>
-        <div class="card-soft">
-          <div class="task-list">
-            <div class="task-item">
-              <div class="task-info">
-                <div class="ph-text w-80"></div>
-                <div class="ph-text w-60"></div>
-                <div class="task-meta">进度占位 · 0 / N</div>
-              </div>
-              <div class="task-right">
-                <span class="reward-pill">+ 金币 占位</span>
-                <button class="btn-task" onclick="location.reload()">去完成</button>
-              </div>
-            </div>
 
-            <div class="task-item">
-              <div class="task-info">
-                <div class="ph-text w-70"></div>
-                <div class="ph-text w-50"></div>
-                <div class="task-meta">进度占位 · 已完成 / 未完成</div>
-              </div>
-              <div class="task-right">
-                <span class="reward-pill">+ 金币 占位</span>
-                <button class="btn-task btn-task-secondary">已领取</button>
-              </div>
-            </div>
+        <div class="checkin-days">
+          <div class="day-chip active">Day 1</div>
+          <div class="day-chip active">Day 2</div>
+          <div class="day-chip active">Day 3</div>
+          <div class="day-chip">Day 4</div>
+          <div class="day-chip">Day 5</div>
+          <div class="day-chip">Day 6</div>
+          <div class="day-chip">Day 7</div>
+        </div>
+      </div>
+    </section>
 
-            <div class="task-item">
-              <div class="task-info">
-                <div class="ph-text w-90"></div>
-                <div class="ph-text w-70"></div>
-                <div class="task-meta">进度占位 · 观看时长 / 剧集数</div>
-              </div>
-              <div class="task-right">
-                <span class="reward-pill">+ 金币 占位</span>
-                <button class="btn-task">去完成</button>
-              </div>
+    <!-- 金币任务 -->
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <div class="section-title gold">金币任务</div>
+          <div class="section-divider"></div>
+        </div>
+        <div class="section-sub">日常任务 / 持续任务 占位</div>
+      </div>
+
+      <div class="card card-pad">
+        <div class="task-list">
+          <div class="task-item">
+            <div class="task-left">
+              <div class="task-title">观看占位 · 0 / N</div>
+              <div class="task-sub">进度占位 · 观看时长 / 剧集数</div>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <div class="reward-pill">+ 金币 占位</div>
+              <button class="btn-primary" onclick="location.href='18.短剧播放器页.html'">去完成</button>
             </div>
           </div>
-        </div>
-      </section>
 
-      <!-- 新手任务 -->
-      <section class="section">
-        <div class="section-title-row">
+          <div class="task-item">
+            <div class="task-left">
+              <div class="task-title">分享占位 · 已完成 / 未完成</div>
+              <div class="task-sub">进度占位 · 分享到社交平台</div>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <div class="reward-pill">+ 金币 占位</div>
+              <button class="btn-ghost" onclick="alert('已领取占位')">已领取</button>
+            </div>
+          </div>
+
+          <div class="task-item">
+            <div class="task-left">
+              <div class="task-title">充值占位 · 0 / 1</div>
+              <div class="task-sub">进度占位 · 完成一次充值</div>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <div class="reward-pill">+ 金币 占位</div>
+              <button class="btn-primary" onclick="location.href='14.我的订单.html'">去完成</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 新手任务 -->
+    <section class="section">
+      <div class="section-header">
+        <div>
           <div class="section-title">新手任务</div>
-          <div class="section-sub">新用户专属奖励 占位</div>
+          <div class="section-divider"></div>
         </div>
-        <div class="card">
-          <div class="task-list">
-            <div class="task-item">
-              <div class="task-info">
-                <div class="ph-text w-90"></div>
-                <div class="ph-text w-70"></div>
-                <div class="task-meta">仅限新手 · 一次性任务 占位</div>
-              </div>
-              <div class="task-right">
-                <span class="reward-pill">新手礼包 占位</span>
-                <button class="btn-task">去完成</button>
-              </div>
+        <div class="section-sub">新用户专属奖励 占位</div>
+      </div>
+
+      <div class="card card-pad">
+        <div class="task-list">
+          <div class="task-item">
+            <div class="task-left">
+              <div class="task-title">新手礼包 · 占位</div>
+              <div class="task-sub">仅限新手 · 一次性任务</div>
             </div>
-
-            <div class="task-item">
-              <div class="task-info">
-                <div class="ph-text w-80"></div>
-                <div class="ph-text w-60"></div>
-                <div class="task-meta">完成若干步骤后解锁 占位</div>
-              </div>
-              <div class="task-right">
-                <span class="reward-pill">高级奖励 占位</span>
-                <button class="btn-task btn-task-secondary">待解锁</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 抽奖中心 -->
-      <section class="section" style="margin-bottom: 20px;">
-        <div class="section-title-row">
-          <div class="section-title">抽奖中心</div>
-          <div class="section-sub">幸运转盘 · 奖励占位</div>
-        </div>
-        <div class="card">
-          <div class="lottery-top">
-            <span>抽奖说明 占位</span>
-            <span class="lottery-count">剩余次数 占位</span>
-          </div>
-
-          <div class="lottery-wheel">
-            <div class="lottery-wheel-inner">
-              <div class="wheel-core-label">抽奖转盘占位</div>
-
-              <div class="wheel-prize wheel-prize-1">奖品 A 占位</div>
-              <div class="wheel-prize wheel-prize-2">奖品 B 占位</div>
-              <div class="wheel-prize wheel-prize-3">奖品 C 占位</div>
-              <div class="wheel-prize wheel-prize-4">奖品 D 占位</div>
-              <div class="wheel-prize wheel-prize-5">奖品 E 占位</div>
-              <div class="wheel-prize wheel-prize-6">奖品 F 占位</div>
-              <div class="wheel-prize wheel-prize-7">奖品 G 占位</div>
-              <div class="wheel-prize wheel-prize-8">奖品 H 占位</div>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <div class="reward-pill">新手礼包 占位</div>
+              <button class="btn-primary" onclick="location.href='23.注册页.html'">去完成</button>
             </div>
           </div>
 
-          <button class="btn-lottery" onclick="location.reload()">点击抽奖</button>
-
-          <div class="lottery-tip">
-            奖品展示位占位 · 抽奖规则说明占位
-          </div>
-
-          <!-- 转盘下方奖品卡片占位 -->
-          <div class="prize-list">
-            <div class="prize-card">
-              <div class="prize-title">奖品 A 卡片占位</div>
-              <div class="ph-text w-90"></div>
-              <div class="prize-reward">奖励详情占位</div>
+          <div class="task-item">
+            <div class="task-left">
+              <div class="task-title">完善资料 · 占位</div>
+              <div class="task-sub">完成若干步骤后解锁</div>
             </div>
-            <div class="prize-card">
-              <div class="prize-title">奖品 B 卡片占位</div>
-              <div class="ph-text w-80"></div>
-              <div class="prize-reward">奖励详情占位</div>
-            </div>
-            <div class="prize-card">
-              <div class="prize-title">奖品 C 卡片占位</div>
-              <div class="ph-text w-90"></div>
-              <div class="prize-reward">奖励详情占位</div>
-            </div>
-            <div class="prize-card">
-              <div class="prize-title">奖品 D 卡片占位</div>
-              <div class="ph-text w-80"></div>
-              <div class="prize-reward">奖励详情占位</div>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <div class="reward-pill">高级奖励 占位</div>
+              <button class="btn-ghost" onclick="location.href='20.用户资料编辑页.html'">待解锁</button>
             </div>
           </div>
         </div>
-      </section>
-    </main>
+      </div>
+    </section>
 
-    <!-- 底部导航 -->
-<nav class="tab-bar">
-  <div class="tab-bar-inner">
+<!-- 抽奖中心（重构：大卡片 + 2×2 入口） -->
+  <section class="section" id="welfare-lottery-hub">
+    <div class="section-header">
+      <div>
+        <div class="section-title">抽奖中心</div>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-sub">转盘 / 游戏 / 玩法入口（占位）</div>
+    </div>
 
-    <!-- 首页 -->
-    <a class="tab-item" href="../index.html">
-      <div class="tab-item-icon"></div>
-      <div class="tab-item-label">首页</div>
-    </a>
+    <div class="hub-card">
+      <div class="hub-grid">
+        <!-- 入口 1：幸运转盘（原“大转盘”移入这里） -->
+        <div class="hub-item" onclick="location.href='54.活动中心页.html'">
+          <div class="hub-thumb"></div>
+          <div class="hub-name">
+            幸运转盘
+            <div class="hub-sub">每日抽奖 · 领取金币（占位）</div>
+          </div>
+        </div>
 
-    <!-- 推荐 -->
-    <a class="tab-item" href="2.推荐页.html">
-      <div class="tab-item-icon"></div>
-      <div class="tab-item-label">推荐</div>
-    </a>
+        <!-- 入口 2：影视收益涨跌（看涨跌小游戏） -->
+        <div class="hub-item" onclick="location.href='62.影视收益涨跌-主页面.html'">
+          <div class="hub-thumb"></div>
+          <div class="hub-name">
+            影视收益涨跌
+            <div class="hub-sub">预测涨跌 · 结算奖励（占位）</div>
+          </div>
+        </div>
 
-    <!-- 福利（当前页高亮） -->
-    <a class="tab-item is-active" href="3.福利中心.html">
-      <div class="tab-item-icon"></div>
-      <div class="tab-item-label">福利</div>
-    </a>
+        <!-- 入口 3：任务礼包（占位，可后续接你的任务系统） -->
+        <div class="hub-item" onclick="location.href='54.活动中心页.html'">
+          <div class="hub-thumb"></div>
+          <div class="hub-name">
+            任务礼包
+            <div class="hub-sub">完成任务 · 领取福利（占位）</div>
+          </div>
+        </div>
 
-    <!-- 历史 -->
-    <a class="tab-item" href="4.播放历史页.html">
-      <div class="tab-item-icon"></div>
-      <div class="tab-item-label">历史</div>
-    </a>
-
-    <!-- 我的 -->
-    <a class="tab-item" href="5.个人中心.html">
-      <div class="tab-item-icon"></div>
-      <div class="tab-item-label">我的</div>
-    </a>
+        <!-- 入口 4：兑换商店（占位） -->
+        <div class="hub-item" onclick="location.href='7.钱包 & 收益总览二级页1版.html'">
+          <div class="hub-thumb"></div>
+          <div class="hub-name">
+            兑换商店
+            <div class="hub-sub">金币兑换 · 道具/权益（占位）</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   </div>
-</nav>
+
+  <!-- Bottom TabBar -->
+  <nav class="tabbar" aria-label="底部导航">
+    <div class="tabbar-inner">
+      <a class="tab" href="1.首页.html"><span class="dot"></span><span>首页</span></a>
+      <a class="tab" href="2.推荐页.html"><span class="dot"></span><span>推荐</span></a>
+      <a class="tab active" href="3.福利中心.html"><span class="dot"></span><span>福利</span></a>
+      <a class="tab" href="4.播放历史页.html"><span class="dot"></span><span>历史</span></a>
+      <a class="tab" href="5.个人中心.html"><span class="dot"></span><span>我的</span></a>
+    </div>
+  </nav>
+
+  <script>
+    // tabs 演示（占位）：切换 active 状态，不改变页面内容
+    document.querySelectorAll('.tab-pill').forEach(pill=>{
+      pill.addEventListener('click', ()=>{
+        document.querySelectorAll('.tab-pill').forEach(x=>x.classList.remove('active'));
+        pill.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
