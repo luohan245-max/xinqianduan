@@ -2,8 +2,8 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <title>短剧详情页 · 占位</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>短剧平台 · 个人中心</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
   <style>
     :root {
       --bg: #050506;
@@ -14,557 +14,718 @@
       --pink: #ff7eb3;
       --text-main: #f7f7fb;
       --text-sub: #9ea1b6;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 999px;
+      --shadow-soft: 0 18px 40px rgba(0,0,0,0.55);
     }
 
     * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
     }
 
-    body {
-      background: radial-gradient(circle at top, #191e34 0, #050506 55%);
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+    html, body {
+      background: var(--bg);
       color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", system-ui, sans-serif;
       -webkit-font-smoothing: antialiased;
     }
 
-    .app {
+    body {
+      min-height: 100vh;
+    }
+
+    .page {
       width: 100%;
       max-width: 430px;
       min-height: 100vh;
       margin: 0 auto;
-      padding-bottom: 24px;
+      padding-bottom: 80px; /* 给 TabBar 预留 */
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* PC 行为与 index.html 完全一致 */
+    @media (min-width: 768px) {
+    .page {
+      max-width: 430px;
+      margin: 0 auto;
+      border-radius: 0;
+      box-shadow: none;
+      }
     }
 
     .page {
-      padding: 12px 14px 24px;
+      padding: 12px 16px 24px;
     }
 
-    /* 顶部栏 */
+    /* 顶部标题 */
     .page-header {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      margin-bottom: 10px;
-    }
-
-    .header-left,
-    .header-right {
-      display: flex;
       align-items: center;
-      gap: 8px;
-      flex: 0 0 auto;
-    }
-
-    .header-center {
-      flex: 1;
-      padding: 0 6px;
-      display: flex;
-      justify-content: center;
+      padding: 4px 0 8px;
     }
 
     .page-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-main);
-      max-width: 210px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      text-align: center;
-    }
-
-    .circle-btn {
-      width: 32px;
-      height: 32px;
-      border-radius: 999px;
-      border: 1px solid rgba(245,210,122,0.45);
-      background:
-        radial-gradient(circle at top, rgba(255,126,179,0.25), transparent 60%),
-        linear-gradient(145deg, #111320, #070811);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--gold);
-      box-shadow: 0 10px 22px rgba(0,0,0,0.85);
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .circle-btn:hover {
-      box-shadow: 0 0 14px rgba(255,126,179,0.7);
-    }
-
-    .btn-ghost {
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.16);
-      background: transparent;
-      color: var(--text-sub);
-      font-size: 11px;
-    }
-
-    /* 顶部横向大卡：封面 + 右侧信息 */
-    .card-hero {
-      display: flex;
-      gap: 12px;
-      padding: 10px 10px 12px;
-      border-radius: 18px;
-      background:
-        radial-gradient(circle at 0% 0%, rgba(255,126,179,0.25), transparent 55%),
-        radial-gradient(circle at 100% 0%, rgba(245,210,122,0.2), transparent 55%),
-        linear-gradient(145deg, #111427, #050506);
-      box-shadow: 0 18px 40px rgba(0,0,0,0.85);
-      border: 1px solid rgba(245,210,122,0.45);
-      margin-bottom: 14px;
-    }
-
-    .cover-main {
-      width: 110px;
-      aspect-ratio: 3 / 4;
-      border-radius: 14px;
-      border: 1px solid rgba(245,210,122,0.5);
-      background:
-        radial-gradient(circle at 0% 0%, rgba(255,126,179,0.3), transparent 60%),
-        radial-gradient(circle at 100% 100%, rgba(245,210,122,0.22), transparent 60%),
-        linear-gradient(145deg, #151827, #050506);
-      box-shadow: 0 15px 40px rgba(0,0,0,0.9);
-      position: relative;
-      flex-shrink: 0;
-    }
-
-    .badge-corner {
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      padding: 3px 7px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #ff7eb3, #f5d27a);
-      color: #050506;
-      font-size: 10px;
-      font-weight: 600;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.7);
-    }
-
-    .cover-play {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: 42px;
-      height: 42px;
-      border-radius: 999px;
-      border: 1px solid rgba(245,210,122,0.7);
-      background:
-        radial-gradient(circle at top, rgba(255,255,255,0.4), transparent 60%),
-        linear-gradient(145deg, #050506, #111320);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--gold);
       font-size: 18px;
-      box-shadow: 0 10px 26px rgba(0,0,0,0.85);
-    }
-
-    .info-main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      justify-content: center;
-    }
-
-    .info-title {
-      font-size: 15px;
       font-weight: 600;
-      line-height: 1.3;
     }
 
-    .info-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      font-size: 10px;
-      color: var(--text-sub);
-    }
-
-    .tag-pill {
-      padding: 2px 6px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.15);
-      background: rgba(5,5,10,0.7);
-    }
-
-    .info-meta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+    .page-header-right {
       font-size: 11px;
       color: var(--text-sub);
     }
 
-    .meta-dot::before {
-      content: "· ";
-    }
-
-    /* 主操作区（整行） */
-    .cta-row-main {
-      display: flex;
-      gap: 10px;
-      margin-top: 4px;
-      margin-bottom: 4px;
-    }
-
-    .btn-primary-wide {
-      flex: 1;
-      padding: 10px 12px;
-      border-radius: 999px;
-      border: none;
-      background: linear-gradient(135deg, var(--gold), var(--pink));
-      color: #050506;
-      font-size: 14px;
-      font-weight: 600;
-      box-shadow: 0 0 18px rgba(255,126,179,0.8);
-      text-align: center;
-      cursor: pointer;
-    }
-
-    .btn-secondary {
-      width: 42px;
-      height: 42px;
-      border-radius: 999px;
-      border: 1px solid rgba(245,210,122,0.4);
-      background:
-        radial-gradient(circle at top, rgba(255,126,179,0.25), transparent 60%),
-        linear-gradient(145deg, #111320, #070811);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      color: var(--gold);
-      box-shadow: 0 10px 22px rgba(0,0,0,0.9);
-    }
-
-    .cta-sub-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 11px;
-      color: var(--text-sub);
-      margin-top: 2px;
-    }
-
-    /* 信息区块标题 */
-    .section-title {
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-
-    .section-sub {
-      font-size: 11px;
-      color: var(--text-sub);
-      margin-bottom: 8px;
-    }
-
-    /* 通用卡片容器 */
-    .card-soft {
-      background:
-        radial-gradient(circle at 0% 0%, rgba(255,126,179,0.16), transparent 55%),
-        radial-gradient(circle at 100% 100%, rgba(245,210,122,0.14), transparent 55%),
-        linear-gradient(145deg, #111427, #050506);
-      border-radius: 18px;
-      padding: 10px 10px 12px;
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 14px 32px rgba(0,0,0,0.85);
-      margin-bottom: 12px;
-    }
-
-    /* 剧情简介 */
-    .summary-text {
-      font-size: 12px;
-      color: var(--text-sub);
-      line-height: 1.5;
-    }
-
-    /* 剧集列表 + 底部小数字按钮 */
-    .episodes-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      margin-bottom: 8px;
-    }
-
-    .episode-cover {
-      width: 80px;
-      height: 52px;
-      border-radius: 12px;
-      background:
-        radial-gradient(circle at 0% 0%, rgba(255,126,179,0.25), transparent 60%),
-        linear-gradient(145deg, #151827, #050506);
-      flex-shrink: 0;
-    }
-
-    .episode-info {
-      flex: 1;
-      font-size: 11px;
-      color: var(--text-sub);
-    }
-
-    .episode-title {
-      font-size: 12px;
-      color: var(--text-main);
-      margin-bottom: 2px;
-    }
-
-    .episode-meta {
-      font-size: 11px;
-      color: var(--text-sub);
-    }
-
-    .episode-extra {
-      font-size: 11px;
-      color: var(--text-sub);
-      margin-top: 4px;
-    }
-
-    .episode-btn-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
+    /* 用户信息卡片 */
+    .user-card {
       margin-top: 8px;
-    }
-
-    .ep-btn {
-      min-width: 32px;
-      padding: 4px 6px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.16);
-      background: rgba(5,5,10,0.8);
-      font-size: 11px;
-      color: var(--text-sub);
-      text-align: center;
-    }
-
-    .ep-btn.active {
-      border-color: rgba(245,210,122,0.9);
+      padding: 14px 14px 12px;
+      border-radius: 20px;
       background:
-        radial-gradient(circle at top, rgba(255,255,255,0.35), transparent 65%),
-        linear-gradient(145deg, #f5d27a, #ff7eb3);
-      color: #050506;
-      font-weight: 600;
-      box-shadow: 0 0 16px rgba(255,126,179,0.8);
+        radial-gradient(circle at top left, rgba(255,126,179,0.25), transparent 60%),
+        radial-gradient(circle at bottom right, rgba(245,210,122,0.25), transparent 55%),
+        linear-gradient(160deg, #191d30, #05060c);
+      border: 1px solid rgba(245,210,122,0.35);
+      box-shadow: 0 16px 36px rgba(0,0,0,0.9);
     }
 
-    /* 主演 & 出品信息 */
-    .meta-list {
-      font-size: 11px;
-      color: var(--text-sub);
+    .user-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at top, rgba(255,216,111,0.45), transparent 60%),
+        linear-gradient(160deg, #2b2f45, #121423);
+      border: 1px solid rgba(245,210,122,0.6);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.9);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .avatar::after {
+      content: "头像";
+      position: absolute;
+      bottom: 6px;
+      right: 8px;
+      font-size: 9px;
+      color: rgba(245,210,122,0.9);
+    }
+
+    .user-main {
+      flex: 1;
       display: flex;
       flex-direction: column;
       gap: 4px;
     }
 
-    .meta-item-label {
-      color: var(--text-sub);
-    }
-
-    .meta-item-value {
-      color: var(--text-main);
-    }
-
-    .meta-item {
+    .user-name-row {
       display: flex;
+      align-items: center;
       gap: 6px;
     }
 
-    /* 推荐模块：两列小卡片 */
-    .recommend-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap: 10px;
+    .user-name {
+      font-size: 15px;
+      font-weight: 500;
     }
 
-    .recommend-item {
-      background:
-        radial-gradient(circle at 0% 0%, rgba(255,126,179,0.18), transparent 60%),
-        linear-gradient(145deg, #151827, #050506);
-      border-radius: 14px;
-      padding: 8px 8px 9px;
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 12px 26px rgba(0,0,0,0.85);
+    .vip-tag {
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      background: linear-gradient(135deg, var(--gold), var(--pink));
+      color: #050506;
+      box-shadow: 0 0 12px rgba(255,126,179,0.85);
+      font-weight: 600;
+    }
+
+    .user-extra {
       font-size: 11px;
+      color: var(--text-sub);
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
-    .recommend-cover {
-      width: 100%;
-      padding-top: 60%;
-      border-radius: 10px;
-      background:
-        radial-gradient(circle at 0% 0%, rgba(255,126,179,0.25), transparent 60%),
-        linear-gradient(145deg, #151827, #050506);
-      margin-bottom: 6px;
-    }
-
-    .recommend-title {
-      font-size: 12px;
-      color: var(--text-main);
-      line-height: 1.3;
-      margin-bottom: 4px;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .recommend-meta {
+    .invite-row {
+      margin-top: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
       font-size: 11px;
       color: var(--text-sub);
     }
 
-    /* 全局：禁用 a 标签默认下划线与默认蓝色，保证和父级文字风格一致 */
+    .invite-code {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .invite-badge {
+      padding: 2px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(245,210,122,0.6);
+      color: var(--gold);
+      font-size: 10px;
+    }
+
+    .btn-copy {
+      padding: 3px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(245,210,122,0.7);
+      background: rgba(5,5,10,0.9);
+      color: var(--gold);
+      font-size: 10px;
+      white-space: nowrap;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.8);
+    }
+
+    /* 资产概览 */
+    .section {
+      margin-top: 14px;
+    }
+
+    .section-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .section-sub {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .asset-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .asset-card {
+      padding: 10px 10px 9px;
+      border-radius: 14px;
+      background: linear-gradient(150deg, #151827, #070811);
+      border: 1px solid rgba(38,42,63,0.9);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.85);
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .asset-card-strong {
+      background:
+        radial-gradient(circle at top left, rgba(255,126,179,0.18), transparent 60%),
+        linear-gradient(150deg, #181c30, #05060c);
+      border-color: rgba(245,210,122,0.6);
+    }
+
+    .asset-label {
+      font-size: 11px;
+      color: var(--text-sub);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .asset-value {
+      font-size: 15px;
+      font-weight: 600;
+      background: linear-gradient(135deg, var(--gold), var(--pink));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .asset-unit {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    .asset-tag {
+      font-size: 10px;
+      color: var(--gold);
+    }
+
+    /* 团队卡片（整行） */
+    .asset-row-full {
+      grid-column: 1 / -1;
+    }
+
+    .asset-team {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .team-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+    }
+
+    .team-label {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .team-link {
+      font-size: 10px;
+      color: var(--gold);
+    }
+
+    .team-stats {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .team-stat-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .team-stat-label {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    .team-stat-value {
+      font-size: 13px;
+      color: var(--gold);
+    }
+
+    /* 菜单分组 */
+    .menu-section {
+      margin-top: 16px;
+    }
+
+    .menu-section-title {
+      font-size: 11px;
+      color: var(--text-sub);
+      margin-bottom: 6px;
+    }
+
+    .menu-list {
+      border-radius: 16px;
+      background: linear-gradient(155deg, #101322, #05060c);
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.9);
+      overflow: hidden;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 12px;
+      gap: 10px;
+      font-size: 13px;
+      border-bottom: 1px solid rgba(22,25,40,0.95);
+    }
+
+    .menu-item:last-child {
+      border-bottom: none;
+    }
+
+    /* 这里把 menu-item 当成链接时的下划线 / 颜色全部干掉 */
+    .menu-item,
+    .menu-item:link,
+    .menu-item:visited,
+    .menu-item:hover,
+    .menu-item:active {
+      color: inherit !important;
+      text-decoration: none !important;
+    }
+
+    .menu-item * {
+      color: inherit !important;
+      text-decoration: none !important;
+    }
+
+    .menu-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background:
+        radial-gradient(circle at top, rgba(255,216,111,0.4), rgba(255,126,179,0.25)),
+        linear-gradient(150deg, #252840, #111422);
+      border: 1px solid rgba(245,210,122,0.6);
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #050506;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.9);
+    }
+
+    .menu-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .menu-title {
+      font-size: 13px;
+    }
+
+    .menu-desc {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .menu-arrow {
+      font-size: 14px;
+      color: var(--text-sub);
+    }
+
+    /* 底部 TabBar */
+    .tab-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 64px;
+      background: rgba(5,6,10,0.96);
+      border-top: 1px solid rgba(245,210,122,0.16);
+      backdrop-filter: blur(22px);
+      display: flex;
+      justify-content: center;
+      z-index: 20;
+    }
+
+    .tab-bar-inner {
+      width: 100%;
+      max-width: 430px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    @media (min-width: 768px) {
+      .tab-bar-inner {
+        max-width: 520px;
+      }
+    }
+
+    .tab-bar a {
+      text-decoration: none !important;
+    }
+
+    .tab-item {
+      flex: 1;
+      text-align: center;
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    .tab-item-icon {
+      width: 22px;
+      height: 22px;
+      margin: 0 auto;
+      border-radius: 999px;
+      border: 1px solid rgba(245,210,122,0.3);
+      background: radial-gradient(circle at top, #30354c, #151728);
+    }
+
+    .tab-item-label {
+      margin-top: 2px;
+    }
+
+    .tab-item.is-active {
+      color: var(--gold);
+    }
+
+    .tab-item.is-active .tab-item-icon {
+      background: radial-gradient(circle at top, var(--gold), var(--pink));
+      border-color: transparent;
+      box-shadow: 0 0 12px rgba(255,126,179,0.7);
+    }
+
+    /* 全局：禁用 a 标签默认下划线和默认蓝色，保持和父级一致 */
     a {
       text-decoration: none !important;
       color: inherit !important;
     }
 
+    .page-header-right {
+      cursor: pointer;
+    }
+
   </style>
 </head>
-
 <body>
-  <div class="app">
-    <main class="page" id="page-drama-detail">
-      <!-- 顶部栏 -->
-      <header class="page-header">
-        <div class="header-left">
-          <div class="circle-btn" onclick="history.back()">‹</div>
-        </div>
-        <div class="header-center">
-          <div class="page-title">短剧标题占位 · 最多一行展示</div>
-        </div>
-        <div class="header-right">
-          <div class="circle-btn">⇪</div>
-        </div>
+  <div class="page">
+    <main class="page" id="page-profile">
+      <!-- 顶部标题 -->
+      <header class="page-header ns-header ns-header--flow">
+        <div class="page-title">我的</div>
+        <div class="page-header-right" onclick="location.href='47.设置主页面.html'">账号中心占位</div>
       </header>
 
-      <!-- ===== 顶部大卡：封面 + 主信息 + CTA ===== -->
-      <section class="card-hero">
-        <div class="cover-main">
-          <div class="badge-corner">New</div>
-          <div class="cover-play" onclick="location.href='16.短剧播放器页.html'">▶</div>
-        </div>
-
-        <div class="info-main">
-          <div class="info-title">短剧标题占位 · 最多两行展示效果（占位）</div>
-          <div class="info-tags">
-            <span class="tag-pill">都市</span>
-            <span class="tag-pill">现偶</span>
-            <span class="tag-pill">反转</span>
-            <span class="tag-pill">霸总</span>
-          </div>
-          <div class="info-meta-row">
-            <span>共 XX 集</span>
-            <span class="meta-dot">已更新至第 XX 集</span>
-            <span class="meta-dot">综合热度 XX.XM🔥</span>
-          </div>
-
-          <div class="cta-row-main">
-            <!-- 这里是主观影按钮：点击跳转到 16.短剧播放器页.html -->
-            <button class="btn-primary-wide" onclick="location.href='16.短剧播放器页.html'">继续播放（占位）</button>
-            <div class="btn-secondary">★</div>
-            <div class="btn-secondary">✎</div>
-          </div>
-          <div class="cta-sub-row">
-            <span>收藏 / 追更入口占位</span>
-            <span>评论 / 弹幕入口占位</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- ===== 剧情简介 ===== -->
-      <section class="section card-soft">
-        <div class="section-title">剧情简介</div>
-        <div class="section-sub">以下为文案占位内容，后续可以替换为真实接口文案。</div>
-        <div class="summary-text">
-          这里是一段短剧的剧情简介占位文案，用于展示故事的核心卖点与情绪氛围。
-          例如：女主在一场设计好的婚礼事故中意外“闪婚”霸总，醒来后发现自己卷入了一场
-          有关家族、复仇与金钱的巨大阴谋。<br><br>
-          随着剧集推进，他们在误会和对立中逐渐看清彼此的真心，同时也一点点揭开尘封已久的
-          家族秘密与旧事恩怨……以上为纯占位文案。
-        </div>
-      </section>
-
-      <!-- ===== 绿框：剧集列表 + 小数字按钮 ===== -->
-      <section class="section card-soft" style="border-color: rgba(129, 199, 132, 0.8);">
-        <div class="section-title">选集 · 剧集列表（占位）</div>
-        <div class="section-sub">本模块为剧集列表占位示意，后续可接真实剧集接口。</div>
-
-        <div class="episodes-row">
-          <div class="episode-cover"></div>
-          <div class="episode-info">
-            <div class="episode-title">第 01 集 · 标题占位文案</div>
-            <div class="episode-meta">时长约 120 秒 · 首播时间占位</div>
-            <div class="episode-extra">
-              简要剧情占位：女主在婚礼当天遭遇变故，和陌生人发生命运交错……
+      <!-- 用户信息卡片 -->
+      <section class="user-card">
+        <div class="user-row">
+          <div class="avatar"></div>
+          <div class="user-main">
+            <div class="user-name-row">
+              <div class="user-name">用户昵称占位</div>
+              <span class="vip-tag">VIP 占位</span>
+            </div>
+            <div class="user-extra">
+              <span>UID：123456 占位</span>
+              <span>注册时间占位</span>
             </div>
           </div>
         </div>
-
-        <div class="episode-btn-row">
-          <div class="ep-btn active">01</div>
-          <div class="ep-btn">02</div>
-          <div class="ep-btn">03</div>
-          <div class="ep-btn">04</div>
-          <div class="ep-btn">05</div>
-          <div class="ep-btn">06</div>
-          <div class="ep-btn">07</div>
-          <div class="ep-btn">08</div>
+        <div class="invite-row">
+          <div class="invite-code">
+            <span class="invite-badge">邀请码</span>
+            <span>NS-XXXXXX 占位</span>
+          </div>
+          <button class="btn-copy" onclick="location.reload()">复制邀请码</button>
         </div>
       </section>
 
-      <!-- ===== 主演 / 出品方等信息 ===== -->
-      <section class="section card-soft">
-        <div class="section-title">主演 & 出品信息（占位）</div>
-        <div class="meta-list">
-          <div class="meta-item">
-            <span class="meta-item-label">主演：</span>
-            <span class="meta-item-value">主演 A / 主演 B / 主演 C（占位）</span>
+      <!-- 我的资产概览 -->
+      <section class="section">
+        <div class="section-title-row">
+          <div class="section-title">我的资产</div>
+          <div class="section-sub">金币 / 钻石 / 徽章 / DP / 团队占位</div>
+        </div>
+
+        <div class="asset-grid">
+          <!-- 金币 -->
+          <div class="asset-card" onclick="location.href='7.钱包 & 收益总览二级页.html'">
+            <div class="asset-label">
+              <span>金币</span>
+              <span class="asset-unit">单位占位</span>
+            </div>
+            <div class="asset-value">0 占位</div>
           </div>
-          <div class="meta-item">
-            <span class="meta-item-label">导演：</span>
-            <span class="meta-item-value">导演姓名占位</span>
+
+          <!-- 钻石 -->
+          <div class="asset-card" onclick="location.href='7.钱包 & 收益总览二级页.html'">
+            <div class="asset-label">
+              <span>钻石</span>
+              <span class="asset-unit">单位占位</span>
+            </div>
+            <div class="asset-value">0 占位</div>
           </div>
-          <div class="meta-item">
-            <span class="meta-item-label">出品方：</span>
-            <span class="meta-item-value">出品公司名称占位</span>
+
+          <!-- 徽章 -->
+          <div class="asset-card" onclick="location.href='7.钱包 & 收益总览二级页.html'">
+            <div class="asset-label">
+              <span>徽章</span>
+              <span class="asset-unit">数量占位</span>
+            </div>
+            <div class="asset-value">0 占位</div>
           </div>
-          <div class="meta-item">
-            <span class="meta-item-label">出品地区：</span>
-            <span class="meta-item-value">中国 · 内地 / 海外 · 占位</span>
+
+          <!-- DP 资产（强化） -->
+          <div class="asset-card asset-card-strong" onclick="location.href='9.DP收益总览.html'">
+            <div class="asset-label">
+              <span>DP 资产</span>
+              <span class="asset-tag">可视化入口占位</span>
+            </div>
+            <div class="asset-value">0.0000 占位</div>
+          </div>
+
+          <!-- 团队（整行，含直推 / 间推） -->
+          <div class="asset-card asset-row-full asset-team" onclick="location.href='22.团队中心页.html'">
+            <div class="team-top-row">
+              <span class="team-label">团队</span>
+              <span class="team-link">团队 & 收益入口占位 →</span>
+            </div>
+            <div class="team-stats">
+              <div class="team-stat-item">
+                <span class="team-stat-label">直推人数</span>
+                <span class="team-stat-value">0 占位</span>
+              </div>
+              <div class="team-stat-item" style="text-align:right;">
+                <span class="team-stat-label">间推人数</span>
+                <span class="team-stat-value">0 占位</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- ===== 推荐模块：你可能还喜欢 ===== -->
-      <section class="section card-soft">
-        <div class="section-title">你可能还喜欢（占位）</div>
-        <div class="section-sub">基于当前短剧的题材与观影行为推荐。</div>
+      <!-- 钱包与收益 & 团队 -->
+      <section class="menu-section">
+        <div class="menu-section-title">钱包与收益 & 团队</div>
+        <div class="menu-list">
+          <!-- 这一项改成可点击的 a：跳转 7.钱包 & 收益总览二级页.html -->
+          <a class="menu-item" href="7.钱包 & 收益总览二级页.html">
+            <div class="menu-icon">￥</div>
+            <div class="menu-main">
+              <div class="menu-title">钱包 & 收益总览</div>
+              <div class="menu-desc">我的收益 / 徽章收益可视化 / DP 收益总览占位</div>
+            </div>
+            <div class="menu-arrow">›</div>
+          </a>
 
-        <div class="recommend-grid">
-          <article class="recommend-item" onclick="location.href='6.短剧详情页.html'">
-            <div class="recommend-cover"></div>
-            <div class="recommend-title">推荐短剧标题占位 · 最多两行展示效果</div>
-            <div class="recommend-meta">现偶 · 霸总 · 共 XX 集 占位</div>
-          </article>
+          <a class="menu-item" href="35.徽章中心主页.html">
+            <div class="menu-icon">徽</div>
+            <div class="menu-main">
+              <div class="menu-title">徽章中心</div>
+              <div class="menu-desc">徽章列表 / 升级规则 / 权益说明占位</div>
+            </div>
+            <div class="menu-arrow">›</div>
+          </a>
 
-          <article class="recommend-item" onclick="location.href='6.短剧详情页.html'">
-            <div class="recommend-cover"></div>
-            <div class="recommend-title">推荐短剧标题占位 · 最多两行展示效果</div>
-            <div class="recommend-meta">悬疑 · 反转 · 共 XX 集 占位</div>
-          </article>
+          <a class="menu-item" href="9.DP收益总览.html">
+            <div class="menu-icon">DP</div>
+            <div class="menu-main">
+              <div class="menu-title">DP 收益总览</div>
+              <div class="menu-desc">DP 收益结构 / 曲线可视化占位</div>
+            </div>
+            <div class="menu-arrow">›</div>
+          </a>
+
+          <a class="menu-item" href="10.徽章收益计算器.html">
+            <div class="menu-icon">算</div>
+            <div class="menu-main">
+              <div class="menu-title">徽章收益计算器</div>
+              <div class="menu-desc">模拟不同徽章配置的收益占位</div>
+            </div>
+            <div class="menu-arrow">›</div>
+          </a>
+
+          <a class="menu-item" href="22.团队中心页.html">
+            <div class="menu-icon">团</div>
+            <div class="menu-main">
+              <div class="menu-title">团队中心 & 团队收益</div>
+              <div class="menu-desc">团队结构 / 直推 & 间推收益占位</div>
+            </div>
+            <div class="menu-arrow">›</div>
+          </a>
+        </div>
+      </section>
+
+      <!-- 账号与内容 -->
+      <section class="menu-section">
+        <div class="menu-section-title">账号与内容</div>
+        <div class="menu-list">
+          <a class="menu-item" href="25.VIP专区.html">
+            <div class="menu-icon">V</div>
+            <div class="menu-main">
+              <div class="menu-title">VIP 开通 / 管理</div>
+              <div class="menu-desc">VIP 权益 / 价格 / 到期时间占位</div>
+            </div>
+            <div class="menu-arrow">›</div>
+          </a>
+
+          <a class="menu-item" href="13.我的订单.html">
+            <div class="menu-icon">订</div>
+            <div class="menu-main">
+              <div class="menu-title">我的订单</div>
+              <div class="menu-desc">充值记录 / 订阅记录占位</div>
+            </div>
+            <div class="menu-arrow">›</div>
+          </a>
+
+          <a class="menu-item" href="15.我的收藏.html">
+            <div class="menu-icon">藏</div>
+            <div class="menu-main">
+              <div class="menu-title">我的收藏</div>
+              <div class="menu-desc">收藏的短剧 / 电影 占位</div>
+            </div>
+            <div class="menu-arrow">›</div>
+          </a>
+        </div>
+      </section>
+
+      <!-- 系统功能 -->
+      <section class="menu-section">
+        <div class="menu-section-title">系统功能</div>
+        <div class="menu-list">
+          <a class="menu-item" href="49.客服中心首页.html">
+            <div class="menu-icon">客</div>
+            <div class="menu-main">
+              <div class="menu-title">客服中心</div>
+              <div class="menu-desc">在线客服 / 联系方式占位</div>
+            </div>
+            <div class="menu-arrow">›</div>
+          </a>
+
+          <a class="menu-item" href="48.语言设置页.html">
+            <div class="menu-icon">语</div>
+            <div class="menu-main">
+              <div class="menu-title">语言切换</div>
+              <div class="menu-desc">中文 / 越南语 / 英文占位</div>
+            </div>
+            <div class="menu-arrow">›</div>
+          </a>
+
+          <a class="menu-item" href="47.设置主页面.html">
+            <div class="menu-icon">设</div>
+            <div class="menu-main">
+              <div class="menu-title">设置</div>
+              <div class="menu-desc">账号安全 / 推送设置 / 退出登录占位</div>
+            </div>
+            <div class="menu-arrow">›</div>
+          </a>
         </div>
       </section>
     </main>
+
+    <!-- 底部 TabBar：我的高亮 + 可点击跳转 -->
+    <nav class="tab-bar">
+      <div class="tab-bar-inner">
+        <!-- 首页 -->
+        <a class="tab-item" href="../index.html">
+          <div class="tab-item-icon"></div>
+          <div class="tab-item-label">首页</div>
+        </a>
+
+        <!-- 推荐 -->
+        <a class="tab-item" href="2.推荐页.html">
+          <div class="tab-item-icon"></div>
+          <div class="tab-item-label">推荐</div>
+        </a>
+
+        <!-- 福利 -->
+        <a class="tab-item" href="3.福利中心.html">
+          <div class="tab-item-icon"></div>
+          <div class="tab-item-label">福利</div>
+        </a>
+
+        <!-- 历史 -->
+        <a class="tab-item" href="4.播放历史页.html">
+          <div class="tab-item-icon"></div>
+          <div class="tab-item-label">历史</div>
+        </a>
+
+        <!-- 我的（当前页高亮） -->
+        <a class="tab-item is-active" href="5.个人中心.html">
+          <div class="tab-item-icon"></div>
+          <div class="tab-item-label">我的</div>
+        </a>
+      </div>
+    </nav>
   </div>
 </body>
 </html>
