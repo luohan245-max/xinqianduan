@@ -31,7 +31,15 @@
 
     body { min-height: 100vh; }
 
-    .app { max-width: 430px; margin: 0 auto; padding: 18px 16px 90px; }
+    .page {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      margin: 0 auto;
+      padding-bottom: 80px; /* 和 index 一样，给 TabBar 预留 */
+      position: relative;
+      overflow: hidden;
+    }
 
     .page-title { font-size: 22px; font-weight: 800; letter-spacing: .2px; }
 
@@ -255,48 +263,65 @@
     }
 
     /* ====== 底部导航 ====== */
-    .tabbar {
-      position: fixed;
-      left: 50%;
-      transform: translateX(-50%);
-      bottom: 0;
-      width: 100%;
-      max-width: 430px;
-      background: rgba(5,5,6,0.92);
-      backdrop-filter: blur(14px);
-      border-top: 1px solid rgba(255,255,255,0.08);
-      padding: 10px 10px 12px;
-      z-index: 999;
-    }
-    .tabbar-inner {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 6px;
-      align-items: center;
-    }
-    .tab {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      color: rgba(255,255,255,0.45);
-      font-size: 10px;
-      text-decoration: none;
-      user-select: none;
-    }
-    .tab .dot {
-      width: 26px;
-      height: 26px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.18);
-      background: rgba(255,255,255,0.04);
-    }
-    .tab.active { color: rgba(255,255,255,0.90); font-weight: 800; }
-    .tab.active .dot {
-      border: 0;
-      background: linear-gradient(135deg, rgba(255,126,179,0.95), rgba(245,210,122,0.95));
-      box-shadow: 0 0 18px rgba(245,210,122,0.25);
-    }
+    /* ===== TabBar unified with index.html ===== */
+
+.tab-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 64px;
+  background: rgba(5,6,10,0.96);
+  border-top: 1px solid rgba(245,210,122,0.16);
+  backdrop-filter: blur(22px);
+  display: flex;
+  justify-content: center;
+  z-index: 20;
+}
+
+.tab-bar-inner {
+  width: 100%;
+  max-width: 430px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .tab-bar-inner {
+    max-width: 520px;
+  }
+}
+
+.tab-item {
+  flex: 1;
+  text-align: center;
+  font-size: 10px;
+  color: var(--text-sub);
+}
+
+.tab-item-icon {
+  width: 22px;
+  height: 22px;
+  margin: 0 auto;
+  border-radius: 999px;
+  border: 1px solid rgba(245,210,122,0.3);
+  background: radial-gradient(circle at top, #30354c, #151728);
+}
+
+.tab-item-label {
+  margin-top: 2px;
+}
+
+.tab-item.is-active {
+  color: var(--gold);
+}
+
+.tab-item.is-active .tab-item-icon {
+  background: radial-gradient(circle at top, var(--gold), var(--pink));
+  border-color: transparent;
+  box-shadow: 0 0 12px rgba(255,126,179,0.7);
+}
 
     /* ===== 顶部金币余额卡片（新增） ===== */
     .balance-card{
@@ -405,16 +430,51 @@
       margin-top: 4px;
       font-weight: 500;
     }
+
+    /* ===== NS Unify V1 : Welfare Page ===== */
+
+    /* 语义对齐，不改变现有布局 */
+    .ns-shell {}
+
+    /* 福利中心页头归入统一 flow header 体系 */
+    .ns-header.ns-header--flow {
+    /* 不设置高度、不设背景、不改 padding */
+    }
+
+    /* 兜底：确保页头左右不突破系统主宽 */
+    .ns-header {
+      max-width: 430px;
+      margin: 0 auto;
+    }
+
+    /* ===== unify with index.html ===== */
+    @media (min-width: 768px) {
+    .page {
+      max-width: 430px;
+      margin: 0 auto;
+      border-radius: 0;
+      box-shadow: none;
+      }
+    }
+
+    /* 内容区统一内边距（等价 index） */
+    .page > *:not(.tab-bar) {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+
   </style>
 </head>
 
 <body>
-  <div class="app">
-    <div class="page-title">福利中心</div>
-    <div class="page-sub">
-      <span>签到 / 任务 / 抽奖 · 奖励占位</span>
-      <div class="help-btn" onclick="location.href='29.客服页-帮助中心页.html'">?</div>
-    </div>
+  <div class="page">
+    <header class="ns-header ns-header--flow">
+      <div class="page-title">福利中心</div>
+      <div class="page-sub">
+        <span>签到 / 任务 / 抽奖 · 奖励占位</span>
+        <div class="help-btn" onclick="location.href='29.客服页-帮助中心页.html'">?</div>
+      </div>
+    </header>
 
     <!-- Tabs -->
     <nav class="welfare-tabs" aria-label="福利中心 tabs">
@@ -621,15 +681,36 @@
   </div>
 
   <!-- Bottom TabBar -->
-  <nav class="tabbar" aria-label="底部导航">
-    <div class="tabbar-inner">
-      <a class="tab" href="../index.html"><span class="dot"></span><span>首页>shou y</a>
-      <a class="tab" href="2.推荐页.html"><span class="dot"></span><span>推荐</span></a>
-      <a class="tab active" href="3.福利中心.html"><span class="dot"></span><span>福利</span></a>
-      <a class="tab" href="4.播放历史页.html"><span class="dot"></span><span>历史</span></a>
-      <a class="tab" href="5.个人中心.html"><span class="dot"></span><span>我的</span></a>
-    </div>
-  </nav>
+ <nav class="tab-bar">
+  <div class="tab-bar-inner">
+
+    <a class="tab-item" href="1.首页.html">
+      <div class="tab-item-icon"></div>
+      <div class="tab-item-label">首页</div>
+    </a>
+
+    <a class="tab-item" href="2.推荐页.html">
+      <div class="tab-item-icon"></div>
+      <div class="tab-item-label">推荐</div>
+    </a>
+
+    <a class="tab-item is-active" href="3.福利中心.html">
+      <div class="tab-item-icon"></div>
+      <div class="tab-item-label">福利</div>
+    </a>
+
+    <a class="tab-item" href="4.播放历史页.html">
+      <div class="tab-item-icon"></div>
+      <div class="tab-item-label">历史</div>
+    </a>
+
+    <a class="tab-item" href="5.个人中心.html">
+      <div class="tab-item-icon"></div>
+      <div class="tab-item-label">我的</div>
+    </a>
+
+  </div>
+</nav>
 
   <script>
     // tabs 演示（占位）：切换 active 状态，不改变页面内容
