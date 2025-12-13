@@ -463,6 +463,47 @@
       padding-right: 16px;
     }
 
+    /* 1) 先把页面最底层背景锁死为黑（防止 iOS 底部露白） */
+html, body {
+  background: #050509 !important;
+  height: 100%;
+}
+
+/* 2) iOS 有时会把“回弹区域”露出来，给 body 再兜底 */
+body {
+  min-height: 100vh;
+  overscroll-behavior: none; /* 部分浏览器生效 */
+}
+
+/* 3) TabBar：不要半透明（半透明+blur最容易透出白边） */
+:root { --safe-bottom: env(safe-area-inset-bottom, 0px); }
+
+.tab-bar{
+  border-top: none !important;
+  box-shadow: none !important;
+
+  background: #050509 !important;   /* 关键：纯色！ */
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+
+  height: calc(64px + var(--safe-bottom));
+  padding-bottom: var(--safe-bottom);
+
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+}
+
+/* 4) 再补一层“底部遮罩”，专门盖住极端机型/WebView的白底条 */
+.tab-bar::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(-1 * var(--safe-bottom));
+  height: var(--safe-bottom);
+  background: #050509;
+}
+    
   </style>
 </head>
 
