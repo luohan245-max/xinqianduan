@@ -478,6 +478,23 @@
       color: inherit !important;
     }
 
+    :root{
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    .tab-bar{
+      border-top: none !important;
+      box-shadow: none !important;
+
+      /* 关键：把安全区也包进 TabBar 背景里 */
+      height: calc(64px + var(--safe-bottom));
+      padding-bottom: var(--safe-bottom);
+
+      background: rgba(5,6,10,0.98) !important;
+      -webkit-backdrop-filter: blur(22px);
+      backdrop-filter: blur(22px);
+     }
+    
   </style>
 </head>
 
